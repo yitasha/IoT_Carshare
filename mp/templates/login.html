@@ -1,0 +1,22 @@
+{% extends "template.html" %}
+   
+    {% block title %} 
+    {{'Login'}} 
+    {% endblock %}
+
+    {% block display %}
+    <div class="loginContainer">
+      <h2>Login</h2>
+      <form action="/login" method="post">
+        <div class="form-row">
+        <label for="firstname"><b>Username</b></label>
+        <input type="text" id="username" name="username" value="" placeholder="Username" required><br>
+        </div>
+        <div class="form-row">
+        <label for="firstname"><b>Password</b></label>
+        <input type="password" id="pass" name="password" value="" placeholder="Password" required><br>
+        </div>
+        <input class="btn btn-primary" type="submit" name="Login" value="login"/>
+      </form> 
+    </div>
+    {% endblock %}

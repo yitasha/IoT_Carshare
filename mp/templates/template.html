@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+ <head>
+   <meta charset="utf-8">
+   <title>{% block title %} {% endblock %}</title>
+   <link rel="shortcut icon" type="image/x-icon" href="static/image/favicon.ico">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
+   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>
+   <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+	 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+ </head>
+ <body>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Car Share</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{{ url_for('home') }}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="#">Page 1</a></li>
+        <li><a href="#">Page 2</a></li>
+      </ul>
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-user"></span>Login</a></li>
+        <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-log-in"></span>Register</a></li>
+        <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+    {% block display %}
+
+    {% endblock %}
+    
+ </body>
+</html>

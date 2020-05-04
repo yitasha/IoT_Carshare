@@ -1,0 +1,30 @@
+body {
+    text-align: center;
+    margin: auto;
+}
+
+.home {
+    text-align: center;
+}
+
+img.responsive {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+  }
+
+input {
+    background-color: #f6f6f6;
+    color: #0d0d0d;
+    padding: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 5px;
+    border: 2px solid #f6f6f6;
+    border-radius: 5px 5px 5px 5px;
+    outline: none;
+}
+
+.form-row {
+    padding: 5px;
+}

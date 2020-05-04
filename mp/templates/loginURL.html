@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Flask Tutorial</title>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block display %}
+    <div class="loginContainer">
+      <h2>Login</h2>
+      <form action="/loginURL" method="post">
+        <div class="form-row">
+          <label for="id"><b>ID</b></label>
+          <input type="text" id="username" name="id" value="" placeholder="Username" required><br>
+          </div>
+        <div class="form-row">
+        <label for="username"><b>Username</b></label>
+        <input type="text" id="username" name="username" value="" placeholder="Username" required><br>
+        </div>
+        <div class="form-row">
+        <label for="password"><b>Password</b></label>
+        <input type="password" id="pass" name="password" value="" placeholder="Password" required><br>
+        </div>
+        <input class="btn btn-primary" type="submit" name="Login" value="login"/>
+      </form> 
+    </div>
+    {% endblock %}
+  </body>
+</html>

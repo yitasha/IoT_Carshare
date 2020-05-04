@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+
+    {% block title %} 
+    {{'Register'}} 
+    {% endblock %}
+
+    {% block display %}
+    <div class="registerContainer">
+        <h2>Register</h2>
+        <div class="row">
+        <form action="/loggedin" method="post">
+            <div class="form-row">
+            <label for="username"><b>Username</b></label>
+            <input type="text" id="username" name="username" placeholder="Username" required><br>
+            </div>
+            <div class="form-row">
+            <label for="password"><b>Password</b></label>
+            <input type="password" id="pass" name="password" placeholder="Password" required><br>
+            </div>
+            <div class="form-row">
+            <label for="firstname"><b>Firstname</b></label>
+            <input type="text" name="firstname" placeholder="first name"required/><br>
+            </div>
+            <div class="form-row">
+            <label for="lastname"><b>Lastname</b></label>
+            <input type="text" name="lastname" placeholder="last name"required/><br>
+            </div>
+            <div class="form-row">
+            <label for="phone"><b>Phone</b></label>
+            <input type="text" name="phone" maxlength="10" placeholder="phone number" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="email"><b>Email</b></label>
+            <input type="email" name="email" placeholder="email" required/><br>
+            </div>
+        </div>
+            <input class="btn btn-primary" type="submit" name="submit" value="Register"/><br/>
+        </form> 
+    </div>
+    {% endblock %}
