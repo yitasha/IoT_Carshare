@@ -1,16 +1,14 @@
 import MySQLdb
-import mysql.connector
 
 class DatabaseUtils:
-    HOST = "35.201.18.142"
+    HOST = "35.189.49.76"
     USER = "root"
-    PASSWORD = "abc123"
-    DATABASE = "People"
+    PASSWORD = "root"
+    DATABASE = "carshare"
 
     def __init__(self, connection = None):
         if(connection == None):
-            connection = mysql.connector.connect(DatabaseUtils.HOST, DatabaseUtils.USER,
-                DatabaseUtils.PASSWORD, DatabaseUtils.DATABASE)
+            connection = MySQLdb.connect(DatabaseUtils.HOST, DatabaseUtils.USER, DatabaseUtils.PASSWORD, DatabaseUtils.DATABASE)
         self.connection = connection
 
     def close(self):
@@ -32,16 +30,17 @@ class DatabaseUtils:
                 )""")
         self.connection.commit()
 
-    def insertPerson(self, name):
+    def insertPerson(self, username, password, firstname, lastname,phone,email,address):
         with self.connection.cursor() as cursor:
-            cursor.execute("insert into Person (Name) values (%s)", (name,))
+            sql = "insert into user (username, password, firstname, lastname, phone, email, address) values (%s, %s, %s, %s, %s, %s, %s)"
+            val = (username, password, firstname, lastname, phone, email, address)
+            cursor.execute(sql, val)
         self.connection.commit()
-
         return cursor.rowcount == 1
 
     def getPeople(self):
         with self.connection.cursor() as cursor:
-            cursor.execute("select PersonID, Name from Person")
+            cursor.execute("select * from user")
             return cursor.fetchall()
 
     def deletePerson(self, personID):
