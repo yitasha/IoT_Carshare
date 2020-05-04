@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request,url_for, redirect, session
-
+from flask import Flask, render_template, request,url_for, redirect, session, flash
+from database import DatabaseUtils
+from passlib.hash import sha256_crypt
 
 app = Flask(__name__)
 app.secret_key = 'asdasd12easd123rdada'
@@ -24,8 +25,26 @@ def about():
     else:
         return login()
 
-@app.route("/register")
+@app.route("/register", methods=['GET', 'POST'])
 def register():
+    if request.method == 'POST':
+        #Data collected from register form
+        username = request.form['username']
+        password = request.form['password']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        phone = request.form['phone']
+        email = request.form['email']
+        address = request.form['address']
+
+        with DatabaseUtils() as db:
+            if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                print("{} inserted successfully.".format(username))
+                flash('Thank you for registering ' + firstname)
+                return redirect(url_for("home"))
+            else:
+                print("{} failed to be inserted.".format(username))
+                return redirect(url_for("register"))
     return render_template("register.html")
 
 @app.route("/login",  methods=['GET', 'POST'])

@@ -8,7 +8,7 @@
     <div class="registerContainer">
         <h2>Register</h2>
         <div class="row">
-        <form action="/loggedin" method="post">
+        <form action="/register" method="post">
             <div class="form-row">
             <label for="username"><b>Username</b></label>
             <input type="text" id="username" name="username" placeholder="Username" required><br>
@@ -32,6 +32,10 @@
             <div class="form-row">
             <label for="email"><b>Email</b></label>
             <input type="email" name="email" placeholder="email" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="address"><b>Address</b></label>
+            <input type="text" name="address" placeholder="Address" required/><br>
             </div>
         </div>
             <input class="btn btn-primary" type="submit" name="submit" value="Register"/><br/>
