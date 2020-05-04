@@ -2,15 +2,25 @@
 
 {% block display %}
 
-<h1> About Flask </h1>
-<h1> ID is: {{ id }}</h1>
-<h1> Username is: {{ session['username'] }}</h1>
+<h1> User Profile </h1>
+
+<h1> Session Username is: {{ session['username'] }}</h1>
+<h1> Session UserID is: {{ session['userid'] }}</h1>
+
+<h1>Database Attributes</h1>
+<h1> ID is: {{ person[0]}}</h1>
+<h1> UserNameis: {{ person[1] }}</h1>
+<h1> Encrypted Password is: {{ person[2] }}</h1>
+<h1> Firstname is: {{ person[3] }}</h1>
+<h1> Lastname is: {{ person[4] }}</h1>
+<h1> Phone is: {{ person[5] }}</h1>
+<h1> Email is: {{ person[6] }}</h1>
+<h1> Address is: {{ person[7] }}</h1>
 
 
-{%for x in data%}
+
+{%for x in person%}
 <p>{{ x }}</p>
 {%endfor%}
-<p> Flask is a micro web framework written in Python.</p>
 
-  
 {% endblock %}

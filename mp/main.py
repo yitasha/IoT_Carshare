@@ -21,7 +21,6 @@ def register():
         email = request.form['email']
         address = request.form['address']
         
-        
         with DatabaseUtils() as db:
             if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
                 print("{} inserted successfully.".format(username))
@@ -45,8 +44,9 @@ def login():
         with DatabaseUtils() as db:
             if(db.checkPerson(username, password)):
                 session['username'] = request.form['username']
-                id = db.getPerson(username)[0]
-                return render_template("myProfile.html", **locals())
+                session['userid'] = db.getPerson(username)[0]
+                person = db.getPerson(username)
+                return redirect(url_for("myprofile", person = person))
             else:
                 print("{} 's Password is wrong.".format(username))
                 return redirect(url_for("register"))
@@ -58,7 +58,9 @@ def login():
 @app.route("/myprofile", methods=['GET', 'POST'])
 def myprofile():
     if session.get('username') != None:
-        return render_template("myProfile.html", **locals())
+        with DatabaseUtils() as db:
+            person = db.getPerson(session.get('username'))
+        return render_template("myprofile.html", person = person)
     else:
         return login()
 

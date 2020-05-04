@@ -39,6 +39,7 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
+    #Check persons username and encrypted password
     def checkPerson(self, username, password):
         with self.connection.cursor() as cursor:
             cursor.execute("select * from user where username = '{}'".format(username))
@@ -49,6 +50,7 @@ class DatabaseUtils:
             else:
                 return False
 
+    #Run this after checkPerson is completed to retrieve data
     def getPerson(self, username):
         with self.connection.cursor() as cursor:
             cursor.execute("select * from user where username = '{}'".format(username))
