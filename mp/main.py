@@ -7,23 +7,7 @@ app.secret_key = 'asdasd12easd123rdada'
 
 @app.route("/")
 def home():
-
     return render_template("home.html")
-
-#after login, redirect to about()
-@app.route("/about", methods=['GET', 'POST'])
-def about():
-    if session.get('username') != None:
-        #Data collected from login form, then passed to about.html
-        var = "Hello"
-        #username = request.form['username']
-        #password = request.form['password']
-        
-        #Testing an array to be used in about.html
-        data = ("one", "two", "three")
-        return render_template("about.html", **locals())
-    else:
-        return login()
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -36,7 +20,8 @@ def register():
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-
+        
+        
         with DatabaseUtils() as db:
             if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
                 print("{} inserted successfully.".format(username))
@@ -51,15 +36,31 @@ def register():
 def login():
     #If session username exist, means already logged in
     if session.get('username') != None:
-        return redirect(url_for('about'))
+        return redirect(url_for('myprofile'))
     elif request.method == 'POST':
         #clear session username, then assign new value
         session.pop('username', None)
-        session['username'] = request.form['username']
-        session['password'] = request.form['password']
-        return redirect(url_for('about'))
+        username = request.form['username']
+        password = request.form['password']
+        with DatabaseUtils() as db:
+            if(db.checkPerson(username, password)):
+                session['username'] = request.form['username']
+                id = db.getPerson(username)[0]
+                return render_template("myProfile.html", **locals())
+            else:
+                print("{} 's Password is wrong.".format(username))
+                return redirect(url_for("register"))
+        
     
     return render_template("login.html")
+
+#after login, redirect to about()
+@app.route("/myprofile", methods=['GET', 'POST'])
+def myprofile():
+    if session.get('username') != None:
+        return render_template("myProfile.html", **locals())
+    else:
+        return login()
 
 @app.route("/logout")
 def logout():
@@ -67,6 +68,13 @@ def logout():
     session.pop('username', None)
     return home()
 
+@app.route("/cars", methods=['GET', 'POST'])
+def cars():
+    pass
+
+
+
+################# Below are testing routes 测试专用 ##########################
 @app.route("/loggedin", methods=['POST'])
 def loggedin():
     #Data collected from register form
