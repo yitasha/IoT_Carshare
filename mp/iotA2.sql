@@ -39,3 +39,28 @@ primary key (bookingid),
 CONSTRAINT FK_userid FOREIGN KEY (userid) REFERENCES user(userid),
 CONSTRAINT FK_carid FOREIGN KEY (carid) REFERENCES car(carid)
 );
+
+/* Dummy Data for tables */
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Toyota", "Camry", "Sedan", "5", "Red", "Melbourne", 99, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("BMW", "i8", "Coupe", "2", "Blue", "Sydney", 459, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("BMW", "i320", "Sedan", "5", "White", "Geelong", 249, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Mazda", "CX-5", "SUV", "5", "Red", "RMIT", 199, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Mitsubishi", "Lancer", "Sedan", "5", "Black", "Rowville", 129, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Nissan", "Skyline", "Coupe", "4", "Red", "Ringwood", 199, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Porsche", "911", "Coupe", "2", "Red", "Glen Waverly", 999, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("VW", "Golf", "Hatchback", "4", "Black", "Kew", 99, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Porsche", "Cayenne", "SUV", "5", "Yellow", "Melbourne", 799, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Volvo", "XC60", "SUV", "5", "White", "Carlton", 199, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Porsche", "Panamera", "Sedan", "4", "Black", "Melbourne", 799, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("AUDI", "A4", "Sedan", "5", "Green", "Melbourne", 399, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Honda", "Civic", "Sedan", "5", "Black", "Melbourne", 99, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Toyota", "Corolla", "Hatch", "5", "Navy", "Point Cook", 69, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Hyundai", "i30", "Hatch", "5", "White", "Melbourne", 69, "True");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Hyundai", "i20", "Hatch", "5", "Black", "Hawthorn", 69, "False");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("AUDI", "i20", "Hatch", "5", "Black", "Hawthorn", 69, "False");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Nissan", "Fairlady-Z", "Coupe", "2", "Black", "Hawthorn", 69, "False");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Ferrari", "F8", "Coupe", "2", "Black", "Hawthorn", 999, "False");
+INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Ferrari", "F1", "SUV", "5", "Red", "South Yarra", 1299, "False");
+
+
+

@@ -30,7 +30,8 @@ class DatabaseUtils:
                     constraint PK_Person primary key (PersonID)
                 )""")
         self.connection.commit()
-    #Why this function is a Boolean: True or False
+    
+    #This function returns Boolean: True or False
     def insertPerson(self, username, password, firstname, lastname,phone,email,address):
         with self.connection.cursor() as cursor:
             sql = "insert into user (username, password, firstname, lastname, phone, email, address) values (%s, %s, %s, %s, %s, %s, %s)"
@@ -55,6 +56,12 @@ class DatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("select * from user where username = '{}'".format(username))
             return cursor.fetchone()
+
+    #Get available = 'True' cars
+    def getAvailCar(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select * from car where available = 'True'")
+            return cursor.fetchall()
 
     def getPeople(self):
         with self.connection.cursor() as cursor:

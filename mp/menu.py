@@ -8,16 +8,19 @@ class Menu:
         while(True):
             print()
             print("1. List User")
-            print("2. Insert User")
-            print("3. Quit")
+            print("2. List Car")
+            print("3. Insert User")
+            print("4. Quit")
             selection = input("Select an option: ")
             print()
 
             if(selection == "1"):
                 self.listPeople()
             elif(selection == "2"):
-                self.insertPerson()
+                self.listCar()
             elif(selection == "3"):
+                self.insertPerson()
+            elif(selection == "4"):
                 print("Goodbye!")
                 break
             else:
@@ -29,6 +32,12 @@ class Menu:
         with DatabaseUtils() as db:
             for person in db.getPeople():
                 print(person)
+    
+    def listCar(self):
+        print("--- Cars ---")
+        with DatabaseUtils() as db:
+            for car in db.getAvailCar():
+                print(car)
 
     def insertPerson(self):
         print("--- Insert Person ---")

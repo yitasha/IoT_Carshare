@@ -72,9 +72,9 @@ def logout():
 
 @app.route("/cars", methods=['GET', 'POST'])
 def cars():
-    pass
-
-
+    with DatabaseUtils() as db:
+        cars = db.getAvailCar()
+    return render_template("cars.html", **locals())
 
 ################# Below are testing routes 测试专用 ##########################
 @app.route("/loggedin", methods=['POST'])
