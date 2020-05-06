@@ -28,3 +28,8 @@ input {
 .form-row {
     padding: 5px;
 }
+
+h1 {
+    color: blueviolet;
+    text-align: center;
+  }

@@ -2,25 +2,103 @@
 
 {% block display %}
 
-<h1> User Profile </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    h1 {
+    color: rgb(226, 116, 43);
+    text-align: center;
+  }
 
-<h1> Session Username is: {{ session['username'] }}</h1>
-<h1> Session UserID is: {{ session['userid'] }}</h1>
+  p {
+      color:brown
+    }
 
-<h1>Database Attributes</h1>
-<h1> ID is: {{ person[0]}}</h1>
-<h1> UserNameis: {{ person[1] }}</h1>
-<h1> Encrypted Password is: {{ person[2] }}</h1>
-<h1> Firstname is: {{ person[3] }}</h1>
-<h1> Lastname is: {{ person[4] }}</h1>
-<h1> Phone is: {{ person[5] }}</h1>
-<h1> Email is: {{ person[6] }}</h1>
-<h1> Address is: {{ person[7] }}</h1>
+  *{
+margin:0;
+padding:0;
+  }
 
+  </style>
 
+</head>
+<body>
 
-{%for x in person%}
-<p>{{ x }}</p>
-{%endfor%}
+  
+<div class="container text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+    <img src="/static/image/Cars_2006.jpg" style="width:100%">
+      <h3><a href="#">History</a></h3>
+      <h3><a href="#">Booking</a></h3>
+    </div>
+    <div class="col-sm-8 text-left"> 
+      <h1>{{ session['username'] }},Welcome!</h1>
+      <hr>
+
+      <div class="col-md-8" style="text-align: center;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>User Id</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ person[0]}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ person[1] }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ person[6] }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Phone</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ person[5] }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Address</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p>{{ person[7] }}</p>
+                            </div>
+                        </div>
+            </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
 
 {% endblock %}
