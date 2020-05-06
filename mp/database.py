@@ -83,6 +83,18 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
+    def checkCarAvail(self, carid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM car where carid = '{}'".format(carid))
+            results = cursor.fetchone()
+            availability = results[8]
+            if(availability == "True"):
+                return True
+            else:
+                return False
+        
+        
+
 ################## Testing ##################
     def getPeople(self):
         with self.connection.cursor() as cursor:

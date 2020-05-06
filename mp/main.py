@@ -101,16 +101,21 @@ def processbook():
         cost = request.form['price']
         startDate =  datetime.strptime(request.form['startDate'], '%Y-%m-%d').date()
         endDate = datetime.strptime(request.form['endDate'], '%Y-%m-%d').date()
+        #For updating car's availability after booking
         avail = "False"
         with DatabaseUtils() as db:
-            if(db.insertBooking(userid, carid, int(cost), startDate, endDate)):
-                if(db.updateCarAvail(carid, avail)):
-                    print("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
-                    flash("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
-                    return redirect(url_for("home"))
+            #Check car availability
+            if(db.checkCarAvail(carid)):
+                #Check if record is inserted
+                if(db.insertBooking(userid, carid, int(cost), startDate, endDate)):
+                    #If it is inserted, update car availability
+                    if(db.updateCarAvail(carid, avail)):
+                        print("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
+                        flash("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
+                        return redirect(url_for("home"))
             else:
-                print("Error, Car ID: {} is not booked.".format(carid))
-                flash("Error, Car ID: {} is not booked.".format(carid))
+                print("Error, Car ID: {} is not booked, try again later".format(carid))
+                flash("Error, Car ID: {} is not booked, try again later".format(carid))
                 return redirect(url_for("home"))
     
     return render_template("test.html", **locals())
