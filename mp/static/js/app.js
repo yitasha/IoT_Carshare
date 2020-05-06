@@ -1,4 +1,4 @@
-
+//Select box filter
 function filterPrice() {
     // Declare variables
     var input, filter, table, tr, td, i, cellValue;
@@ -19,9 +19,9 @@ function filterPrice() {
         }
       }
     }
-  }
+}
 
-
+//Search filter
 $(document).ready(function(){
     $("#myInput").on("keyup", function() {
         var value = $(this).val().toLowerCase();
