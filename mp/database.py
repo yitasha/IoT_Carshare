@@ -34,7 +34,7 @@ class DatabaseUtils:
     #This function returns Boolean: True or False
     def insertPerson(self, username, password, firstname, lastname,phone,email,address):
         with self.connection.cursor() as cursor:
-            sql = "insert into user (username, password, firstname, lastname, phone, email, address) values (%s, %s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             val = (username, password, firstname, lastname, phone, email, address)
             cursor.execute(sql, val)
         self.connection.commit()
@@ -43,7 +43,7 @@ class DatabaseUtils:
     #Check persons username and encrypted password
     def checkPerson(self, username, password):
         with self.connection.cursor() as cursor:
-            cursor.execute("select * from user where username = '{}'".format(username))
+            cursor.execute("SELECT * FROM user where username = '{}'".format(username))
             results = cursor.fetchone()
             userpass = results[2]
             if (sha256_crypt.verify(password, userpass)):
@@ -54,15 +54,36 @@ class DatabaseUtils:
     #Run this after checkPerson is completed to retrieve data
     def getPerson(self, username):
         with self.connection.cursor() as cursor:
-            cursor.execute("select * from user where username = '{}'".format(username))
+            cursor.execute("SELECT * FROM user where username = '{}'".format(username))
             return cursor.fetchone()
 
     #Get available = 'True' cars
     def getAvailCar(self):
         with self.connection.cursor() as cursor:
-            cursor.execute("select * from car where available = 'True'")
+            cursor.execute("SELECT * FROM car where available = 'True'")
             return cursor.fetchall()
 
+    def insertBooking(self, userid, carid, cost, startDate, endDate):
+        #calculate totalcost
+        days = endDate - startDate
+        totalcost = days.days * cost
+        #Status for this booking event - Default: active
+        status = "True" 
+        with self.connection.cursor() as cursor:
+            sql = "INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            val = (userid, carid, cost, startDate, endDate, int(totalcost), status)
+            cursor.execute(sql, val)
+        self.connection.commit()
+        return cursor.rowcount == 1
+    
+    def updateCarAvail(self, carid, avail):
+        condition = avail
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE car SET available = '{}' where carid = '{}'".format(condition, carid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+################## Testing ##################
     def getPeople(self):
         with self.connection.cursor() as cursor:
             cursor.execute("select * from user")

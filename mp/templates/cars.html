@@ -30,10 +30,12 @@
                 <option value='500'> < 500 </option>
             </select>
           </th>
+          <th>Book</th>
         </tr>
       </thead>
       <tbody id="carsTable">
         {%for car in cars%}
+        <form action="/book" method="POST">
         <tr>
           <td>{{ car[0] }}</td>
           <td>{{ car[1] }}</td>
@@ -43,7 +45,18 @@
           <td>{{ car[5] }}</td>
           <td>{{ car[6] }}</td>
           <td>{{ car[7] }}</td>
+          <td><input  class="btn btn-success" type="submit" name="book" value="Book"></td>
         </tr>
+        <!-- Hidden attribute to get data from form request  -->
+        <input id="carid" name="carid" type="hidden" value="{{ car[0] }}">
+        <input id="make" name="make" type="hidden" value="{{ car[1] }}">
+        <input id="model" name="model" type="hidden" value="{{ car[2] }}">
+        <input id="type" name="type" type="hidden" value="{{ car[3] }}">
+        <input id="seats" name="seats" type="hidden" value="{{ car[4] }}">
+        <input id="color" name="color" type="hidden" value="{{ car[5] }}">
+        <input id="location" name="location" type="hidden" value="{{ car[6] }}">
+        <input id="price" name="price" type="hidden" value="{{ car[7] }}">
+        </form>
         {%endfor%}
       </tbody>
     </table>

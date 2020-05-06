@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+    {% block title %} 
+      {{'Book'}} 
+    {% endblock %}
+
+    {% block display %}
+    <h1>Booking</h1>
+    <h1>Car You Have Selected:  </h1>
+    <h3>userid: {{ userid }}</h3>
+            <h3>carid: {{ carid }}</h3>
+            
+              <h3>{{ make }}</h3>
+              <h3>{{ model}}</h3>
+              <h3>{{ Type }}</h3>
+              <h3>{{ seats }}</h3>
+              <h3>{{ color }}</h3>
+              <h3>{{ location }}</h3>
+              <h3>{{ price }}</h3>
+              <h3>{{ startDate }}</h3>
+              <h3>{{ endDate }}</h3>
+              <h3>{{ d1 }}</h3>
+    
+
+    {% endblock %}

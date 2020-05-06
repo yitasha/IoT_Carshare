@@ -1,5 +1,6 @@
 import MySQLdb
 from passlib.hash import sha256_crypt
+from datetime import datetime
 
 class DatabaseUtils:
     HOST = "35.189.49.76"
@@ -56,6 +57,11 @@ class DatabaseUtils:
             cursor.execute("select * from user")
             return cursor.fetchall()
 
+    def getBooking(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("select * from booking")
+            return cursor.fetchall()
+
     def deletePerson(self, personID):
         with self.connection.cursor() as cursor:
             # Note there is an intentionally placed bug here: != should be =
@@ -64,3 +70,11 @@ class DatabaseUtils:
 
 db = DatabaseUtils()
 db.checkPerson("Nicole")
+
+startDate =  datetime.strptime('2020-05-08', '%Y-%m-%d').date()
+endDate = datetime.strptime('2020-05-18', '%Y-%m-%d').date()
+days = endDate - startDate
+cost = 249
+totalcost = days.days * cost
+print(totalcost)
+        
