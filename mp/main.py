@@ -50,14 +50,16 @@ def login():
         username = request.form['username']
         password = request.form['password']
         with DatabaseUtils() as db:
-            if(db.checkPerson(username, password)):
-                session['username'] = request.form['username']
-                session['userid'] = db.getPerson(username)[0]
-                #person = db.getPerson(username)
-                return redirect(url_for("myprofile"))
-            else:
-                print("{} 's Password is wrong.".format(username))
-                return redirect(url_for("register"))
+            if(db.checkUsername(username) == False):
+                if(db.checkPerson(username, password)):
+                    session['username'] = request.form['username']
+                    session['userid'] = db.getPerson(username)[0]
+                    #person = db.getPerson(username)
+                    return redirect(url_for("myprofile"))
+                else:
+                    print("{} 's Password is wrong.".format(username))
+                    flash("{} 's Password is wrong.".format(username))
+                    return redirect(url_for("login"))
 
     return render_template("login.html")
 
@@ -67,9 +69,20 @@ def myprofile():
     if session.get('username') != None:
         with DatabaseUtils() as db:
             person = db.getPerson(session.get('username'))
-        return render_template("myprofile.html", person = person)
+            booking = db.showBooking(person[0])
+            history = db.showHistory(person[0])
+
+        return render_template("myprofile.html", person = person, booking = booking, history=history)
     else:
         return login()
+
+@app.context_processor
+def utility_processor():
+    def car(bookingid):
+        with DatabaseUtils() as db:
+            car = db.getCar(bookingid)
+            return car[1] + "-" + car[2]
+    return dict(car=car)
 
 @app.route("/logout")
 def logout():
@@ -129,7 +142,24 @@ def processbook():
     
     return render_template("test.html", **locals())
 
+@app.route("/cancelbook", methods=['POST'])
+def cancelbook():
+    if request.method == "POST":
+        carid = request.form['carid']
+        bookid = request.form['bookid']
+        avail = "True"
+        with DatabaseUtils() as db:
+            if(db.cancelBooking(bookid) and db.updateCarAvail(carid, avail)):
+                print("Booking ID: {} is successfully canceled".format(bookid))
+                flash("Booking ID: {} is successfully canceled".format(bookid))
+            else:
+                print("Error, please try cancel it again later.")
+                flash("Error, please try cancel it again later.")
+    return redirect(url_for("myprofile"))
 
+
+    
+    
 
 ################# Below are testing routes 测试专用 ##########################
 @app.route("/loggedin", methods=['POST'])

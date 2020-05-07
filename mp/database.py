@@ -30,7 +30,7 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
-    #Check if username exist, unique username
+    #Check if username exist, username will be unique
     def checkUsername(self, username):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
@@ -62,6 +62,11 @@ class DatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE available = 'True'")
             return cursor.fetchall()
+    
+    def getCar(self, carid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
+            return cursor.fetchone()
 
     def insertBooking(self, userid, carid, cost, startDate, endDate):
         #calculate totalcost
@@ -77,9 +82,8 @@ class DatabaseUtils:
         return cursor.rowcount == 1
     
     def updateCarAvail(self, carid, avail):
-        condition = avail
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE car SET available = '{}' WHERE carid = '{}'".format(condition, carid))
+            cursor.execute("UPDATE car SET available = '{}' WHERE carid = '{}'".format(avail, carid))
         self.connection.commit()
         return cursor.rowcount == 1
 
@@ -95,14 +99,19 @@ class DatabaseUtils:
         
     def showBooking(self, userid):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT FROM booking WHERE userid = '{}'".format(userid))
+            cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'True'".format(userid))
             return cursor.fetchall()
 
     def cancelBooking(self, bookingid):
         with self.connection.cursor() as cursor:
-            cursor.execute("DELETE FROM booking WHERE bookingid = '{}'".format(bookingid))
+            cursor.execute("UPDATE booking SET status = 'False' WHERE bookingid = '{}'".format(bookingid))
         self.connection.commit()
         return cursor.rowcount == 1
+    
+    def showHistory(self, userid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'False'".format(userid))
+            return cursor.fetchall()
 
 ################## Testing ##################
     def getPeople(self):

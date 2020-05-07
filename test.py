@@ -71,10 +71,11 @@ class DatabaseUtils:
 db = DatabaseUtils()
 db.checkPerson("Nicole")
 
-startDate =  datetime.strptime('2020-05-08', '%Y-%m-%d').date()
-endDate = datetime.strptime('2020-05-18', '%Y-%m-%d').date()
-days = endDate - startDate
-cost = 249
-totalcost = days.days * cost
-print(totalcost)
+print(db.getPeople())
+# startDate =  datetime.strptime('2020-05-08', '%Y-%m-%d').date()
+# endDate = datetime.strptime('2020-05-18', '%Y-%m-%d').date()
+# days = endDate - startDate
+# cost = 249
+# totalcost = days.days * cost
+# print(totalcost)
         
