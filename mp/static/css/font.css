@@ -13,6 +13,7 @@ img.responsive {
     height: auto;
   }
 
+/* Input forms */
 input {
     background-color: #f6f6f6;
     color: #0d0d0d;
@@ -27,4 +28,45 @@ input {
 
 .form-row {
     padding: 5px;
+}
+
+/* Car tables */
+.table>thead>tr>th {
+    text-align: center;
+}
+
+td {
+    font-weight: bold;
+}
+
+tr.header, tr:hover {
+    background-color: #f1f1f1;
+  }
+
+#myInput {
+    background-image: url('');
+    background-position: 0px 0px;
+    background-repeat: no-repeat;
+    width: 60%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+  
+
+/* User Profile Page */
+.sidenav {
+  padding-top: 20px;
+  background-color: #f1f1f1;
+  height: 100%;
+}
+
+h1#userTitle {
+  color: rgb(226, 116, 43);
+  text-align: center;
+}
+
+p {
+  color:brown
 }

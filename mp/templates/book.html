@@ -1,0 +1,57 @@
+{% extends "template.html" %}
+    {% block title %} 
+      {{'Book'}} 
+    {% endblock %}
+
+    {% block display %}
+    <h1>Booking</h1>
+    <h1>Car You Have Selected: </h1>
+    <div class="container">
+        <table id="carTable" class="table table-striped">
+          <thead>
+            <tr class="header">
+              <th>ID</th>
+              <th>Make</th>
+              <th>Model</th>
+              <th>Type</th>
+              <th>Seats</th>
+              <th>Color</th>
+              <th>Location</th>
+              <th>Price/Day</th>
+            </tr>
+          </thead>
+          <tbody id="carsTable">
+            <tr>
+              <td>{{ carid }}</td>
+              <td>{{ make }}</td>
+              <td>{{ model}}</td>
+              <td>{{ Type }}</td>
+              <td>{{ seats }}</td>
+              <td>{{ color }}</td>
+              <td>{{ location }}</td>
+              <td>{{ price }}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <form action="/processbook" method="POST">
+        <!-- Hidden attribute to get data from form request  -->
+        <input id="userid" name="userid" type="hidden" value="{{ session['userid'] }}">
+        <input id="carid" name="carid" type="hidden" value="{{ carid }}">
+        <input id="make" name="make" type="hidden" value="{{ make }}">
+        <input id="model" name="model" type="hidden" value="{{ model }}">
+        <input id="type" name="type" type="hidden" value="{{ Type }}">
+        <input id="seats" name="seats" type="hidden" value="{{ seats }}">
+        <input id="color" name="color" type="hidden" value="{{ color }}">
+        <input id="location" name="location" type="hidden" value="{{ location }}">
+        <input id="price" name="price" type="hidden" value="{{ price }}">
+    
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" required>
+    <label>----></label>
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="endDate" required>
+    <input class="btn btn-success" type="submit" name="book" value="Book">
+    </form>
+
+    {% endblock %}
