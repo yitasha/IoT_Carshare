@@ -23,13 +23,20 @@ def register():
         address = request.form['address']
         
         with DatabaseUtils() as db:
-            if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                print("{} inserted successfully.".format(username))
-                flash("Thank you for registering {}".format(firstname))
-                return redirect(url_for("home"))
+            if(db.checkUsername(username)):
+                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                    print("{} inserted successfully.".format(username))
+                    flash("Thank you for registering {}".format(firstname))
+                    return redirect(url_for("home"))
+                else:
+                    print("{} failed to be inserted.".format(username))
+                    flash("{} failed to be inserted.".format(username))
+                    return redirect(url_for("register"))
             else:
-                print("{} failed to be inserted.".format(username))
-                return redirect(url_for("register"))
+                    print("{} already exist, try a different one.".format(username))
+                    flash("{} already exist, try a different one.".format(username))
+                    return redirect(url_for("register"))
+    
     return render_template("register.html")
 
 @app.route("/login",  methods=['GET', 'POST'])
@@ -66,8 +73,10 @@ def myprofile():
 
 @app.route("/logout")
 def logout():
-    session.clear()
     session.pop('username', None)
+    session.pop('userid', None)
+    session.clear()
+    flash("You have logged out!")
     return home()
 
 @app.route("/cars", methods=['GET', 'POST'])

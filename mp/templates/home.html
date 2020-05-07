@@ -5,16 +5,16 @@
     {% endblock %}
 
     {% block display %}
-    <div class = "home">
+
     {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      {% for message in messages %}
-        <h1>{{ message }}</h1>
-      {% endfor %}
-    {% else %}
-      <h1> Welcome To IoT Car Share</h1>
-    {% endif %}
+      {% if messages %}
+        {% for message in messages %}
+          <h1>{{ message }}</h1>
+        {% endfor %}
+      {% else %}
+        <h1> Welcome To IoT Car Share</h1>
+      {% endif %}
     {% endwith %}
     <img src="/static/image/cars.jpg" class="responsive">
-    </div>
+
     {% endblock %}

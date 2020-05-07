@@ -20,16 +20,6 @@ class DatabaseUtils:
 
     def __exit__(self, type, value, traceback):
         self.close()
-
-    def createPersonTable(self):
-        with self.connection.cursor() as cursor:
-            cursor.execute("""
-                create table if not exists Person (
-                    PersonID int not null auto_increment,
-                    Name text not null,
-                    constraint PK_Person primary key (PersonID)
-                )""")
-        self.connection.commit()
     
     #This function returns Boolean: True or False
     def insertPerson(self, username, password, firstname, lastname,phone,email,address):
@@ -40,10 +30,20 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
+    #Check if username exist, unique username
+    def checkUsername(self, username):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
+        self.connection.commit()
+        if(cursor.rowcount >= 1):
+            return False
+        else:
+            return True
+
     #Check persons username and encrypted password
     def checkPerson(self, username, password):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM user where username = '{}'".format(username))
+            cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
             results = cursor.fetchone()
             userpass = results[2]
             if (sha256_crypt.verify(password, userpass)):
@@ -54,13 +54,13 @@ class DatabaseUtils:
     #Run this after checkPerson is completed to retrieve data
     def getPerson(self, username):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM user where username = '{}'".format(username))
+            cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
             return cursor.fetchone()
 
     #Get available = 'True' cars
     def getAvailCar(self):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM car where available = 'True'")
+            cursor.execute("SELECT * FROM car WHERE available = 'True'")
             return cursor.fetchall()
 
     def insertBooking(self, userid, carid, cost, startDate, endDate):
@@ -79,13 +79,13 @@ class DatabaseUtils:
     def updateCarAvail(self, carid, avail):
         condition = avail
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE car SET available = '{}' where carid = '{}'".format(condition, carid))
+            cursor.execute("UPDATE car SET available = '{}' WHERE carid = '{}'".format(condition, carid))
         self.connection.commit()
         return cursor.rowcount == 1
 
     def checkCarAvail(self, carid):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM car where carid = '{}'".format(carid))
+            cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             results = cursor.fetchone()
             availability = results[8]
             if(availability == "True"):
@@ -93,7 +93,16 @@ class DatabaseUtils:
             else:
                 return False
         
-        
+    def showBooking(self, userid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT FROM booking WHERE userid = '{}'".format(userid))
+            return cursor.fetchall()
+
+    def cancelBooking(self, bookingid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("DELETE FROM booking WHERE bookingid = '{}'".format(bookingid))
+        self.connection.commit()
+        return cursor.rowcount == 1
 
 ################## Testing ##################
     def getPeople(self):
