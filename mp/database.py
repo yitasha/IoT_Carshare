@@ -3,8 +3,8 @@ from passlib.hash import sha256_crypt
 
 class DatabaseUtils:
     HOST = "35.189.49.76"
-    USER = "root"
-    PASSWORD = "root"
+    USER = "iotA2"
+    PASSWORD = "Z4J96$\qg$:<ZxU6"
     DATABASE = "carshare"
 
     def __init__(self, connection = None):
