@@ -72,7 +72,6 @@ def myprofile():
             person = db.getPerson(session.get('username'))
             booking = db.showBooking(person[0])
             history = db.showHistory(person[0])
-
         return render_template("myprofile.html", person = person, booking = booking, history=history)
     else:
         return login()
@@ -173,12 +172,18 @@ def cancelbook():
         bookid = request.form['bookid']
         avail = "True"
         with DatabaseUtils() as db:
-            if(db.cancelBooking(bookid) and db.updateCarAvail(carid, avail)):
-                print("Booking ID: {} is successfully canceled".format(bookid))
-                flash("Booking ID: {} is successfully canceled".format(bookid))
+            cal = Calendar()
+            status = db.getBooking(bookid)[8]
+            if(cal.delete(status)):
+                if(db.cancelBooking(bookid) and db.updateCarAvail(carid, avail)):
+                    print("Booking ID: {} is successfully canceled".format(bookid))
+                    flash("Booking ID: {} is successfully canceled".format(bookid))
+                else:
+                    print("Error, please try cancel it again later.")
+                    flash("Error, please try cancel it again later.")
             else:
-                print("Error, please try cancel it again later.")
-                flash("Error, please try cancel it again later.")
+                print("Error, Please use your primary google account.")
+                flash("Error, Please use your primary google account.")
     return redirect(url_for("myprofile"))
 
 

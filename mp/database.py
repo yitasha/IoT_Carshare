@@ -113,6 +113,12 @@ class DatabaseUtils:
             cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'False'".format(userid))
             return cursor.fetchall()
 
+    def getBooking(self, bookingid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM booking WHERE bookingid = '{}'".format(bookingid))
+            return cursor.fetchone()
+
+
 ################## Testing ##################
     def getPeople(self):
         with self.connection.cursor() as cursor:

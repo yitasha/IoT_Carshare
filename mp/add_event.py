@@ -52,12 +52,15 @@ class Calendar:
         event = self.service.events().get(calendarId='primary', eventId=eventID).execute()
         #If eventID is already deleted.
         if(event.get('status') == "cancelled"):
-            print("True, already deleted")
+            print("True, event is already cancelled")
+            return True
         else:
             #Assume event exists then delete eventID.
             delete = self.service.events().delete(calendarId='primary', eventId=eventID)
             delete.execute()
-            print("True, deleted just now")
+            print("True, event deleted just now")
+            return True
+        return False
 
     def insert(self, car, location, user, startDate, endDate):
         duration = endDate - startDate
