@@ -60,8 +60,6 @@ class Calendar:
             print("True, deleted just now")
 
     def insert(self, car, location, user, startDate, endDate):
-        startDate =  datetime.strptime(startDate, '%Y-%m-%d').date()
-        endDate = datetime.strptime(endDate, '%Y-%m-%d').date()
         duration = endDate - startDate
         event = {
             "summary": "Car: {} ,booked for {}".format(car, user),
@@ -83,7 +81,6 @@ class Calendar:
                 ],
             }
         }
-
         event = self.service.events().insert(calendarId = "primary", body = event).execute()
         print("Event created: {}".format(event.get("htmlLink")))
         status = event.get("status")

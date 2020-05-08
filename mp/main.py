@@ -118,7 +118,6 @@ def book():
 #Need to add more rules: Google calendar & check car's availability
 @app.route("/processbook", methods=['POST'])
 def processbook():
-    
     if request.method == "POST":
         userid = request.form['userid']
         carid = request.form['carid']
@@ -128,7 +127,7 @@ def processbook():
         #For updating car's availability after booking
         avail = "False"
         #Check if input date is valid
-        if(endDate > startDate):
+        if(endDate < startDate):
             print("Error, minimum booking is 1 day")
             flash("Error, minimum booking is 1 day")
             return redirect(url_for("book"), code = 307)
@@ -142,7 +141,7 @@ def processbook():
                     user = "{} {}".format(person[3], person[4])
                     car = "{} {}, {} Seats".format(carinfo[1], carinfo[2], carinfo[4])
                     location = carinfo[6]
-                    status, eventID = cal.insert(car, location, user, "2020-05-09", "2020-05-10")
+                    status, eventID = cal.insert(car, location, user, startDate, endDate)
                     #Check if booking is confirmed for Google Calendar
                     if(status == "confirmed"):
                         #Check if booking record is inserted
@@ -182,9 +181,6 @@ def cancelbook():
                 flash("Error, please try cancel it again later.")
     return redirect(url_for("myprofile"))
 
-
-    
-    
 
 ################# Below are testing routes 测试专用 ##########################
 @app.route("/loggedin", methods=['POST'])
