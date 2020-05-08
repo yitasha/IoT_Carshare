@@ -2,6 +2,7 @@ from flask import Flask, render_template, request,url_for, redirect, session, fl
 from database import DatabaseUtils
 from passlib.hash import sha256_crypt
 from datetime import datetime
+from add_event import Calendar
 
 app = Flask(__name__)
 app.secret_key = 'asdasd12easd123rdada'
@@ -117,6 +118,7 @@ def book():
 #Need to add more rules: Google calendar & check car's availability
 @app.route("/processbook", methods=['POST'])
 def processbook():
+    
     if request.method == "POST":
         userid = request.form['userid']
         carid = request.form['carid']
@@ -127,24 +129,41 @@ def processbook():
         avail = "False"
         #Check if input date is valid
         if(endDate > startDate):
+            print("Error, minimum booking is 1 day")
+            flash("Error, minimum booking is 1 day")
+            return redirect(url_for("book"), code = 307)
+        else:
+            cal = Calendar()
             with DatabaseUtils() as db:
                 #Check car availability
                 if(db.checkCarAvail(carid)):
-                    #Check if record is inserted
-                    if(db.insertBooking(userid, carid, int(cost), startDate, endDate)):
-                        #If it is inserted, update car availability
-                        if(db.updateCarAvail(carid, avail)):
-                            print("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
-                            flash("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
+                    person = db.getPerson(session.get('username'))
+                    carinfo = db.getCar(carid)
+                    user = "{} {}".format(person[3], person[4])
+                    car = "{} {}, {} Seats".format(carinfo[1], carinfo[2], carinfo[4])
+                    location = carinfo[6]
+                    status, eventID = cal.insert(car, location, user, "2020-05-09", "2020-05-10")
+                    #Check if booking is confirmed for Google Calendar
+                    if(status == "confirmed"):
+                        #Check if booking record is inserted
+                        if(db.insertBooking(userid, carid, int(cost), startDate, endDate, eventID)):
+                            #If it is inserted, update car availability
+                            if(db.updateCarAvail(carid, avail)):
+                                print("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
+                                flash("Car ID: {} is booked from {} till {}".format(carid, startDate, endDate))
+                                return redirect(url_for("home"))
+                        else:
+                            print("Error, booking failed, try again later.")
+                            flash("Error, booking failed, try again later.")
                             return redirect(url_for("home"))
+                    else:
+                        print("Error, Google Calendar request is canceled, try again later.")
+                        flash("Error, Google Calendar request is canceled, try again later.")
+                        return redirect(url_for("book"), code = 307)
                 else:
-                    print("Error, Car ID: {} is not booked, try again later".format(carid))
-                    flash("Error, Car ID: {} is not booked, try again later".format(carid))
+                    print("Error, Car ID: {} is not available, try a different car later".format(carid))
+                    flash("Error, Car ID: {} is not available, try a different car later".format(carid))
                     return redirect(url_for("home"))
-        else:
-            print("Error, minimum booking is 1 day")
-            flash("Error, minimum booking is 1 day")
-            return redirect(url_for("home"))
     
     return render_template("test.html", **locals())
 

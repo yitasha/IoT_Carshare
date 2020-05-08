@@ -73,12 +73,13 @@ class DatabaseUtils:
 
 # print(db.getPeople())
 startDate =  datetime.strptime('2020-05-08', '%Y-%m-%d').date()
-endDate = datetime.strptime('2020-05-8', '%Y-%m-%d').date()
+endDate = datetime.strptime('2020-05-08', '%Y-%m-%d').date()
 days = endDate - startDate
 cost = 249
 totalcost = days.days * cost
+print(days)
 print(totalcost)
-if(endDate >= startDate):
+if(endDate > startDate):
     print("True")
 else:
     print("False")

@@ -68,15 +68,15 @@ class DatabaseUtils:
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             return cursor.fetchone()
 
-    def insertBooking(self, userid, carid, cost, startDate, endDate):
+    def insertBooking(self, userid, carid, cost, startDate, endDate, eventID):
         #calculate totalcost
         days = endDate - startDate
         totalcost = days.days * cost
         #Status for this booking event - Default: active
         status = "True" 
         with self.connection.cursor() as cursor:
-            sql = "INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            val = (userid, carid, cost, startDate, endDate, int(totalcost), status)
+            sql = "INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status, eventid) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (userid, carid, cost, startDate, endDate, int(totalcost), status, eventID)
             cursor.execute(sql, val)
         self.connection.commit()
         return cursor.rowcount == 1
