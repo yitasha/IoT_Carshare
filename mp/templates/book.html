@@ -53,5 +53,12 @@
     <input type="date" id="endDate" name="endDate" required>
     <input class="btn btn-success" type="submit" name="book" value="Book">
     </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <h1>{{ message }}</h1>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
     {% endblock %}

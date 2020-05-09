@@ -36,6 +36,7 @@ startdate DATE NOT NULL,
 enddate DATE NOT NULL,
 totalcost int NOT NULL,
 status varchar(10) NOT NULL,
+eventid varchar(30),
 primary key (bookingid),
 CONSTRAINT FK_userid FOREIGN KEY (userid) REFERENCES user(userid),
 CONSTRAINT FK_carid FOREIGN KEY (carid) REFERENCES car(carid)
