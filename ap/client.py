@@ -11,7 +11,6 @@ class Client:
         self.identity()
 
     def identity(self):
-        connCheck = ""
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as self.s:
                 print("Connecting to {}...".format(self.ADDRESS))
