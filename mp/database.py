@@ -3,8 +3,8 @@ from passlib.hash import sha256_crypt
 
 class DatabaseUtils:
     HOST = "35.189.49.76"
-    USER = "root"
-    PASSWORD = "root"
+    USER = "iotA2"
+    PASSWORD = "Z4J96$\qg$:<ZxU6"
     DATABASE = "carshare"
 
     def __init__(self, connection = None):
@@ -68,15 +68,15 @@ class DatabaseUtils:
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             return cursor.fetchone()
 
-    def insertBooking(self, userid, carid, cost, startDate, endDate):
+    def insertBooking(self, userid, carid, cost, startDate, endDate, eventID):
         #calculate totalcost
         days = endDate - startDate
         totalcost = days.days * cost
         #Status for this booking event - Default: active
         status = "True" 
         with self.connection.cursor() as cursor:
-            sql = "INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            val = (userid, carid, cost, startDate, endDate, int(totalcost), status)
+            sql = "INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status, eventid) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (userid, carid, cost, startDate, endDate, int(totalcost), status, eventID)
             cursor.execute(sql, val)
         self.connection.commit()
         return cursor.rowcount == 1
@@ -112,6 +112,12 @@ class DatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'False'".format(userid))
             return cursor.fetchall()
+
+    def getBooking(self, bookingid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM booking WHERE bookingid = '{}'".format(bookingid))
+            return cursor.fetchone()
+
 
 ################## Testing ##################
     def getPeople(self):
