@@ -4,101 +4,79 @@ from getpass import getpass
 
 class Client:
     def main(self):
+        self.carid = 2
         self.HOST = "localhost"
         self.POST = 61180
         self.ADDRESS = (self.HOST, self.POST)
         self.identity()
 
     def identity(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as self.s:
-            print("Connecting to {}...".format(self.ADDRESS))
-            self.s.connect(self.ADDRESS)
-            print("Connected.")
+        connCheck = ""
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as self.s:
+                print("Connecting to {}...".format(self.ADDRESS))
+                self.s.connect(self.ADDRESS)
+                self.s.sendall(pickle.dumps(["Connecting", self.carid]))
+                connCheck = pickle.loads(self.s.recv(4096))[0]
+                print(connCheck)
+                while(True):
+                    if connCheck == "Car already exists":
+                        break
 
-            while(True):
-                print()
-                print("Home page")
-                print("1. Has an account")
-                print("2. Create a new account")
-                print("3. Quit")
-                selection = input("Select an option: ")
-                print()
+                    print()
+                    print("Home page")
+                    print("1. Unlock Car")
+                    print("2. Return Car")
+                    print("3. Quit")
+                    selection = input("Select an option: ")
+                    print()
 
-                if(selection == "1"):
-                    self.checkAccount()
-                elif(selection == "2"):
-                    self.createAccount()
-                elif(selection == "3"):
-                    print("Client closed!")
-                    break
-                else:
-                    print("Invalid input - please try again.")
-            
-            self.s.sendall(pickle.dumps(["END"]))
+                    if selection == "1":
+                        self.checkAccount(selection)
+                    elif selection == "2":
+                        self.checkAccount(selection)
+                    elif selection == "3":
+                        print("Client closed!")
+                        break
+                    else:
+                        print("Invalid input - please try again.")
+                
+                print("Disconnecting from server.")
+                self.s.sendall(pickle.dumps(["Disconnecting", self.carid]))
+                print(pickle.loads(self.s.recv(4096))[0])
+        except:
             print("Disconnecting from server.")
+            pass
 
-    def checkAccount(self):
+    def checkAccount(self, selection):
         while True:
             print()
             print("Login page")
             username = input("Enter username: ")
             password = getpass("Enter Password: ")
             print()
-            message = ["Login", username, password]
+            message = ["Login", self.carid, username, password]
             self.s.sendall(pickle.dumps(message))
             data = pickle.loads(self.s.recv(4096))
-            if data:
-                self.function(username)
-                break
+            if data[0]:
+                if selection == "1":
+                    self.unlockCar(username)
+                    break
+                elif selection == "2":
+                    self.returnCar(username)
+                    break
             else:
                 print("Incorrect username or password - please try again.")
 
-    def createAccount(self):
-        while True:
-            print()
-            username = input("Enter username: ")
-            password = getpass("Enter password: ")
-            firstname = input("Enter firstname: ")
-            lastname = input("Enter lastname: ")
-            phone = input("Enter phone: ")
-            email = input("Enter email: ")
-            address = input("Enter address: ")
-            print()
-            message = ["Create", username, password, firstname, lastname, phone, email, address]
-            self.s.sendall(pickle.dumps(message))
-            data = pickle.loads(self.s.recv(4096))
-            if data:
-                print(data[1])
-                self.checkAccount()
-                break
-            else:
-                print(data[1])
-
-    def function (self, user):
-        while(True):
-            print()
-            print("Welcome {}.".format(user))
-            print("1. Unlock Car")
-            print("2. Return Car")
-            print("3. Logout")
-            selection = input("Select an option: ")
-            print()
-
-            if(selection == "1"):
-                self.unlockCar()
-            elif(selection == "2"):
-                self.returnCar()
-            elif(selection == "3"):
-                print("Goodbye {}!".format(user))
-                break
-            else:
-                print("Invalid input - please try again.")
-
-    def unlockCar(self):
-        print("Unlock Car")
+    def unlockCar(self, username):
+        message = ["Unlock", self.carid, username]
+        self.s.sendall(pickle.dumps(message))
+        print(pickle.loads(self.s.recv(4096)))
             
-    def returnCar(self):
-        print("Return Car")
+    def returnCar(self, username):
+        message = ["Return", self.carid, username]
+        self.s.sendall(pickle.dumps(message))
+        print(pickle.loads(self.s.recv(4096)))
 
 if __name__ == "__main__":
     Client().main()
