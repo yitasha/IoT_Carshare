@@ -63,11 +63,13 @@ class DatabaseUtils:
             cursor.execute("SELECT * FROM car WHERE available = 'True'")
             return cursor.fetchall()
     
+    #Get individual car's info by int:carid
     def getCar(self, carid):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             return cursor.fetchone()
 
+    #Insert booking with follow intake parameters
     def insertBooking(self, userid, carid, cost, startDate, endDate, eventID):
         #calculate totalcost
         days = endDate - startDate
@@ -81,12 +83,14 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
     
+    #Update car's availability with ( int:carid string:avail )
     def updateCarAvail(self, carid, avail):
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE car SET available = '{}' WHERE carid = '{}'".format(avail, carid))
         self.connection.commit()
         return cursor.rowcount == 1
 
+    #Check car's availability with (int:carid) and return True or False
     def checkCarAvail(self, carid):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
@@ -96,37 +100,80 @@ class DatabaseUtils:
                 return True
             else:
                 return False
-        
+    
+    #Get all booking filtered by userid
     def showBooking(self, userid):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'True'".format(userid))
             return cursor.fetchall()
 
+    #Update booking status to "False"
     def cancelBooking(self, bookingid):
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE booking SET status = 'False' WHERE bookingid = '{}'".format(bookingid))
         self.connection.commit()
         return cursor.rowcount == 1
     
+    #Get history of booking filtered by userid and status = "False", "False" means canceled
     def showHistory(self, userid):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'False'".format(userid))
             return cursor.fetchall()
 
+    #Get single booking info by int:bookingid
     def getBooking(self, bookingid):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE bookingid = '{}'".format(bookingid))
             return cursor.fetchone()
 
-
-################## Testing ##################
-    def getPeople(self):
+################## For server.py socket communication ##################
+    #1.Check username, password and generate userid for step 2
+    #2.Check userid(from step 1), carid, date
+    def checkLogin_AP(self, username, password, carid, date):
+        if(self.checkUsername(username) == False):
+            if(self.checkPerson(username, password)):
+                userid = self.getPerson(username)[0]
+                booking = self.checkBooking_AP(userid, carid, date)
+                if(booking):
+                    #If user booked this car at during login date
+                    #The return type is a tuple (bookingid, userid, carid, cost, startdate, enddate, totalcost, status, eventid)
+                    #booking[0] will be the bookingid, we need this at client.py to unlock/return
+                    return booking
+                else:
+                    return "Error, You didn't book this car today"
+            else:
+                return "Error, Password is incorrect"
+        else:
+            return "Username incorect or doesn't exist"
+    
+    #Helper function for checkLogin_AP
+    def checkBooking_AP(self, userid, carid, date):
         with self.connection.cursor() as cursor:
-            cursor.execute("select * from user")
-            return cursor.fetchall()
+            cursor.execute("SELECT * FROM booking where userid = '{}' AND carid = '{}' AND '{}' BETWEEN startdate AND enddate".format(userid, carid, date))
+            return cursor.fetchone()
 
-    def deletePerson(self, personID):
+    #Unlock car by update booking status to Unlocked, returns True or False
+    def unlock_AP(self, bookingid):
         with self.connection.cursor() as cursor:
-            # Note there is an intentionally placed bug here: != should be =
-            cursor.execute("delete from Person where PersonID = %s", (personID))
+            cursor.execute("UPDATE booking SET status = 'Unlocked' WHERE bookingid = '{}'".format(bookingid))
         self.connection.commit()
+        return cursor.rowcount == 1
+
+    #Return car by update booking status to Returned, car's available to "True"
+    #Need to update car location with Google Maps API
+    def return_AP(self, bookingid):
+        avail = "True"
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE booking SET status = 'Returned' WHERE bookingid = '{}'".format(bookingid))
+        self.connection.commit()
+        #If Booking status is updated on success
+        if(cursor.rowcount == 1):
+            #Get booking data
+            booking = self.getBooking(bookingid)
+            #Set the carid available to True from this booking, carid is indexed at [2]
+            if(self.updateCarAvail(booking[2], avail)):
+                return True
+            else:
+                return False
+        else:
+            return False

@@ -173,8 +173,8 @@ def cancelbook():
         avail = "True"
         with DatabaseUtils() as db:
             cal = Calendar()
-            status = db.getBooking(bookid)[8]
-            if(cal.delete(status)):
+            eventID = db.getBooking(bookid)[8]
+            if(cal.delete(eventID)):
                 if(db.cancelBooking(bookid) and db.updateCarAvail(carid, avail)):
                     print("Booking ID: {} is successfully canceled".format(bookid))
                     flash("Booking ID: {} is successfully canceled".format(bookid))
