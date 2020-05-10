@@ -5,6 +5,7 @@ from database import DatabaseUtils
 
 class Server:
     def main(self):
+        self.connectList = []
         self.run()
 
     def run(self):
@@ -21,40 +22,50 @@ class Server:
                 t.start()
             
     def threadHandle(self, conn, addr):
-        with conn:
-            print("Connected to {}".format(addr))
+        try:
+            with conn:
+                while True:
+                    data = pickle.loads(conn.recv(4096))
+                    reply = self.dataCase(data)
+                    if reply[0] == "Disconnected" or reply[0] == "Car already exists":
+                        conn.sendall(pickle.dumps(reply))
+                        break
+                    else:
+                        conn.sendall(pickle.dumps(reply))
+        except:
+            print("Disconnected to car id: {}".format(data[1]))
+            self.connectList.remove(data[1])
+            pass
 
-            while True:
-                data = pickle.loads(conn.recv(4096))
-                reply = self.dataCase(data, addr)
-                if(reply[0] == "END"):
-                    break
-                conn.sendall(pickle.dumps(reply))
-            
-            print("Disconnecting from {}".format(addr))
-
-    def dataCase(self, list, addr):
+    def dataCase(self, list):
         if list[0] == "Login":
-            reply = [DatabaseUtils().checkPerson(list[1], list[2])]
-            print("{} Try to login and reply {}".format(addr, reply[0]))
-            return reply
-
-        elif list[0] == "Create":
-            reply = [DatabaseUtils().checkUsername(list[1])]
-            if reply[0]:
-                reply.clear
-                reply = [DatabaseUtils().insertPerson(list[1], list[2], list[3], list[4], list[5], list[6], list[7])]
-                if reply[0]:
-                    reply.insert(1, "{} register successfully. try to login.".format(list[1]))
-                else:
-                    reply.insert(1, "{} failed to register.".format(list[1]))
-            else:
-                reply.insert(1, "{} already exist, try a different one.".format(list[1]))
-            print("{} Try to Create an account and reply {}".format(addr, reply[0]))
+            reply = [DatabaseUtils().checkPerson(list[2], list[3])]
+            print("Client {} try to login car id {} and reply {}".format(list[2], list[1], reply[0]))
             return reply
             
-        elif list[0] == "END":
-            reply = ["END"]
+        elif list[0] == "Unlock":
+            reply = ["Unlock", DatabaseUtils().showBooking(DatabaseUtils().getPerson(list[2])[0])]
+            print("Client {} try to unlock car id {}".format(list[2], list[1]))
+            return reply
+        
+        elif list[0] == "Return":
+            reply = ["Return"]
+            print("Client {} try to return car id {}".format(list[2], list[1]))
+            return reply
+
+        elif list[0] == "Connecting":
+            if list[1] not in self.connectList:
+                print("Connected to car id: {}".format(list[1]))
+                self.connectList.append(list[1])
+                reply = ["Connected"]
+            else:
+                reply = ["Car already exists"]
+            return reply
+        
+        elif list[0] == "Disconnecting":
+            print("Disconnected to car id: {}".format(list[1]))
+            self.connectList.remove(list[1])
+            reply = ["Disconnected"]
             return reply
 
 if __name__ == "__main__":
