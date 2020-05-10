@@ -135,9 +135,10 @@ class DatabaseUtils:
                 userid = self.getPerson(username)[0]
                 booking = self.checkBooking_AP(userid, carid, date)
                 if(booking):
-                    #If user booked this car at during login date
+                    #If user booked this car during login date
                     #The return type is a tuple (bookingid, userid, carid, cost, startdate, enddate, totalcost, status, eventid)
-                    #booking[0] will be the bookingid, we need this at client.py to unlock/return
+                    #booking[0] will be the bookingid, we need this at client.py to do unlock/return
+                    #Change to return booking[0] if you only want to return bookingid, otherwise do it at client side
                     return booking
                 else:
                     return "Error, You didn't book this car today"
