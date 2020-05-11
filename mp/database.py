@@ -154,7 +154,7 @@ class DatabaseUtils:
             return cursor.fetchone()
 
     #Unlock car by update booking status to Unlocked, returns True or False
-    def unlock_AP(self, bookingid, date):
+    def unlock_AP(self, bookingid):
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE booking SET status = 'Unlocked' WHERE bookingid = '{}'".format(bookingid))
         self.connection.commit()
@@ -162,7 +162,7 @@ class DatabaseUtils:
 
     #Return car by update booking status to Returned, car's available to "True"
     #Need to update car location with Google Maps API
-    def return_AP(self, bookingid, date):
+    def return_AP(self, bookingid):
         avail = "True"
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE booking SET status = 'Returned' WHERE bookingid = '{}'".format(bookingid))
@@ -178,9 +178,3 @@ class DatabaseUtils:
                 return False
         else:
             return False
-    
-    ## bug 1：无视订单日期进行解锁和归还，已经传递了date数据 可直接使用
-    ## bug 2：MP端 当进行解锁后 Booking列表消失， 归还后 History未显示
-
-    ## 请求 1：unlock_AP 和 return_AP 返回的值可如 checkLogin_AP
-    ## 返回 “已解锁” 或 “未解锁” 或 “订单已失效” 吧啦吧啦。。。

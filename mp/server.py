@@ -62,17 +62,17 @@ class Server:
             print("Client {} try to login car id {} and reply {}".format(list[2], list[1], reply[0]))
             return reply
         
-        # case Messages ["Unlock", carid, username, bookingid, date]
+        # case Messages ["Unlock", carid, username, bookingid]
         elif list[0] == "Unlock":
             # in Database unlock_AP(self, bookingid):
-            reply = [DatabaseUtils().unlock_AP(list[3], list[4])]
+            reply = [DatabaseUtils().unlock_AP(list[3])]
             print("Client {} try to unlock car id {} and reply {}".format(list[2], list[1], reply[0]))
             return reply
         
-        # case Messages ["Return", carid, username, bookingid, date]
+        # case Messages ["Return", carid, username, bookingid]
         elif list[0] == "Return":
             # in Database return_AP(self, bookingid):
-            reply = [DatabaseUtils().return_AP(list[3], list[4])]
+            reply = [DatabaseUtils().return_AP(list[3])]
             print("Client {} try to return car id {} and reply {}".format(list[2], list[1], reply[0]))
             return reply
 

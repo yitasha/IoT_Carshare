@@ -6,7 +6,7 @@ from getpass import getpass
 class Client:
     def main(self):
         # Unique car ID
-        self.carid = 2
+        self.carid = 4
 
         # Socket connection 
         # self.HOST = "192.168.0.135"
@@ -100,7 +100,7 @@ class Client:
 
     def unlockCar(self, username, bookingid):
         time = datetime.datetime.now()
-        message = ["Unlock", self.carid, username, bookingid, time.strftime("%Y-%m-%d")]
+        message = ["Unlock", self.carid, username, bookingid]
 
         # send and wait receive
         self.s.sendall(pickle.dumps(message))
@@ -111,7 +111,7 @@ class Client:
             
     def returnCar(self, username, bookingid):
         time = datetime.datetime.now()
-        message = ["Return", self.carid, username, bookingid, time.strftime("%Y-%m-%d")]
+        message = ["Return", self.carid, username, bookingid]
         
         # send and wait receive
         self.s.sendall(pickle.dumps(message))
