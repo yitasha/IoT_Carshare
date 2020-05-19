@@ -5,6 +5,10 @@ from getpass import getpass
 
 class Client:
     def main(self):
+        """
+        Main function
+        :return: self
+        """
         # Unique car ID
         self.carid = 4
 
@@ -16,6 +20,10 @@ class Client:
         self.identity()
 
     def identity(self):
+        """
+        Main menu function
+        :return: self
+        """
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as self.s:
                 print("Connecting to {}...".format(self.ADDRESS))
@@ -68,6 +76,12 @@ class Client:
             pass
 
     def checkAccount(self, selection):
+        """
+
+        :param self:
+        :param selection:
+        :return: self, selection
+        """
         while True:
             print()
             print("Login page")
@@ -99,6 +113,13 @@ class Client:
                 print(data[1])
 
     def unlockCar(self, username, bookingid):
+        """
+
+        :param self:
+        :param username: string
+        :param bookingid: int
+        :return: self, string, int
+        """
         time = datetime.datetime.now()
         message = ["Unlock", self.carid, username, bookingid]
 
@@ -110,6 +131,13 @@ class Client:
         print(data)
             
     def returnCar(self, username, bookingid):
+        """
+
+        :param self:
+        :param username:
+        :param bookingid:
+        :return: self, string, int
+        """
         time = datetime.datetime.now()
         message = ["Return", self.carid, username, bookingid]
         
