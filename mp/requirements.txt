@@ -1,3 +1,5 @@
 pip3 install passlib
 pip3 install flask
 pip3 install mysqlclient
+pip3 install passlib
+pip3 install google-api-python-client google-auth-httplib2 google-auth-oauthlib oauth2client httplib2
