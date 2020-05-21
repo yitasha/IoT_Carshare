@@ -117,7 +117,7 @@ class DatabaseUtils:
     #Get history of booking filtered by userid and status = "False", "False" means canceled
     def showHistory(self, userid):
         with self.connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'False'".format(userid))
+            cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status != 'True'".format(userid))
             return cursor.fetchall()
 
     #Get single booking info by int:bookingid

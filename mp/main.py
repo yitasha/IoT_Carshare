@@ -72,7 +72,7 @@ def myprofile():
             person = db.getPerson(session.get('username'))
             booking = db.showBooking(person[0])
             history = db.showHistory(person[0])
-        return render_template("myprofile.html", person = person, booking = booking, history=history)
+        return render_template("myProfile.html", person = person, booking = booking, history=history)
     else:
         return login()
 
