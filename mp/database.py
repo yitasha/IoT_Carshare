@@ -24,7 +24,9 @@ class DatabaseUtils:
     #This function returns Boolean: True or False
     def insertPerson(self, username, password, firstname, lastname,phone,email,address):
         """
+
         This function returns Boolean: True or False
+
         :param username: string
         :param password: string
         :param firstname: string
@@ -32,7 +34,7 @@ class DatabaseUtils:
         :param phone: int
         :param email: string
         :param address: string
-        :return: Boolean
+        :return: boolean
         """
         with self.connection.cursor() as cursor:
             sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
@@ -44,7 +46,9 @@ class DatabaseUtils:
     #Check if username exist, username will be unique
     def checkUsername(self, username):
         """
+
         Check if username exist, username will be unique
+
         :param username: string
         :return: string
         """
@@ -59,7 +63,9 @@ class DatabaseUtils:
     #Check persons username and encrypted password
     def checkPerson(self, username, password):
         """
+        
         Check persons username and encrypted password
+
         :param username: string
         :param password: string
         :return: string
@@ -76,7 +82,9 @@ class DatabaseUtils:
     #Run this after checkPerson is completed to retrieve data
     def getPerson(self, username):
         """
+
         Run this after checkPerson is completed to retrieve data
+
         :param username: string
         :return: string
         """
@@ -87,7 +95,9 @@ class DatabaseUtils:
     #Get available = 'True' cars
     def getAvailCar(self):
         """
+
         Get available = 'True' cars
+
         :return: boolean
         """
 
@@ -98,7 +108,9 @@ class DatabaseUtils:
     #Get individual car's info by int:carid
     def getCar(self, carid):
         """
+
         Get individual car's info by int:carid
+
         :param carid: int
         :return: int
         """
@@ -110,7 +122,9 @@ class DatabaseUtils:
     #Insert booking with follow intake parameters
     def insertBooking(self, userid, carid, cost, startDate, endDate, eventID):
         """
+
         Insert booking with follow intake parameters
+
         :param userid: int 
         :param carid: int
         :param cost: string
@@ -134,7 +148,9 @@ class DatabaseUtils:
     #Update car's availability with ( int:carid string:avail )
     def updateCarAvail(self, carid, avail):
         """
+
         Update car's availability with ( int:carid string:avail )
+
         :param carid: int
         :param avail: string
         :return: int , string
@@ -147,7 +163,9 @@ class DatabaseUtils:
     #Check car's availability with (int:carid) and return True or False
     def checkCarAvail(self, carid):
         """
+
         Check car's availability with (int:carid) and return True or False
+
         :param carid: int
         :return: boolean
         """
@@ -163,7 +181,9 @@ class DatabaseUtils:
     #Get all booking filtered by userid
     def showBooking(self, userid):
         """
+
         Get all booking filtered by userid
+
         :param userid: int
         :return: int 
         """
@@ -186,7 +206,9 @@ class DatabaseUtils:
     #Get history of booking filtered by userid and status = "False", "False" means canceled
     def showHistory(self, userid):
         """
+
         Get history of booking filtered by userid and status = "False", "False" means canceled
+
         :param userid: int
         :return: Boolean 
         """
@@ -197,7 +219,9 @@ class DatabaseUtils:
     #Get single booking info by int:bookingid
     def getBooking(self, bookingid):
         """
+
         Get single booking info by int:bookingid
+
         :param bookingid: int
         :return: int
         """
@@ -210,9 +234,13 @@ class DatabaseUtils:
     #2.Check userid(from step 1), carid, date
     def checkLogin_AP(self, username, password, carid, date):
         """
+
         For server.py socket communication
+
         #1.Check username, password and generate userid for step 2
+        
         #2.Check userid(from step 1), carid, date
+
         :param username: string
         :param password: string
         :param carid: int
@@ -239,7 +267,9 @@ class DatabaseUtils:
     #Helper function for checkLogin_AP
     def checkBooking_AP(self, userid, carid, date):
         """
+
         Helper function for checkLogin_AP
+
         :param userid: int
         :param carid: int
         :param date: date
@@ -252,7 +282,9 @@ class DatabaseUtils:
     #Unlock car by update booking status to Unlocked, returns True or False
     def unlock_AP(self, bookingid):
         """
+
         Unlock car by update booking status to Unlocked, returns True or False
+
         :param bookingid: int
         :return: Boolean
         """
@@ -265,8 +297,11 @@ class DatabaseUtils:
     #Need to update car location with Google Maps API
     def return_AP(self, bookingid):
         """
+
         #Return car by update booking status to Returned, car's available to "True"
+
         #Need to update car location with Google Maps API
+
         :param bookingid: int
         :return: Boolean
         """

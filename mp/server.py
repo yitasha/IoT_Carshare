@@ -6,8 +6,11 @@ from database import DatabaseUtils
 class Server:
     def main(self):
         """
+
         Server records the connected carid
+        
         run server
+
         """
         # Server records the connected carid
         self.connectList = []
@@ -17,6 +20,7 @@ class Server:
 
     def run(self):
         """
+
         Socket Listen
 
         """
@@ -70,7 +74,9 @@ class Server:
 
     def messagesCase(self, list):
         """
+
         Case Messages ["Login", carid, username, password, date]
+
         :param list: string
         :return: string
         """

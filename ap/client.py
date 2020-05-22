@@ -6,6 +6,7 @@ from getpass import getpass
 class Client:
     def main(self):
         """
+        
         Main function
 
         """
@@ -21,6 +22,7 @@ class Client:
 
     def identity(self):
         """
+
         Main menu function
 
         """

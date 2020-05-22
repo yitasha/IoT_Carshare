@@ -33,7 +33,9 @@ class Calendar:
     def main(self):
         """
         Shows basic usage of the Google Calendar API.
+
         Prints the start and name of the next 10 events on the user"s calendar.
+        
         """
         # Call the Calendar API.
         now = datetime.utcnow().isoformat() + "Z" # "Z" indicates UTC time.

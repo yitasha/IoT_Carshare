@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>database module &#8212; CarShare 0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="main module" href="main.html" />
+    <link rel="prev" title="add_event module" href="add_event.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-mp.database">
+<span id="database-module"></span><h1>database module<a class="headerlink" href="#module-mp.database" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="mp.database.DatabaseUtils">
+<em class="property">class </em><code class="sig-prename descclassname">mp.database.</code><code class="sig-name descname">DatabaseUtils</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">connection</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="mp.database.DatabaseUtils.DATABASE">
+<code class="sig-name descname">DATABASE</code><em class="property"> = 'carshare'</em><a class="headerlink" href="#mp.database.DatabaseUtils.DATABASE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mp.database.DatabaseUtils.HOST">
+<code class="sig-name descname">HOST</code><em class="property"> = '35.189.49.76'</em><a class="headerlink" href="#mp.database.DatabaseUtils.HOST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mp.database.DatabaseUtils.PASSWORD">
+<code class="sig-name descname">PASSWORD</code><em class="property"> = 'Z4J96$\\qg$:&lt;ZxU6'</em><a class="headerlink" href="#mp.database.DatabaseUtils.PASSWORD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="mp.database.DatabaseUtils.USER">
+<code class="sig-name descname">USER</code><em class="property"> = 'iotA2'</em><a class="headerlink" href="#mp.database.DatabaseUtils.USER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.cancelBooking">
+<code class="sig-name descname">cancelBooking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bookingid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.cancelBooking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update booking status to “False”
+:param bookingid: int
+:return: Boolean</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.checkBooking_AP">
+<code class="sig-name descname">checkBooking_AP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">userid</span></em>, <em class="sig-param"><span class="n">carid</span></em>, <em class="sig-param"><span class="n">date</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.checkBooking_AP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function for checkLogin_AP</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userid</strong> – int</p></li>
+<li><p><strong>carid</strong> – int</p></li>
+<li><p><strong>date</strong> – date</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int , date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.checkCarAvail">
+<code class="sig-name descname">checkCarAvail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">carid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.checkCarAvail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check car’s availability with (int:carid) and return True or False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>carid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.checkLogin_AP">
+<code class="sig-name descname">checkLogin_AP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">carid</span></em>, <em class="sig-param"><span class="n">date</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.checkLogin_AP" title="Permalink to this definition">¶</a></dt>
+<dd><p>For server.py socket communication</p>
+<p>#1.Check username, password and generate userid for step 2</p>
+<p>#2.Check userid(from step 1), carid, date</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – string</p></li>
+<li><p><strong>password</strong> – string</p></li>
+<li><p><strong>carid</strong> – int</p></li>
+<li><p><strong>date</strong> – date</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean , string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.checkPerson">
+<code class="sig-name descname">checkPerson</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">password</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.checkPerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check persons username and encrypted password</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – string</p></li>
+<li><p><strong>password</strong> – string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.checkUsername">
+<code class="sig-name descname">checkUsername</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.checkUsername" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if username exist, username will be unique</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> – string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.getAvailCar">
+<code class="sig-name descname">getAvailCar</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.getAvailCar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get available = ‘True’ cars</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.getBooking">
+<code class="sig-name descname">getBooking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bookingid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.getBooking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get single booking info by int:bookingid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bookingid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.getCar">
+<code class="sig-name descname">getCar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">carid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.getCar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get individual car’s info by int:carid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>carid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.getPerson">
+<code class="sig-name descname">getPerson</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.getPerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run this after checkPerson is completed to retrieve data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>username</strong> – string</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.insertBooking">
+<code class="sig-name descname">insertBooking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">userid</span></em>, <em class="sig-param"><span class="n">carid</span></em>, <em class="sig-param"><span class="n">cost</span></em>, <em class="sig-param"><span class="n">startDate</span></em>, <em class="sig-param"><span class="n">endDate</span></em>, <em class="sig-param"><span class="n">eventID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.insertBooking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert booking with follow intake parameters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>userid</strong> – int</p></li>
+<li><p><strong>carid</strong> – int</p></li>
+<li><p><strong>cost</strong> – string</p></li>
+<li><p><strong>startDate</strong> – date</p></li>
+<li><p><strong>endDate</strong> – date</p></li>
+<li><p><strong>eventID</strong> – int</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int, string, date</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.insertPerson">
+<code class="sig-name descname">insertPerson</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">password</span></em>, <em class="sig-param"><span class="n">firstname</span></em>, <em class="sig-param"><span class="n">lastname</span></em>, <em class="sig-param"><span class="n">phone</span></em>, <em class="sig-param"><span class="n">email</span></em>, <em class="sig-param"><span class="n">address</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.insertPerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns Boolean: True or False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – string</p></li>
+<li><p><strong>password</strong> – string</p></li>
+<li><p><strong>firstname</strong> – string</p></li>
+<li><p><strong>lastname</strong> – string</p></li>
+<li><p><strong>phone</strong> – int</p></li>
+<li><p><strong>email</strong> – string</p></li>
+<li><p><strong>address</strong> – string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.return_AP">
+<code class="sig-name descname">return_AP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bookingid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.return_AP" title="Permalink to this definition">¶</a></dt>
+<dd><p>#Return car by update booking status to Returned, car’s available to “True”</p>
+<p>#Need to update car location with Google Maps API</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bookingid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.showBooking">
+<code class="sig-name descname">showBooking</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">userid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.showBooking" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all booking filtered by userid</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>userid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.showHistory">
+<code class="sig-name descname">showHistory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">userid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.showHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get history of booking filtered by userid and status = “False”, “False” means canceled</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>userid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.unlock_AP">
+<code class="sig-name descname">unlock_AP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bookingid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.unlock_AP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlock car by update booking status to Unlocked, returns True or False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bookingid</strong> – int</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mp.database.DatabaseUtils.updateCarAvail">
+<code class="sig-name descname">updateCarAvail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">carid</span></em>, <em class="sig-param"><span class="n">avail</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mp.database.DatabaseUtils.updateCarAvail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update car’s availability with ( int:carid string:avail )</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>carid</strong> – int</p></li>
+<li><p><strong>avail</strong> – string</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>int , string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">CarShare</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">mp</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="add_event.html">add_event module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">database module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="menu.html">menu module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html">server module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ap/modules.html">ap</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">mp</a><ul>
+      <li>Previous: <a href="add_event.html" title="previous chapter">add_event module</a></li>
+      <li>Next: <a href="main.html" title="next chapter">main module</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Carshare-IoT Team.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/mp/database.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

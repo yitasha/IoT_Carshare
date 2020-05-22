@@ -10,6 +10,7 @@ app.secret_key = 'asdasd12easd123rdada'
 @app.route("/")
 def home():
     """
+
     return to home.html
 
     """
@@ -18,6 +19,7 @@ def home():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     """
+
     Register function
 
     """
@@ -51,6 +53,7 @@ def register():
 @app.route("/login",  methods=['GET', 'POST'])
 def login():
     """
+
     Login function
 
     """
@@ -80,6 +83,7 @@ def login():
 @app.route("/myprofile", methods=['GET', 'POST'])
 def myprofile():
     """
+
     Read database for login
 
     """
@@ -95,6 +99,7 @@ def myprofile():
 @app.context_processor
 def utility_processor():
     """
+
     For booking
 
     """
@@ -107,6 +112,7 @@ def utility_processor():
 @app.route("/logout")
 def logout():
     """
+
     Logout an account
 
     """
@@ -119,7 +125,9 @@ def logout():
 @app.route("/cars", methods=['GET', 'POST'])
 def cars():
     """
+
     Read available car for db
+
     """
     with DatabaseUtils() as db:
         cars = db.getAvailCar()
@@ -129,6 +137,7 @@ def cars():
 @app.route("/book", methods=['POST'])
 def book():
     """
+
     Booking function and store data to db
 
     """
@@ -149,7 +158,9 @@ def book():
 @app.route("/processbook", methods=['POST'])
 def processbook():
     """
+
     Function for process booking
+
     """
     if request.method == "POST":
         userid = request.form['userid']
@@ -202,6 +213,7 @@ def processbook():
 @app.route("/cancelbook", methods=['POST'])
 def cancelbook():
     """
+
     Function for cancel booking
 
     """
@@ -229,7 +241,9 @@ def cancelbook():
 @app.route("/loggedin", methods=['POST'])
 def loggedin():
     """
+
     testing function
+
     collecting data from register form
 
     """
@@ -262,7 +276,9 @@ def loginURL():
 @app.route("/testURL/<id>/<username>/<password>", methods=['POST'])
 def testURL(id, username, password):
     """
+
     testing function
+    
     LoginURL function
 
     """
