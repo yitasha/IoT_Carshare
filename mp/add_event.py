@@ -33,7 +33,9 @@ class Calendar:
     def main(self):
         """
         Shows basic usage of the Google Calendar API.
+
         Prints the start and name of the next 10 events on the user"s calendar.
+        
         """
         # Call the Calendar API.
         now = datetime.utcnow().isoformat() + "Z" # "Z" indicates UTC time.
@@ -49,6 +51,11 @@ class Calendar:
             print(start, event["summary"])
     
     def delete(self, eventID):
+        """
+        
+        :param eventID: int
+        :return: boolean
+        """
         event = self.service.events().get(calendarId='primary', eventId=eventID).execute()
         #If eventID is already deleted.
         if(event.get('status') == "cancelled"):
@@ -63,6 +70,15 @@ class Calendar:
         return False
 
     def insert(self, car, location, user, startDate, endDate):
+        """
+        
+        :param car: String
+        :param location: String
+        :param user: String
+        :param startDate: Date
+        :param endDate: Date
+        :return: int
+        """
         duration = endDate - startDate
         event = {
             "summary": "Car: {} ,booked for {}".format(car, user),

@@ -5,6 +5,13 @@ from database import DatabaseUtils
 
 class Server:
     def main(self):
+        """
+
+        Server records the connected carid
+        
+        run server
+
+        """
         # Server records the connected carid
         self.connectList = []
 
@@ -12,6 +19,11 @@ class Server:
         self.run()
 
     def run(self):
+        """
+
+        Socket Listen
+
+        """
         # Socket Listen
         # self.HOST = "192.168.0.135"
         HOST = "localhost"
@@ -30,6 +42,12 @@ class Server:
                 t.start()
             
     def threadHandle(self, conn, addr):
+        """
+
+        :param conn:
+        :param addr:
+        :return:
+        """
         try:
             with conn:
                 while True:
@@ -55,6 +73,13 @@ class Server:
             pass
 
     def messagesCase(self, list):
+        """
+
+        Case Messages ["Login", carid, username, password, date]
+
+        :param list: string
+        :return: string
+        """
         # case Messages ["Login", carid, username, password, date]
         if list[0] == "Login":
             # in Database checkLogin_AP(self, username, password, carid, date):
