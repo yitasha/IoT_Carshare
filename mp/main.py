@@ -9,10 +9,18 @@ app.secret_key = 'asdasd12easd123rdada'
 
 @app.route("/")
 def home():
+    """
+    return to home.html
+
+    """
     return render_template("home.html")
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    """
+    Register function
+
+    """
     if request.method == 'POST':
         #Data collected from register form
         username = request.form['username']
@@ -42,6 +50,10 @@ def register():
 
 @app.route("/login",  methods=['GET', 'POST'])
 def login():
+    """
+    Login function
+
+    """
     #If session username exist, means already logged in
     if session.get('username') != None:
         return redirect(url_for('myprofile'))
@@ -67,6 +79,10 @@ def login():
 #after login, redirect to myprofile page
 @app.route("/myprofile", methods=['GET', 'POST'])
 def myprofile():
+    """
+    Read database for login
+
+    """
     if session.get('username') != None:
         with DatabaseUtils() as db:
             person = db.getPerson(session.get('username'))
@@ -78,6 +94,10 @@ def myprofile():
 
 @app.context_processor
 def utility_processor():
+    """
+    For booking
+
+    """
     def car(bookingid):
         with DatabaseUtils() as db:
             car = db.getCar(bookingid)
@@ -86,6 +106,10 @@ def utility_processor():
 
 @app.route("/logout")
 def logout():
+    """
+    Logout an account
+
+    """
     session.pop('username', None)
     session.pop('userid', None)
     session.clear()
@@ -94,6 +118,9 @@ def logout():
 
 @app.route("/cars", methods=['GET', 'POST'])
 def cars():
+    """
+    Read available car for db
+    """
     with DatabaseUtils() as db:
         cars = db.getAvailCar()
 
@@ -101,6 +128,10 @@ def cars():
 
 @app.route("/book", methods=['POST'])
 def book():
+    """
+    Booking function and store data to db
+
+    """
     if request.method == "POST":
         carid = request.form['carid']
         make = request.form['make']
@@ -117,6 +148,9 @@ def book():
 #Need to add more rules: Google calendar & check car's availability
 @app.route("/processbook", methods=['POST'])
 def processbook():
+    """
+    Function for process booking
+    """
     if request.method == "POST":
         userid = request.form['userid']
         carid = request.form['carid']
@@ -167,6 +201,10 @@ def processbook():
 
 @app.route("/cancelbook", methods=['POST'])
 def cancelbook():
+    """
+    Function for cancel booking
+
+    """
     if request.method == "POST":
         carid = request.form['carid']
         bookid = request.form['bookid']
@@ -190,6 +228,11 @@ def cancelbook():
 ################# Below are testing routes 测试专用 ##########################
 @app.route("/loggedin", methods=['POST'])
 def loggedin():
+    """
+    testing function
+    collecting data from register form
+
+    """
     #Data collected from register form
     username = request.form['username']
     password = request.form['password']
@@ -218,7 +261,11 @@ def loginURL():
 
 @app.route("/testURL/<id>/<username>/<password>", methods=['POST'])
 def testURL(id, username, password):
+    """
+    testing function
+    LoginURL function
 
+    """
     #return "The ID is " + str(id) + " Name is " + username + " Password is " + password
     return render_template("testURL.html", **locals())
 

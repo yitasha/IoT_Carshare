@@ -23,6 +23,17 @@ class DatabaseUtils:
     
     #This function returns Boolean: True or False
     def insertPerson(self, username, password, firstname, lastname,phone,email,address):
+        """
+        This function returns Boolean: True or False
+        :param username: string
+        :param password: string
+        :param firstname: string
+        :param lastname: string
+        :param phone: int
+        :param email: string
+        :param address: string
+        :return: Boolean
+        """
         with self.connection.cursor() as cursor:
             sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             val = (username, password, firstname, lastname, phone, email, address)
@@ -32,6 +43,11 @@ class DatabaseUtils:
 
     #Check if username exist, username will be unique
     def checkUsername(self, username):
+        """
+        Check if username exist, username will be unique
+        :param username: string
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
         self.connection.commit()
@@ -42,6 +58,12 @@ class DatabaseUtils:
 
     #Check persons username and encrypted password
     def checkPerson(self, username, password):
+        """
+        Check persons username and encrypted password
+        :param username: string
+        :param password: string
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
             results = cursor.fetchone()
@@ -53,24 +75,50 @@ class DatabaseUtils:
 
     #Run this after checkPerson is completed to retrieve data
     def getPerson(self, username):
+        """
+        Run this after checkPerson is completed to retrieve data
+        :param username: string
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
             return cursor.fetchone()
 
     #Get available = 'True' cars
     def getAvailCar(self):
+        """
+        Get available = 'True' cars
+        :return: boolean
+        """
+
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE available = 'True'")
             return cursor.fetchall()
     
     #Get individual car's info by int:carid
     def getCar(self, carid):
+        """
+        Get individual car's info by int:carid
+        :param carid: int
+        :return: int
+        """
+
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             return cursor.fetchone()
 
     #Insert booking with follow intake parameters
     def insertBooking(self, userid, carid, cost, startDate, endDate, eventID):
+        """
+        Insert booking with follow intake parameters
+        :param userid: int 
+        :param carid: int
+        :param cost: string
+        :param startDate: date
+        :param endDate: date
+        :param eventID: int
+        :return: int, string, date 
+        """
         #calculate totalcost
         days = endDate - startDate
         totalcost = days.days * cost
@@ -85,6 +133,12 @@ class DatabaseUtils:
     
     #Update car's availability with ( int:carid string:avail )
     def updateCarAvail(self, carid, avail):
+        """
+        Update car's availability with ( int:carid string:avail )
+        :param carid: int
+        :param avail: string
+        :return: int , string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE car SET available = '{}' WHERE carid = '{}'".format(avail, carid))
         self.connection.commit()
@@ -92,6 +146,11 @@ class DatabaseUtils:
 
     #Check car's availability with (int:carid) and return True or False
     def checkCarAvail(self, carid):
+        """
+        Check car's availability with (int:carid) and return True or False
+        :param carid: int
+        :return: boolean
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             results = cursor.fetchone()
@@ -103,12 +162,22 @@ class DatabaseUtils:
     
     #Get all booking filtered by userid
     def showBooking(self, userid):
+        """
+        Get all booking filtered by userid
+        :param userid: int
+        :return: int 
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status = 'True'".format(userid))
             return cursor.fetchall()
 
     #Update booking status to "False"
     def cancelBooking(self, bookingid):
+        """
+        Update booking status to "False"
+        :param bookingid: int
+        :return: Boolean
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE booking SET status = 'False' WHERE bookingid = '{}'".format(bookingid))
         self.connection.commit()
@@ -116,12 +185,22 @@ class DatabaseUtils:
     
     #Get history of booking filtered by userid and status = "False", "False" means canceled
     def showHistory(self, userid):
+        """
+        Get history of booking filtered by userid and status = "False", "False" means canceled
+        :param userid: int
+        :return: Boolean 
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE userid = '{}' AND status != 'True'".format(userid))
             return cursor.fetchall()
 
     #Get single booking info by int:bookingid
     def getBooking(self, bookingid):
+        """
+        Get single booking info by int:bookingid
+        :param bookingid: int
+        :return: int
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking WHERE bookingid = '{}'".format(bookingid))
             return cursor.fetchone()
@@ -130,6 +209,16 @@ class DatabaseUtils:
     #1.Check username, password and generate userid for step 2
     #2.Check userid(from step 1), carid, date
     def checkLogin_AP(self, username, password, carid, date):
+        """
+        For server.py socket communication
+        #1.Check username, password and generate userid for step 2
+        #2.Check userid(from step 1), carid, date
+        :param username: string
+        :param password: string
+        :param carid: int
+        :param date: date
+        :return: Boolean , string
+        """
         if(self.checkUsername(username) == False):
             if(self.checkPerson(username, password)):
                 userid = self.getPerson(username)[0]
@@ -149,12 +238,24 @@ class DatabaseUtils:
     
     #Helper function for checkLogin_AP
     def checkBooking_AP(self, userid, carid, date):
+        """
+        Helper function for checkLogin_AP
+        :param userid: int
+        :param carid: int
+        :param date: date
+        :return: int , date
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking where userid = '{}' AND carid = '{}' AND '{}' BETWEEN startdate AND enddate".format(userid, carid, date))
             return cursor.fetchone()
 
     #Unlock car by update booking status to Unlocked, returns True or False
     def unlock_AP(self, bookingid):
+        """
+        Unlock car by update booking status to Unlocked, returns True or False
+        :param bookingid: int
+        :return: Boolean
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE booking SET status = 'Unlocked' WHERE bookingid = '{}'".format(bookingid))
         self.connection.commit()
@@ -163,6 +264,12 @@ class DatabaseUtils:
     #Return car by update booking status to Returned, car's available to "True"
     #Need to update car location with Google Maps API
     def return_AP(self, bookingid):
+        """
+        #Return car by update booking status to Returned, car's available to "True"
+        #Need to update car location with Google Maps API
+        :param bookingid: int
+        :return: Boolean
+        """
         avail = "True"
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE booking SET status = 'Returned' WHERE bookingid = '{}'".format(bookingid))
