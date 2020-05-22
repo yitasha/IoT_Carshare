@@ -3,10 +3,10 @@ from passlib.hash import sha256_crypt
 from datetime import datetime
 
 class DatabaseUtils:
-    HOST = "35.189.49.76"
-    USER = "root"
-    PASSWORD = "root"
-    DATABASE = "carshare"
+    HOST = "34.87.255.4"
+    USER = "iotA2"
+    PASSWORD = "Z4J96$\qg$:<ZxU6"
+    DATABASE = "testcarshare"
 
     def __init__(self, connection = None):
         if(connection == None):
@@ -68,19 +68,18 @@ class DatabaseUtils:
             cursor.execute("delete from Person where PersonID = %s", (personID))
         self.connection.commit()
 
-# db = DatabaseUtils()
-# db.checkPerson("Nicole")
+db = DatabaseUtils()
+db.createPersonTable()
 
-# print(db.getPeople())
-startDate =  datetime.strptime('2020-05-08', '%Y-%m-%d').date()
-endDate = datetime.strptime('2020-05-08', '%Y-%m-%d').date()
-days = endDate - startDate
-cost = 249
-totalcost = days.days * cost
-print(days)
-print(totalcost)
-if(endDate > startDate):
-    print("True")
-else:
-    print("False")
+# startDate =  datetime.strptime('2020-05-08', '%Y-%m-%d').date()
+# endDate = datetime.strptime('2020-05-08', '%Y-%m-%d').date()
+# days = endDate - startDate
+# cost = 249
+# totalcost = days.days * cost
+# print(days)
+# print(totalcost)
+# if(endDate > startDate):
+#     print("True")
+# else:
+#     print("False")
         

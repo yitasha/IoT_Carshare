@@ -5,7 +5,7 @@ use carshare;
 create table user(
 userid int NOT NULL auto_increment,
 username text NOT NULL,
-password varchar (30) NOT NULL,
+password text NOT NULL,
 firstname  varchar(20) NOT NULL,
 lastname varchar (20) NOT NULL,
 phone varchar(15) NOT NULL,

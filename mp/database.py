@@ -34,7 +34,7 @@ class DatabaseUtils:
     def checkUsername(self, username):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE username = '{}'".format(username))
-        self.connection.commit()
+        # self.connection.commit()
         if(cursor.rowcount >= 1):
             return False
         else:
