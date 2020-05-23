@@ -94,7 +94,7 @@ class TestDatabaseUtils(unittest.TestCase):
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             return cursor.fetchone()
 
-    # Compare the available cars count rows
+    # Compare the available cars row count
     def test_countAvailCar(self):
         with DatabaseUtils(self.connection) as db:
             self.assertEqual(self.countAvailCar(), len(db.getAvailCar()))
@@ -116,22 +116,34 @@ class TestDatabaseUtils(unittest.TestCase):
     
     # Test updating car availability
     def test_updateCarAvail(self):
-        avail = "False"
-        carid = 1
+        status_F = "False"
+        status_T = "True"
+        car1 = 1
+        car2 = 2
+        currentAvail = self.countAvailCar()
         with DatabaseUtils(self.connection) as db:
-            self.assertEqual(db.updateCarAvail('carid', 'avail'), db.updateCarAvail())
-
-
-    # Test car's availability 
+            # Set status to False and compare with counter
+            self.assertTrue(db.updateCarAvail(car1, status_F))
+            self.assertEqual(currentAvail - 1, self.countAvailCar())
+            self.assertTrue(db.updateCarAvail(car2, status_F))
+            self.assertEqual(currentAvail - 2, self.countAvailCar())
+            # Set status to True and compare backward with counter
+            self.assertTrue(db.updateCarAvail(car2, status_T))
+            self.assertEqual(currentAvail - 1, self.countAvailCar())
+            self.assertTrue(db.updateCarAvail(car1, status_T))
+            self.assertEqual(currentAvail, self.countAvailCar())
+    
+    # Test car's availability
     def test_checkCarAvail(self):
+        carTrue1 = 1
+        carTrue2 = 2
+        carFalse19 = 19
+        carFalse20 = 20
         with DatabaseUtils(self.connection) as db:
-            self.assertTrue(db.checkCarAvail(1, "True"))
-            self.assertFalse(db.checkCarAvail(2, "False"))
-
-
-
-
-
+            self.assertTrue(db.checkCarAvail(carTrue1))
+            self.assertTrue(db.checkCarAvail(carTrue2))
+            self.assertFalse(db.checkCarAvail(carFalse19))
+            self.assertFalse(db.checkCarAvail(carFalse20))
 
 if __name__ == "__main__":
     unittest.main()
