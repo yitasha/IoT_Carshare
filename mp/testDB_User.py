@@ -96,7 +96,7 @@ class TestDatabaseUtils(unittest.TestCase):
             self.assertEqual("TestUser1", db.getPerson("TestUser1")[1])
             self.assertEqual("TestUser2", db.getPerson("TestUser2")[1])
             self.assertEqual("TestUser3", db.getPerson("TestUser3")[1])
-    
+
 if __name__ == "__main__":
     unittest.main()
 
