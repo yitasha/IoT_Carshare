@@ -117,11 +117,18 @@ class TestDatabaseUtils(unittest.TestCase):
     # Test updating car availability
     def test_updateCarAvail(self):
         avail = "False"
-        pass
+        carid = 1
+        with DatabaseUtils(self.connection) as db:
+            self.assertEqual(db.updateCarAvail('carid', 'avail'), db.updateCarAvail())
+
 
     # Test car's availability 
     def test_checkCarAvail(self):
-        pass
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.checkCarAvail(1, "True"))
+            self.assertFalse(db.checkCarAvail(2, "False"))
+
+
 
 
 
