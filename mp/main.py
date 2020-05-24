@@ -103,7 +103,7 @@ def myprofile():
     else:
         return login()
 
-#after login, redirect to myprofile page
+# Upload image and encode it to database
 @app.route("/uploader", methods=['GET', 'POST'])
 def uploader():
     """
@@ -124,8 +124,10 @@ def uploader():
             return redirect(request.url)
         if file:
             filename = secure_filename(file.filename)
-            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # Images get stored in static/image/
             file.save(os.path.join('mp/static/image', filename))
+            #Image file get enconded and sent to database
             img = cv2.imread('mp/static/image/' + filename,1)
             with DatabaseUtils() as db:
                 db.insertImg(session.get('userid'), img)

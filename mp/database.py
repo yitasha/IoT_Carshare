@@ -244,6 +244,18 @@ class DatabaseUtils:
             return cursor.fetchone()
 
 ################## For server.py socket communication ##################
+
+    # Get the image tuple numbers from AP and compare to database
+    def checkFaceImage(self, img, carid, date):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM user WHERE img = '{}'".format(img))
+            if(cursor.fetchone() is not None):
+                username = cursor.fetchone()[1]
+                password = cursor.fetchone()[2]
+                self.checkLogin_AP(username,password, carid, date)
+            else:
+                return [False, "img incorect or doesn't exist"]
+    
     #1.Check username, password and generate userid for step 2
     #2.Check userid(from step 1), carid, date
     def checkLogin_AP(self, username, password, carid, date):
@@ -277,7 +289,7 @@ class DatabaseUtils:
                 return [False, "Error, Password is incorrect"]
         else:
             return [False, "Username incorect or doesn't exist"]
-    
+
     #Helper function for checkLogin_AP
     def checkBooking_AP(self, userid, carid, date):
         """

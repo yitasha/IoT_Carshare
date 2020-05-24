@@ -2,6 +2,9 @@ import socket
 import pickle
 import datetime
 from getpass import getpass
+from os import listdir
+from os.path import isfile, join
+import cv2
 
 class Client:
     def main(self):
@@ -49,6 +52,7 @@ class Client:
                         break
 
                     # Main menu
+                    # Need add in a option "Select image"
                     print()
                     print("Home page")
                     print("1. Unlock Car")

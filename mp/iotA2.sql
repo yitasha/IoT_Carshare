@@ -11,6 +11,7 @@ lastname varchar (20) NOT NULL,
 phone varchar(15) NOT NULL,
 email varchar (40) NOT NULL,
 address varchar (40) NOT NULL,
+imag text,
 primary key (userid)
 );
 
