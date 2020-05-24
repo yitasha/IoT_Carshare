@@ -26,8 +26,10 @@ class Server:
         """
         # Socket Listen
         # HOST = "192.168.0.135" # Shukun's Pi
-        HOST = "192.168.0.102" # Shukun's Desktop
+        # HOST = "192.168.0.102" # Shukun's Desktop
         # HOST = "localhost" # Test local
+        # HOST= "120.21.91.201" # Yi's public IP
+        HOST = "192.168.1.7"
         POST = 61180
         ADDRESS = (HOST, POST)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -45,9 +47,6 @@ class Server:
     def threadHandle(self, conn, addr):
         """
 
-        :param conn:
-        :param addr:
-        :return:
         """
         try:
             with conn:

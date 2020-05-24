@@ -7,15 +7,14 @@ class Client:
     def main(self):
         """
         
-        Main function
+        Connect to master Pi server function
 
         """
         # Unique car ID
-        self.carid = 2
+        self.carid = 5
 
         # Socket connection 
-        # self.HOST = "192.168.0.135" # Shukun's Pi
-        # self.HOST = "192.168.0.102" # Shukun's Desktop
+        self.HOST = "124.189.52.217" # Shukun's Desktop
         # self.HOST = "localhost" # Test local
         self.HOST= "101.117.248.111" # Yi's public IP
         # self.HOST= "120.21.91.201"
@@ -84,7 +83,7 @@ class Client:
         """
 
         :param : selection
-        :return: selection
+        :return: string
         """
         while True:
             print()
@@ -121,7 +120,7 @@ class Client:
 
         :param username: string
         :param bookingid: int
-        :return: string, int
+        :return: string
         """
         time = datetime.datetime.now()
         message = ["Unlock", self.carid, username, bookingid]
@@ -138,7 +137,7 @@ class Client:
 
         :param username: string
         :param bookingid: int
-        :return: string, int
+        :return: string
         """
         time = datetime.datetime.now()
         message = ["Return", self.carid, username, bookingid]
