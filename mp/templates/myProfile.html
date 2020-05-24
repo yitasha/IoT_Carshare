@@ -8,8 +8,18 @@
 <div class="container text-center">    
   <div class="row content">
     <div class="col-sm-2 sidenav">
-      <img src="/static/image/Cars_2006.jpg" style="width:100%">
+      <form action='/uploader' method='post' enctype='multipart/form-data'>
+        <td><img class='myAvatar' type='image' src='static/image/Cars_2006.jpg' style='height:200px'>
+          <!-- src='https://storage.googleapis.com/iotprofileimg/{{ person[8]}}' -->
+          <br>
+        <input type='file' name='file' id='newAvatar' class='form-control-file'>
+        <div style='padding-top: 20px'>
+        <button type='submit' class='btn btn-primary' style='width:150px'>Update Picture</button>
+        </div>
+        </form>
+      
     </div>
+
     <div class="col-sm-8 text-left"> 
       <h1 id="userTitle">{{ session['username'] }},Welcome!</h1>
       <hr>

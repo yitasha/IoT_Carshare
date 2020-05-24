@@ -43,6 +43,21 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
+    #Insert image rgb code
+    def insertImg(self, userid, img):
+        """
+
+        This function returns Boolean: True or False
+
+        :param userid: int
+        :param img: tuple
+        :return: boolean
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE user SET img = '{}' WHERE userid = '{}'".format(img, userid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+
     #Check if username exist, username will be unique
     def checkUsername(self, username):
         """

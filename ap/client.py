@@ -16,6 +16,8 @@ class Client:
         # Socket connection 
         self.HOST = "124.189.52.217" # Shukun's Desktop
         # self.HOST = "localhost" # Test local
+        self.HOST= "101.117.248.111" # Yi's public IP
+        # self.HOST= "120.21.91.201"
         self.POST = 61180
         self.ADDRESS = (self.HOST, self.POST)
         self.identity()

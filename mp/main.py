@@ -1,11 +1,18 @@
 from flask import Flask, render_template, request,url_for, redirect, session, flash
+from werkzeug.utils import secure_filename
 from database import DatabaseUtils
 from passlib.hash import sha256_crypt
 from datetime import datetime
 from add_event import Calendar
+import os
+import cv2 
+
+UPLOAD_FOLDER = 'mp/static/image'
 
 app = Flask(__name__)
 app.secret_key = 'asdasd12easd123rdada'
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def home():
@@ -96,6 +103,35 @@ def myprofile():
     else:
         return login()
 
+#after login, redirect to myprofile page
+@app.route("/uploader", methods=['GET', 'POST'])
+def uploader():
+    """
+
+    Upload images to mp and encoded it into database
+
+    """
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file:
+            filename = secure_filename(file.filename)
+            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join('mp/static/image', filename))
+            img = cv2.imread('mp/static/image/' + filename,1)
+            with DatabaseUtils() as db:
+                db.insertImg(session.get('userid'), img)
+
+    return redirect(url_for("myprofile"))
+
 @app.context_processor
 def utility_processor():
     """
@@ -108,6 +144,7 @@ def utility_processor():
             car = db.getCar(bookingid)
             return car[1] + "-" + car[2]
     return dict(car=car)
+
 
 @app.route("/logout")
 def logout():
