@@ -6,3 +6,6 @@ pip3 install google-api-python-client google-auth-httplib2 google-auth-oauthlib 
 #For mac 
 #brew install sphinx-doc
 #export PATH="/usr/local/opt/sphinx-doc/bin:$PATH"
+
+# To run all uni tests within command line
+python -m unittest discover 

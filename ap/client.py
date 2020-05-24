@@ -14,8 +14,9 @@ class Client:
         self.carid = 4
 
         # Socket connection 
-        # self.HOST = "192.168.0.135"
-        self.HOST = "localhost"
+        # self.HOST = "192.168.0.135" # Shukun's Pi
+        self.HOST = "192.168.0.102" # Shukun's Desktop
+        # self.HOST = "localhost" # Test local
         self.POST = 61180
         self.ADDRESS = (self.HOST, self.POST)
         self.identity()

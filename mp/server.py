@@ -25,8 +25,9 @@ class Server:
 
         """
         # Socket Listen
-        # self.HOST = "192.168.0.135"
-        HOST = "localhost"
+        # HOST = "192.168.0.135" # Shukun's Pi
+        HOST = "192.168.0.102" # Shukun's Desktop
+        # HOST = "localhost" # Test local
         POST = 61180
         ADDRESS = (HOST, POST)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

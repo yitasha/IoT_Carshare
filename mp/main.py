@@ -3,7 +3,6 @@ from database import DatabaseUtils
 from passlib.hash import sha256_crypt
 from datetime import datetime
 from add_event import Calendar
-import pytest
 
 app = Flask(__name__)
 app.secret_key = 'asdasd12easd123rdada'
