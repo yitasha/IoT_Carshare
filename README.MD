@@ -41,4 +41,5 @@ Agent server<br>
 4. Connecting to Database<br>
 
 ## Notice ##
-run agent server in terminal then open a new termial to manually run client server.
+Run mp/server.py in terminal first 
+Then open a new termial to manually run client.py
