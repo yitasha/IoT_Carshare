@@ -1,5 +1,12 @@
 # PIoT Assignment 02 Car Share Scheme
 Car Share Scheme is a website provide user with booking a pecific car on the specific period.
+
+## Team members ##
+> Yi Zhang s3602956 <br>
+> Shukun Lin s3587391<br>
+> Shi Jiayin s3669495<br>
+> Zhirui Liang S3554374<br>
+
 ## Environment and Deployment ##
 `pip3 install passlib`<br>
 `pip3 install flask`<br>
@@ -27,7 +34,7 @@ Login by enter password and facial recognition <br>
 3. quit<br>
 
 ### ap: ###
-agent server<br>
+Agent server<br>
 1. Check Login<br>
 2. Set Unlock Car<br>
 3. Set Return Car<br>
@@ -35,9 +42,3 @@ agent server<br>
 
 ## Notice ##
 run agent server in terminal then open a new termial to manually run client server.
-
-## Team members ##
->> Yi Zhang s3602956 <br>
->> Shukun Lin s3587391<br>
->> Shi Jiayin s3669495<br>
->> Zhirui Liang S3554374<br>
