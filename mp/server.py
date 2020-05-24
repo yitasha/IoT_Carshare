@@ -25,8 +25,7 @@ class Server:
 
         """
         # Socket Listen
-        # HOST = "192.168.0.135" # Shukun's Pi
-        HOST = "192.168.0.102" # Shukun's Desktop
+        HOST = "124.189.52.217" # Shukun's Desktop
         # HOST = "localhost" # Test local
         POST = 61180
         ADDRESS = (HOST, POST)
@@ -45,9 +44,6 @@ class Server:
     def threadHandle(self, conn, addr):
         """
 
-        :param conn:
-        :param addr:
-        :return:
         """
         try:
             with conn:
