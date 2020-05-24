@@ -38,11 +38,12 @@ class TestDatabaseUtils(unittest.TestCase):
                     totalcost int NOT NULL,
                     status varchar(10) NOT NULL,
                     eventid varchar(30),
-                    primary key (bookingid),
-                    CONSTRAINT FK_userid FOREIGN KEY (userid) REFERENCES user(userid),
-                    CONSTRAINT FK_carid FOREIGN KEY (carid) REFERENCES car(carid)
+                    primary key (bookingid)
                 )""")
-
+         
+                # Adding constraints will limite other test cases
+                # CONSTRAINT FK_userid FOREIGN KEY (userid) REFERENCES user(userid),
+                # CONSTRAINT FK_carid FOREIGN KEY (carid) REFERENCES car(carid)
             cursor.execute("""
                     INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status, eventid) VALUES (1, 1, 99, '2020-05-01', '2020-05-11', 990, 'False', 'Google Calendar EventID');
                     INSERT INTO booking (userid, carid, cost, startdate, enddate, totalcost, status, eventid) VALUES (2, 2, 459, '2020-05-05', '2020-05-10', 2295, 'True', 'Google Calendar EventID');
