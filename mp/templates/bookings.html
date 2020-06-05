@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Bookings'}} 
+{% endblock %}
+
+{% block display %}
+<h1>All car rental history</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+
+<div class="container">
+    <div class="row content" style="padding-top: 20px;">
+        <ul class='nav nav-tabs'>
+        <li class='active'><a data-toggle='tab' href='#Booking'>Booking</a></li>
+        </ul>
+
+        <div class='tab-content'>
+        <div id='Booking' class='tab-pane fade in active'>
+            <h1>Booking</h1>
+            <table id="bookingTable" class="table table-striped">
+            <thead>
+                <tr class="header">
+                <th>Booking ID</th>
+                <th>User ID</th>
+                <th>Car ID</th>
+                <th>Car Name</th>
+                <th>Price/Day</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Cost</th>
+                <th>Booking Status</th>
+                </tr>
+            </thead>
+            <tbody id="bookingTable">
+                {%for book in booking%}
+                <tr>
+                <td>{{ book[0] }}</td>
+                <td>{{ book[1] }}</td>
+                <td>{{ book[2] }}</td>
+                <td>{{ car(book[2]) }}</td>
+                <td>{{ book[3] }}</td>
+                <td>{{ book[4] }}</td>
+                <td>{{ book[5] }}</td>
+                <td>{{ book[6] }}</td>
+                <td>{{ book[7] }}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+            </table>
+        </div> <!-- Closing first tab -->
+        </div>
+    </div><!-- Closing div second row -->
+</div> <!-- closing container -->
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Users'}} 
+{% endblock %}
+
+{% block display %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+
+<h1>All Users</h1>
+<div class="searchCar">
+    <input type="text" id="userInput"  placeholder="Search for every attribute" title="Type in a name">
+</div>
+<div class="container">
+            <table id="userTable" class="table table-striped">
+            <thead>
+                <tr class="header">
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Profile IMG?</th>
+                <th>Update</th>
+                </tr>
+            </thead>
+            <tbody id="usersTable">
+                {%for user in users%}
+                <form action="/updateUser" method="POST">
+                <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[3] }}</td>
+                <td>{{ user[4] }}</td>
+                <td>{{ user[5] }}</td>
+                <td>{{ user[6] }}</td>
+                <td>{{ user[7] }}</td>
+                <td>{% if user[8] %}
+                    Yes
+                    {% else %}
+                    No
+                    {% endif %}
+                </td>
+                <td><input  class="btn btn-success" type="submit" name="update" value="Update"></td>
+                </tr>
+                <!-- Hidden attribute to get data from form request  -->
+                <input id="userid" name="userid" type="hidden" value="{{ user[0] }}">
+                <input id="username" name="username" type="hidden" value="{{ user[1] }}">
+                <input id="password" name="password" type="hidden" value="{{ user[2] }}">
+                <input id="firstname" name="firstname" type="hidden" value="{{ user[3] }}">
+                <input id="lastname" name="lastname" type="hidden" value="{{ user[4] }}">
+                <input id="phone" name="phone" type="hidden" value="{{ user[5] }}">
+                <input id="email" name="email" type="hidden" value="{{ user[6] }}">
+                <input id="address" name="address" type="hidden" value="{{ user[7] }}">
+                </form>
+                {%endfor%}
+            </tbody>
+            </table>
+</div> <!-- closing container -->
+
+{% endblock %}

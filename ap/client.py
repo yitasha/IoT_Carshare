@@ -5,6 +5,10 @@ from getpass import getpass
 from os import listdir
 from os.path import isfile, join
 import cv2
+import tkinter as tk
+from tkinter import filedialog
+import os
+import sys
 
 class Client:
     def main(self):
@@ -14,12 +18,12 @@ class Client:
 
         """
         # Unique car ID
-        self.carid = 5
+        self.carid = 13
 
         # Socket connection 
         self.HOST = "124.189.52.217" # Shukun's Desktop
         # self.HOST = "localhost" # Test local
-        self.HOST= "101.117.248.111" # Yi's public IP
+        # self.HOST= "101.117.248.111" # Yi's public IP
         # self.HOST= "120.21.91.201"
         self.POST = 61180
         self.ADDRESS = (self.HOST, self.POST)
@@ -90,53 +94,76 @@ class Client:
         :return: string
         """
         while True:
-            print()
-            print("Login page")
-            username = input("Enter username (Leave blank to quit) : ")
-            # getpass - Hide input to protect privacy
-            password = getpass("Enter Password: ")
-            print()
+            while True:
+                print()
+                print("Login page")
+                print("1. Login by image")
+                print("2. Login by username and password")
+                print("3. Return")
+                Login = input("Select an option: ")
+                print()
+                Return = False
 
-            if(not username):
+                if Login == "1":
+                    # Build a list of tuples for each file type the file dialog should display
+                    my_filetypes = [('all files', '.*'), ('text files', '.txt')]
+
+                    # Ask the user to select a single file name.
+                    path = filedialog.askopenfilename(initialdir=os.getcwd(),
+                                                        title="Please select a file:",
+                                                        filetypes=my_filetypes)
+
+                    if path == "":
+                        Return = True
+                        break
+
+                    img = cv2.imread(path,1)
+                    # build message
+                    time = datetime.datetime.now()
+                    message = ["Login", self.carid, img, time.strftime("%Y-%m-%d")]
+                    break
+
+                elif Login == "2":
+                    username = input("Enter username (Leave blank to quit) : ")
+                    if(not username):
+                        Return = True
+                        break
+                    # getpass - Hide input to protect privacy
+                    password = getpass("Enter Password: ")
+                    print()
+                    
+                    # build message
+                    time = datetime.datetime.now()
+                    message = ["Login", self.carid, username, password, time.strftime("%Y-%m-%d")]
+                    break
+
+                elif Login == "3":
+                    Return = True
+                    break
+
+                else:
+                    print("Invalid input - please try again.")
+
+            if(Return):
                 break
 
-            time = datetime.datetime.now()
-            message = ["Login", self.carid, username, password, time.strftime("%Y-%m-%d")]
             # send and wait receive
             self.s.sendall(pickle.dumps(message))
             data = pickle.loads(self.s.recv(4096))
-
             # identity check
             if data[0]:
                 # [True, (bookingid, userid, carid, cost, startdate, enddate, totalcost, status, eventid)]
                 if selection == "1":
-                    self.unlockCar(username, data[1][0])
+                    self.car("Unlock", data[1][0], data[1][1])
                     break
                 elif selection == "2":
-                    self.returnCar(username, data[1][0])
+                    self.car("Return", data[1][0], data[1][1])
                     break
             else:
                 # [False, "message"]
                 print(data[1])
-
-    def unlockCar(self, username, bookingid):
-        """
-
-        :param username: string
-        :param bookingid: int
-        :return: string
-        """
-        time = datetime.datetime.now()
-        message = ["Unlock", self.carid, username, bookingid]
-
-        # send and wait receive
-        self.s.sendall(pickle.dumps(message))
-        data = pickle.loads(self.s.recv(4096))
-
-        # Unlock check message retuen
-        print(data)
             
-    def returnCar(self, username, bookingid):
+    def car(self, title, bookingid, userid):
         """
 
         :param username: string
@@ -144,13 +171,13 @@ class Client:
         :return: string
         """
         time = datetime.datetime.now()
-        message = ["Return", self.carid, username, bookingid]
+        message = [title, self.carid, bookingid, userid]
         
         # send and wait receive
         self.s.sendall(pickle.dumps(message))
         data = pickle.loads(self.s.recv(4096))
 
-        # Return check message retuen
+        # check message retuen
         print(data)
 
 if __name__ == "__main__":

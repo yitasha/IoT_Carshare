@@ -4,6 +4,8 @@ from database import DatabaseUtils
 from passlib.hash import sha256_crypt
 from datetime import datetime
 from add_event import Calendar
+from time import sleep
+import random
 import os
 import cv2 
 
@@ -157,6 +159,9 @@ def logout():
     """
     session.pop('username', None)
     session.pop('userid', None)
+    session.pop('admin', None)
+    session.pop('manager', None)
+    session.pop('engineer', None)
     session.clear()
     flash("You have logged out!")
     return home()
@@ -275,31 +280,192 @@ def cancelbook():
                 flash("Error, Please use your primary google account.")
     return redirect(url_for("myprofile"))
 
+#Register for 3 type of admins
+@app.route("/registerA", methods=['GET', 'POST'])
+def registerA():
+    if request.method == 'POST':
+        #Data collected from register form
+        username = request.form['username']
+        password = request.form['password']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        phone = request.form['phone']
+        email = request.form['email']
+        address = request.form['address']
+        usertype = request.form['type']
+
+        with DatabaseUtils() as db:
+            if(usertype == "admin"):
+                if(db.insertAdmin(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                    print("{} inserted successfully.".format(username))
+                    flash("Thank you for registering {}".format(firstname))
+                    return redirect(url_for("home"))
+                else:
+                    print("{} failed to be inserted.".format(username))
+                    flash("{} failed to be inserted.".format(username))
+                    return redirect(url_for("registerA"))
+            elif(usertype == "manager"):
+                if(db.insertManager(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                    print("{} inserted successfully.".format(username))
+                    flash("Thank you for registering {}".format(firstname))
+                    return redirect(url_for("home"))
+                else:
+                    print("{} failed to be inserted.".format(username))
+                    flash("{} failed to be inserted.".format(username))
+                    return redirect(url_for("registerA"))
+            elif(usertype == "engineer"):
+                if(db.insertEngineer(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                    print("{} inserted successfully.".format(username))
+                    flash("Thank you for registering {}".format(firstname))
+                    return redirect(url_for("home"))
+                else:
+                    print("{} failed to be inserted.".format(username))
+                    flash("{} failed to be inserted.".format(username))
+                    return redirect(url_for("registerA"))
+            else:
+                print("{} failed to be inserted.".format(username))
+                flash("{} failed to be inserted.".format(username))
+                return redirect(url_for("registerA"))
+    
+    return render_template("registerA.html")
+
+#Ask for 3 type of admins
+@app.route("/askLogin", methods=['GET', 'POST'])
+def askLogin():
+    if request.method == 'POST':
+        usertype = request.form['user']
+        if usertype == 'admin':
+            print("Admin")
+            return redirect(url_for('loginAdmins', usertype='Admin'))
+        elif usertype == 'manager':
+            print("Manager")
+            return redirect(url_for('loginAdmins', usertype='Manager'))
+        elif usertype == 'engineer':
+            print("Engineer")
+            return redirect(url_for('loginAdmins', usertype='Engineer'))
+
+    return render_template("askLogin.html")
+
+# 3 type of admins login
+@app.route("/loginAdmins/<usertype>", methods=['GET', 'POST'])
+def loginAdmins(usertype):
+    return render_template("loginAdmins.html", **locals())
+
+# 3 type of admins login
+@app.route("/processLoginAdmins", methods=['GET','POST'])
+def processLoginAdmins():
+    if request.method == 'POST':
+        check = request.form['filter']
+        username = request.form['username']
+        password = request.form['password']
+        # print(request.form)
+        if check == 'Admin':
+            with DatabaseUtils() as db:
+                if(db.checkAdmin(username, password)):
+                    session['admin'] = request.form['username']
+                    print("Passed")
+                    return redirect(url_for("askLogin"))
+                else:
+                    print("{}'s Password is wrong.".format(username))
+                    flash("{}'s Password is wrong.".format(username))
+                    return redirect(url_for("askLogin"))
+        elif check == 'Manager':
+            with DatabaseUtils() as db:
+                if(db.checkAdmin(username, password)):
+                    session['manager'] = request.form['username']
+                    print("Passed")
+                    return redirect(url_for("askLogin"))
+                else:
+                    print("{}'s Password is wrong.".format(username))
+                    flash("{}'s Password is wrong.".format(username))
+                    return redirect(url_for("askLogin"))
+        elif check == 'Engineer':
+            with DatabaseUtils() as db:
+                if(db.checkAdmin(username, password)):
+                    session['engineer'] = request.form['username']
+                    print("Passed")
+                    return redirect(url_for("askLogin"))
+                else:
+                    print("{}'s Password is wrong.".format(username))
+                    flash("{}'s Password is wrong.".format(username))
+                    return redirect(url_for("askLogin"))
+    else:
+        print("false")
+    
+    return render_template("admin.html")
+
+# Get car rental history 
+@app.route("/showAllBookings", methods=['GET','POST'])
+def showAllBookings():
+    with DatabaseUtils() as db:
+        booking = db.getAllBookings()
+        return render_template("bookings.html", booking = booking)
+
+# Get car rental history 
+@app.route("/showAllUsers", methods=['GET','POST'])
+def showAllUsers():
+    with DatabaseUtils() as db:
+        users = db.getAllUsers()
+        return render_template("users.html", users = users)
+    
+# Get car rental history 
+@app.route("/updateUser", methods=['POST'])
+def updateUser():
+    if request.method == 'POST':
+        userid = request.form['userid']
+        with DatabaseUtils() as db:
+            user = db.getUser(userid)
+            return render_template("updateUser.html", user = user)
+    return render_template("updateUser.html")
+
+
+@app.route("/updatingUser", methods=['POST'])
+def updatingUser():
+    if request.method == 'POST':
+        userid = request.form['userid']
+        username = request.form['username']
+        password = request.form['password']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        phone = request.form['phone']
+        email = request.form['email']
+        address = request.form['address']
+        print(userid, username, password, firstname, lastname, phone, email, address)
+        with DatabaseUtils() as db:
+            if(db.updateUser(userid, username, password, firstname, lastname,phone,email,address)):
+                print("{}'s profile is updated".format(username))
+                flash("{}'s profile is updated".format(username))
+                return redirect(url_for("showAllUsers"))
+            else:
+                print("Error while updating user profile")
+                flash("Error while updating user profile")
+                return redirect(url_for("showAllUsers"))
+
+
+
+
+
+
+
+
+
+
 
 
 ################# Below are testing routes ##########################
-@app.route("/loggedin", methods=['POST'])
-def loggedin():
-    """
-
-    testing function
-
-    collecting data from register form
-
-    """
-    #Data collected from register form
-    username = request.form['username']
-    password = request.form['password']
-    firstname = request.form['firstname']
-    lastname = request.form['lastname']
-    phone = request.form['phone']
-    email = request.form['email']
+@app.route("/chart", methods=['POST', 'GET'])
+def chart():
+    while True:
+        x = random.randint(1,20)
+        sleep(2)
+        print(x)
+        return render_template("chart.html", **locals())
     
-    #Username check
-    if username != "Yi":
-        return redirect(url_for('login'))
+    return render_template("chart.html", **locals())
 
-    return render_template("loggedin.html", **locals())
+@app.route("/gchart", methods=['POST', 'GET'])
+def gchart():
+    return render_template("gchart.html", **locals())
 
 @app.route("/loginURL", methods=['GET', 'POST'])
 def loginURL():

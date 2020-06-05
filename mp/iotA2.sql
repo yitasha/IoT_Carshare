@@ -11,7 +11,7 @@ lastname varchar (20) NOT NULL,
 phone varchar(15) NOT NULL,
 email varchar (40) NOT NULL,
 address varchar (40) NOT NULL,
-imag text,
+img text,
 primary key (userid)
 );
 
@@ -42,6 +42,52 @@ primary key (bookingid),
 CONSTRAINT FK_userid FOREIGN KEY (userid) REFERENCES user(userid),
 CONSTRAINT FK_carid FOREIGN KEY (carid) REFERENCES car(carid)
 );
+
+-- A3 High level users database
+create table admin(
+adminid int NOT NULL auto_increment,
+username text NOT NULL,
+password text NOT NULL,
+firstname  varchar(20) NOT NULL,
+lastname varchar (20) NOT NULL,
+phone varchar(15) NOT NULL,
+email varchar (40) NOT NULL,
+address varchar (40) NOT NULL,
+img text,
+primary key (adminid)
+);
+
+create table manager(
+managerid int NOT NULL auto_increment,
+username text NOT NULL,
+password text NOT NULL,
+firstname  varchar(20) NOT NULL,
+lastname varchar (20) NOT NULL,
+phone varchar(15) NOT NULL,
+email varchar (40) NOT NULL,
+address varchar (40) NOT NULL,
+img text,
+primary key (managerid)
+);
+
+create table engineer(
+engineid int NOT NULL auto_increment,
+username text NOT NULL,
+password text NOT NULL,
+firstname  varchar(20) NOT NULL,
+lastname varchar (20) NOT NULL,
+phone varchar(15) NOT NULL,
+email varchar (40) NOT NULL,
+address varchar (40) NOT NULL,
+img text,
+primary key (engineid)
+);
+
+/* Admins login */
+admin:abc123 
+manager:abc123
+engineer:abc123
+
 
 /* Dummy Data for tables */
 INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Toyota", "Camry", "Sedan", "5", "Red", "Melbourne", 99, "True");

@@ -249,12 +249,48 @@ class DatabaseUtils:
     def checkFaceImage(self, img, carid, date):
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE img = '{}'".format(img))
-            if(cursor.fetchone() is not None):
-                username = cursor.fetchone()[1]
-                password = cursor.fetchone()[2]
-                self.checkLogin_AP(username,password, carid, date)
+            if(cursor.rowcount >= 1):
+                return self.checkImg_AP(cursor.fetchone()[1], carid, date)
             else:
                 return [False, "img incorect or doesn't exist"]
+
+    #Run this after checkPerson is completed to retrieve data
+    def getPersonByID(self, userid):
+        """
+ 
+        Run this after checkPerson is completed to retrieve data
+ 
+        :param username: string
+        :return: string
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM user WHERE userid = '{}'".format(userid))
+            return cursor.fetchone()[1]
+        
+    def checkImg_AP(self, username, carid, date):
+        """
+ 
+        For server.py socket communication
+ 
+        #1.Check username, password and generate userid for step 2
+        
+        #2.Check userid(from step 1), carid, date
+ 
+        :param username: string
+        :param password: string
+        :param carid: int
+        :param date: date
+        :return: Boolean , string
+        """
+        if(self.checkUsername(username) == False):
+            userid = self.getPerson(username)[0]
+            booking = self.checkBooking_AP(userid, carid, date)
+            if(booking):
+                return [True, booking]
+            else:
+                return [False, "Error, You didn't book this car today"]
+        else:
+            return [False, "Username incorect or doesn't exist"]
     
     #1.Check username, password and generate userid for step 2
     #2.Check userid(from step 1), carid, date
@@ -315,7 +351,11 @@ class DatabaseUtils:
         :return: Boolean
         """
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE booking SET status = 'Unlocked' WHERE bookingid = '{}'".format(bookingid))
+            cursor.execute("SELECT * FROM booking WHERE bookingid = '{}' AND status = 'True'".format(bookingid))
+            if(cursor.rowcount == 1):
+                cursor.execute("UPDATE booking SET status = 'Unlocked' WHERE bookingid = '{}'".format(bookingid))
+            else:
+                return False
         self.connection.commit()
         return cursor.rowcount == 1
 
@@ -333,7 +373,11 @@ class DatabaseUtils:
         """
         avail = "True"
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE booking SET status = 'Returned' WHERE bookingid = '{}'".format(bookingid))
+            cursor.execute("SELECT * FROM booking WHERE bookingid = '{}' AND status = 'Unlocked'".format(bookingid))
+            if(cursor.rowcount == 1):
+                cursor.execute("UPDATE booking SET status = 'Returned' WHERE bookingid = '{}'".format(bookingid))
+            else:
+                return False
         self.connection.commit()
         #If Booking status is updated on success
         if(cursor.rowcount == 1):
@@ -346,3 +390,107 @@ class DatabaseUtils:
                 return False
         else:
             return False
+
+################## For A3 database functions ##################
+    #This function returns Boolean: True or False
+    def insertAdmin(self, username, password, firstname, lastname,phone,email,address):
+        with self.connection.cursor() as cursor:
+            sql = "INSERT INTO admin (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            val = (username, password, firstname, lastname, phone, email, address)
+            cursor.execute(sql, val)
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+    #This function returns Boolean: True or False
+    def insertManager(self, username, password, firstname, lastname,phone,email,address):
+        with self.connection.cursor() as cursor:
+            sql = "INSERT INTO manager (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            val = (username, password, firstname, lastname, phone, email, address)
+            cursor.execute(sql, val)
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+    #This function returns Boolean: True or False
+    def insertEngineer(self, username, password, firstname, lastname,phone,email,address):
+        with self.connection.cursor() as cursor:
+            sql = "INSERT INTO engineer (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            val = (username, password, firstname, lastname, phone, email, address)
+            cursor.execute(sql, val)
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+    #Check admin encrypted username and encrypted password
+    def checkAdmin(self, username, password):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM admin")
+            results = cursor.fetchone()
+            encName = results[1]
+            userpass = results[2]
+            if (sha256_crypt.verify(password, userpass) and sha256_crypt.verify(username, encName)):
+                return True
+            else:
+                return False
+    
+    #Check admin encrypted username and encrypted password
+    def checkManager(self, username, password):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM manager")
+            results = cursor.fetchone()
+            encName = results[1]
+            userpass = results[2]
+            if (sha256_crypt.verify(password, userpass) and sha256_crypt.verify(username, encName)):
+                return True
+            else:
+                return False
+    
+    #Check admin encrypted username and encrypted password
+    def checkEngineer(self, username, password):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM engineer")
+            results = cursor.fetchone()
+            encName = results[1]
+            userpass = results[2]
+            if (sha256_crypt.verify(password, userpass) and sha256_crypt.verify(username, encName)):
+                return True
+            else:
+                return False
+
+    #Check admin encrypted username and encrypted password
+    def getAllBookings(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM booking")
+            return cursor.fetchall()
+    
+    # Check admin encrypted username and encrypted password
+    def getAllUsers(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM user")
+            return cursor.fetchall()
+
+    # Get invididual user by userid
+    def getUser(self, userid):
+        """
+ 
+        Get invididual user by userid
+ 
+        :param username: string
+        :return: string
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM user WHERE userid = '{}'".format(userid))
+            return cursor.fetchone()
+
+    # Updating user with basic details and encrypte new password
+    def updateUser(self, userid, username, password, firstname, lastname, phone, email, address):
+        
+        with self.connection.cursor() as cursor:
+            if password == "":
+                cursor.execute("UPDATE user SET firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}' WHERE userid = '{}'".format(firstname, lastname, phone, email, address, userid))
+            else:
+                encpassword = sha256_crypt.hash(password)
+                cursor.execute("UPDATE user SET password = '{}', firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}' WHERE userid = '{}'".format(encpassword, firstname, lastname, phone, email, address, userid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+# db = DatabaseUtils()
+# print(db.checkAdmin("admin", "abc123"))

@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+
+    {% block title %} 
+    {{'Ask?'}} 
+    {% endblock %}
+
+    {% block display %}
+    <div class="registerContainer">
+        <h2>What type of user are you?</h2>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <h2>{{ message }}</h2>
+                {% endfor %}
+            {% endif%}
+        {% endwith%}
+        <form method="post" class="ask_form">
+              <div class = "row">
+                <label id="ask_label" for="ask">
+                  <img src="/static/image/admin.png" style='width:150px;height:220px;'>
+                  <input type="radio" name="user" value="admin">
+                  <h5><span class="">Admin</span></h5>
+                </label>
+          
+                <label id="ask_label" for="ask">
+                    <img src="/static/image/manager.png" style='width:150px;height:220px;'>
+                    <input type="radio" name="user" value="manager">
+                    <h5><span class="">Manager</span></h5>
+                </label>
+                
+                <label id="ask_label" for="ask">
+                    <img src="/static/image/engineer.jpg" style='width:150px;height:220px;'>
+                    <input type="radio" name="user" value="engineer">
+                    <h5><span class="">Engineer</span></h5>
+                </label>
+            </div>
+            <div class="row">
+              <button type="submit" class="btn btn-outline-primary btn-lg " name="nextSell">Next</button>
+            </div>
+          </form>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Update'}} 
+{% endblock %}
+
+{% block display %}
+<h1>Updating UserID: {{ user[0] }}</h1>
+<h1>Username: {{ user[1] }}</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="container">
+    <div class="row">
+        <form action="/updatingUser" method="POST">
+            <div class="form-row">
+            <label for="username"><b>Username</b></label>
+            <input type="text" id="username" name="username" placeholder="Username" value="{{ user[1] }}" readonly><br>
+            </div>
+            <div class="form-row">
+            <label for="password"><b>Password</b></label>
+            <input type="password" id="pass" name="password" placeholder="Enter New Password"><br>
+            </div>
+            <div class="form-row">
+            <label for="firstname"><b>Firstname</b></label>
+            <input type="text" name="firstname" placeholder="first name" value="{{ user[3] }}"required/><br>
+            </div>
+            <div class="form-row">
+            <label for="lastname"><b>Lastname</b></label>
+            <input type="text" name="lastname" placeholder="last name" value="{{ user[4] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="phone"><b>Phone</b></label>
+            <input type="text" name="phone" maxlength="10" placeholder="phone number" value="{{ user[5] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="email"><b>Email</b></label>
+            <input type="email" name="email" placeholder="email" value="{{ user[6] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="address"><b>Address</b></label>
+            <input type="text" name="address" placeholder="Address" value="{{ user[7] }}" required/><br>
+            </div>
+            <input id="userid" name="userid" type="hidden" value="{{ user[0] }}">
+            <input class="btn btn-primary" type="submit" name="submit" value="Update"/><br/>
+        </form> 
+    </div>
+</div>
+{% endblock %}

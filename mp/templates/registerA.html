@@ -1,12 +1,12 @@
- {% extends "template.html" %}
+{% extends "template.html" %}
 
     {% block title %} 
-    {{'Register'}} 
+    {{'Register Admins'}} 
     {% endblock %}
 
     {% block display %}
     <div class="registerContainer">
-        <h2>Register</h2>
+        <h2>Register Admins</h2>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -16,7 +16,7 @@
         {% endwith%}
 
         <div class="row">
-        <form action="/register" method="post">
+        <form action="/registerA" method="post">
             <div class="form-row">
             <label for="username"><b>Username</b></label>
             <input type="text" id="username" name="username" placeholder="Username" required><br>
@@ -45,8 +45,16 @@
             <label for="address"><b>Address</b></label>
             <input type="text" name="address" placeholder="Address" required/><br>
             </div>
+            <div class="form-row">
+            <label for="type"><b>Type</b></label>
+            <select name="type">
+                <option value="admin">Admin</option>
+                <option value="manager">manager</option>
+                <option value="engineer">engineer</option>
+            </select>
+            </div>
+        </div>
             <input class="btn btn-primary" type="submit" name="submit" value="Register"/><br/>
         </form> 
-        </div>
     </div>
 {% endblock %}

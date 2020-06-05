@@ -8,6 +8,10 @@
    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css'>
    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js'></script>
+   <!-- Char JS, google chart CDN-->
+   <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js'></script>
+   <script src="https://www.gstatic.com/charts/loader.js"></script>
+   
    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   </head>
  <body>
@@ -22,12 +26,19 @@
         <li><a href="{{ url_for('cars') }}">Show Cars</a></li>
         <li><a href="{{ url_for('myprofile') }}">My Profile</a></li>
         {% endif %}
+        {% if 'admin' in session %}
+        <li><a href="{{ url_for('cars') }}">Show Cars</a></li>
+        <li><a href="{{ url_for('showAllUsers') }}">All Users</a></li>
+        <li><a href="{{ url_for('showAllBookings') }}">All Booking</a></li>
+        {% endif %}
       </ul>
+
       
       <ul class="nav navbar-nav navbar-right">
         <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-user"></span>Login</a></li>
         <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-log-in"></span>Register</a></li>
         <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+        <li><a href="{{ url_for('askLogin') }}"><span class="glyphicon glyphicon-eye-open"></span>Admins</a></li>
       </ul>
     </div>
   </nav>

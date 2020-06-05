@@ -1,0 +1,24 @@
+{% extends "template.html" %}
+   
+    {% block title %} 
+    {{'Login'}} 
+    {% endblock %}
+
+    {% block display %}
+    <div class="loginContainer">
+      <h2>{{ usertype }} Login </h2>
+      <form action="/processLoginAdmins" method="post">
+        <div class="form-row">
+        <label for="firstname"><b>Username</b></label>
+        <input type="text" id="username" name="username" placeholder="Username" required><br>
+        </div>
+        <div class="form-row">
+        <label for="firstname"><b>Password</b></label>
+        <input type="password" id="pass" name="password" placeholder="Password" required><br>
+        <!-- filter for type of user login -->
+        <input id="filter" name="filter" type="hidden" value="{{ usertype }}">
+        </div>
+        <input class="btn btn-primary" type="submit" name="Login" value="login"/>
+      </form> 
+    </div>
+    {% endblock %}
