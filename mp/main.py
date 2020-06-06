@@ -53,9 +53,9 @@ def register():
                     flash("{} failed to be inserted.".format(username))
                     return redirect(url_for("register"))
             else:
-                    print("{} already exist, try a different one.".format(username))
-                    flash("{} already exist, try a different one.".format(username))
-                    return redirect(url_for("register"))
+                print("{} already exist, try a different one.".format(username))
+                flash("{} already exist, try a different one.".format(username))
+                return redirect(url_for("register"))
     
     return render_template("register.html")
 
@@ -251,8 +251,6 @@ def processbook():
                     print("Error, Car ID: {} is not available, try a different car later".format(carid))
                     flash("Error, Car ID: {} is not available, try a different car later".format(carid))
                     return redirect(url_for("home"))
-    
-    return render_template("test.html", **locals())
 
 @app.route("/cancelbook", methods=['POST'])
 def cancelbook():
@@ -279,6 +277,8 @@ def cancelbook():
                 print("Error, Please use your primary google account.")
                 flash("Error, Please use your primary google account.")
     return redirect(url_for("myprofile"))
+
+########################### A3 Part ####################################
 
 #Register for 3 type of admins
 @app.route("/registerA", methods=['GET', 'POST'])
@@ -364,7 +364,7 @@ def processLoginAdmins():
                 if(db.checkAdmin(username, password)):
                     session['admin'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("askLogin"))
+                    return redirect(url_for("showAllBookings"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
@@ -441,12 +441,143 @@ def updatingUser():
                 flash("Error while updating user profile")
                 return redirect(url_for("showAllUsers"))
 
+@app.route("/deleteUser", methods=['POST'])
+def deleteUser():
+    if request.method == 'POST':
+        userid = request.form['userid']
+        with DatabaseUtils() as db:
+            if(db.deleteUser(userid)):
+                print("UserID: {} 's profile is removed".format(userid))
+                flash("UserID: {} 's profile is removed".format(userid))
+                return redirect(url_for("showAllUsers"))
+            else:
+                print("Error while removing user profile")
+                flash("Error while removing user profile")
+                return redirect(url_for("showAllUsers"))
+
+# List cars with editing function for Admins
+@app.route("/showAdminCars", methods=['GET', 'POST'])
+def showAdminCars():
+    with DatabaseUtils() as db:
+        cars = db.getAllCar()
+    return render_template("adminCars.html", **locals())
+
+# Routing update car
+@app.route("/updateCar", methods=['POST'])
+def updateCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        with DatabaseUtils() as db:
+            car = db.getCar(carid)
+        return render_template("updateCar.html", car = car)
+    return render_template("updateCar.html")
+
+# Updating individual car
+@app.route("/updatingCar", methods=['POST'])
+def updatingCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        make = request.form['make']
+        model = request.form['model']
+        cartype = request.form['type']
+        seats = request.form['seats']
+        color = request.form['color']
+        location = request.form['location']
+        cost = request.form['cost']
+        available = request.form['status']
+        print(carid, make, model, cartype, seats, color, location, cost, available)
+
+        with DatabaseUtils() as db:
+            if(db.updateCar(carid, make, model, cartype, seats, color, location, cost, available)):
+                print("CarID : {} is updated".format(carid))
+                flash("CarID : {} is updated".format(carid))
+                return redirect(url_for("showAdminCars"))
+            else:
+                print("Error while updating car profile")
+                flash("Error while updating car profile")
+                return redirect(url_for("showAdminCars"))
+
+# Updating individual car
+@app.route("/deleteCar", methods=['POST'])
+def deleteCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        with DatabaseUtils() as db:
+            if(db.deleteCar(carid)):
+                print("CarID : {} is removed".format(carid))
+                flash("CarID : {} is removed".format(carid))
+                return redirect(url_for("showAdminCars"))
+            else:
+                print("Error while removing car profile")
+                flash("Error while removing car profile")
+                return redirect(url_for("showAdminCars"))
 
 
+@app.route("/addUser", methods=['GET', 'POST'])
+def addUser():
+    if request.method == 'POST':
+        #Data collected from register form
+        username = request.form['username']
+        password = request.form['password']
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        phone = request.form['phone']
+        email = request.form['email']
+        address = request.form['address']
+        
+        with DatabaseUtils() as db:
+            if(db.checkUsername(username)):
+                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                    print("{} is inserted successfully.".format(username))
+                    flash("{} is inserted successfully.".format(username))
+                    return redirect(url_for("addUser"))
+                else:
+                    print("{} failed to be inserted.".format(username))
+                    flash("{} failed to be inserted.".format(username))
+                    return redirect(url_for("addUser"))
+            else:
+                print("{} already exist, try a different username.".format(username))
+                flash("{} already exist, try a different username.".format(username))
+                return redirect(url_for("addUser"))
+    
+    return render_template("add.html")
 
+@app.route("/addCar", methods=['GET', 'POST'])
+def addCar():
+    if request.method == 'POST':
+        make = request.form['make']
+        model = request.form['model']
+        cartype = request.form['type']
+        seats = request.form['seats']
+        color = request.form['color']
+        location = request.form['location']
+        cost = request.form['cost']
+        available = request.form['status']
+        with DatabaseUtils() as db:
+            if(db.addCar(make, model, cartype, seats, color, location, cost, available)):
+                print("{} {} is inserted successfully.".format(make,model))
+                flash("{} {} is inserted successfully.".format(make,model))
+                return redirect(url_for("addUser"))
+            else:
+                print("{} {} failed to be inserted.".format(make,model))
+                flash("{} {} failed to be inserted.".format(make,model))
+                return redirect(url_for("addUser"))
+    return render_template("add.html") 
 
-
-
+# Reporting cars with issue and update their availability status to "Faulty"
+@app.route("/reportCar", methods=['POST'])
+def reportCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        with DatabaseUtils() as db:
+            if(db.reportCar(carid)):
+                print("CarID: {} is reported successfully.".format(carid))
+                flash("CarID: {} is reported successfully.".format(carid))
+                return redirect(url_for("showAdminCars"))
+            else:
+                print("Error while reporting CarID: {} ".format(carid))
+                flash("Error while reporting CarID: {} ".format(carid))
+                return redirect(url_for("showAdminCars"))
 
 
 

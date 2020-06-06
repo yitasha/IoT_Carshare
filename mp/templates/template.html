@@ -27,9 +27,10 @@
         <li><a href="{{ url_for('myprofile') }}">My Profile</a></li>
         {% endif %}
         {% if 'admin' in session %}
-        <li><a href="{{ url_for('cars') }}">Show Cars</a></li>
+        <li><a href="{{ url_for('showAdminCars') }}">Show Cars</a></li>
         <li><a href="{{ url_for('showAllUsers') }}">All Users</a></li>
         <li><a href="{{ url_for('showAllBookings') }}">All Booking</a></li>
+        <li><a href="{{ url_for('addUser') }}">Add User/Car</a></li>
         {% endif %}
       </ul>
 

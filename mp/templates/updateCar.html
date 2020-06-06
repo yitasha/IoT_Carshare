@@ -1,0 +1,56 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Update'}} 
+{% endblock %}
+
+{% block display %}
+<h1>Updating CarID: {{ car[0] }}</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="container">
+    <div class="row">
+        <form action="/updatingCar" method="POST">
+            <div class="form-row">
+            <label for="make"><b>Make</b></label>
+            <input type="text" id="make" name="make" placeholder="make" value="{{ car[1] }}" required><br>
+            </div>
+            <div class="form-row">
+            <label for="model"><b>Model</b></label>
+            <input type="text" id="model" name="model" placeholder="model" value="{{ car[2] }}"><br>
+            </div>
+            <div class="form-row">
+            <label for="type"><b>Type</b></label>
+            <input type="text" name="type" placeholder="type" value="{{ car[3] }}"required/><br>
+            </div>
+            <div class="form-row">
+            <label for="seats"><b>Seats</b></label>
+            <input type="text" name="seats" placeholder="seats" value="{{ car[4] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="color"><b>Color</b></label>
+            <input type="text" name="color" placeholder="color" value="{{ car[5] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="location"><b>Location</b></label>
+            <input type="text" name="location" placeholder="location" value="{{ car[6] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="cost"><b>Cost</b></label>
+            <input type="text" name="cost" placeholder="cost" value="{{ car[7] }}" required/><br>
+            </div>
+            <div class="form-row">
+            <label for="status"><b>Status</b></label>
+            <input type="text" name="status" placeholder="status" value="{{ car[8] }}" required/><br>
+            </div><br>
+            <input id="carid" name="carid" type="hidden" value="{{ car[0] }}">
+            <input class="btn btn-primary" type="submit" name="submit" value="Update"/>
+            <button type="submit" class="btn btn-danger" formaction="/deleteCar">Delete Car</button>
+        </form> 
+    </div>
+</div>
+{% endblock %}
