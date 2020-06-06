@@ -1,4 +1,4 @@
-# PIoT Assignment 02 Car Share Scheme
+# PIoT Assignment 03 Car Share Scheme
 Car Share Scheme is a website provide user with booking a pecific car on the specific period.
 
 ## Team members 
@@ -6,6 +6,11 @@ Car Share Scheme is a website provide user with booking a pecific car on the spe
 > Shukun Lin s3587391<br>
 > Shi Jiayin s3669495<br>
 > Zhirui Liang S3554374<br>
+
+## Username and password of 3 types of user 
+> Username:__admin__ Password: **abc123**<br>
+> Username:__manager__ Password: **abc123**<br>
+> Username:__engineer__ Password: **abc123**<br>
 
 ## Environment and Deployment 
 `pip3 install passlib`<br>
