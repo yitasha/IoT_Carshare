@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Dashboard #1'}} 
+{% endblock %}
+
+{% block display %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="container">
+    <h1>Number of users living in each area</h1>
+    <iframe width="1000" height="1000" src="https://datastudio.google.com/embed/reporting/a8eac3af-768a-47da-b374-fea1f4e6d30e/page/3pGTB" frameborder="0" style="border:0" allowfullscreen=""></iframe>
+</div>
+{% endblock %}

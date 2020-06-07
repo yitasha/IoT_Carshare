@@ -22,7 +22,7 @@ class DatabaseUtils:
         self.close()
     
     #This function returns Boolean: True or False
-    def insertPerson(self, username, password, firstname, lastname,phone,email,address):
+    def insertPerson(self, username, password, firstname, lastname, phone, email, address, city):
         """
 
         This function returns Boolean: True or False
@@ -37,8 +37,8 @@ class DatabaseUtils:
         :return: boolean
         """
         with self.connection.cursor() as cursor:
-            sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            val = (username, password, firstname, lastname, phone, email, address)
+            sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address, city) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (username, password, firstname, lastname, phone, email, address, city)
             cursor.execute(sql, val)
         self.connection.commit()
         return cursor.rowcount == 1
@@ -481,14 +481,13 @@ class DatabaseUtils:
             return cursor.fetchone()
 
     # Updating user with basic details and encrypte new password
-    def updateUser(self, userid, username, password, firstname, lastname, phone, email, address):
-        
+    def updateUser(self, userid, username, password, firstname, lastname, phone, email, address, city):
         with self.connection.cursor() as cursor:
             if password == "":
-                cursor.execute("UPDATE user SET firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}' WHERE userid = '{}'".format(firstname, lastname, phone, email, address, userid))
+                cursor.execute("UPDATE user SET firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}', city = '{}' WHERE userid = '{}'".format(firstname, lastname, phone, email, address, city, userid))
             else:
                 encpassword = sha256_crypt.hash(password)
-                cursor.execute("UPDATE user SET password = '{}', firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}' WHERE userid = '{}'".format(encpassword, firstname, lastname, phone, email, address, userid))
+                cursor.execute("UPDATE user SET password = '{}', firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}', city = '{}' WHERE userid = '{}'".format(encpassword, firstname, lastname, phone, email, address, city, userid))
         self.connection.commit()
         return cursor.rowcount == 1
     

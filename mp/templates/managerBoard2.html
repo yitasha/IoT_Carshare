@@ -1,0 +1,18 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Dashboard #2'}} 
+{% endblock %}
+
+{% block display %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="container">
+    <h1>Most Frequent Booked Car</h1>
+    <iframe width="1200" height="1200" src="https://datastudio.google.com/embed/reporting/83b78c7a-d2eb-4953-962f-58cc60b33c2d/page/b3HTB" frameborder="0" style="border:0" allowfullscreen></iframe>          
+</div>
+{% endblock %}

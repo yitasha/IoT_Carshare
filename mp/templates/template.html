@@ -32,6 +32,12 @@
         <li><a href="{{ url_for('showAllBookings') }}">All Booking</a></li>
         <li><a href="{{ url_for('addUser') }}">Add User/Car</a></li>
         {% endif %}
+        {% if 'manager' in session %}
+        <li><a href="{{ url_for('managerBoard1') }}">User Location</a></li>
+        <li><a href="{{ url_for('managerBoard2') }}">Frequent Booked Cars</a></li>
+        <li><a href="{{ url_for('managerBoard3') }}">Most Profitable Car</a></li>
+        {% endif %}
+
       </ul>
 
       

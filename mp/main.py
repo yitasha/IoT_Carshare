@@ -41,10 +41,11 @@ def register():
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-        
+        city = request.form['city']
+
         with DatabaseUtils() as db:
             if(db.checkUsername(username)):
-                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname, phone, email, address, city)):
                     print("{} inserted successfully.".format(username))
                     flash("Thank you for registering {}".format(firstname))
                     return redirect(url_for("home"))
@@ -280,56 +281,56 @@ def cancelbook():
 
 ########################### A3 Part ####################################
 
-#Register for 3 type of admins
-@app.route("/registerA", methods=['GET', 'POST'])
-def registerA():
-    if request.method == 'POST':
-        #Data collected from register form
-        username = request.form['username']
-        password = request.form['password']
-        firstname = request.form['firstname']
-        lastname = request.form['lastname']
-        phone = request.form['phone']
-        email = request.form['email']
-        address = request.form['address']
-        usertype = request.form['type']
+# Register for 3 type of admins, DISABLED!
+# @app.route("/registerA", methods=['GET', 'POST'])
+# def registerA():
+#     if request.method == 'POST':
+#         #Data collected from register form
+#         username = request.form['username']
+#         password = request.form['password']
+#         firstname = request.form['firstname']
+#         lastname = request.form['lastname']
+#         phone = request.form['phone']
+#         email = request.form['email']
+#         address = request.form['address']
+#         usertype = request.form['type']
 
-        with DatabaseUtils() as db:
-            if(usertype == "admin"):
-                if(db.insertAdmin(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                    print("{} inserted successfully.".format(username))
-                    flash("Thank you for registering {}".format(firstname))
-                    return redirect(url_for("home"))
-                else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
-                    return redirect(url_for("registerA"))
-            elif(usertype == "manager"):
-                if(db.insertManager(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                    print("{} inserted successfully.".format(username))
-                    flash("Thank you for registering {}".format(firstname))
-                    return redirect(url_for("home"))
-                else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
-                    return redirect(url_for("registerA"))
-            elif(usertype == "engineer"):
-                if(db.insertEngineer(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                    print("{} inserted successfully.".format(username))
-                    flash("Thank you for registering {}".format(firstname))
-                    return redirect(url_for("home"))
-                else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
-                    return redirect(url_for("registerA"))
-            else:
-                print("{} failed to be inserted.".format(username))
-                flash("{} failed to be inserted.".format(username))
-                return redirect(url_for("registerA"))
+#         with DatabaseUtils() as db:
+#             if(usertype == "admin"):
+#                 if(db.insertAdmin(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+#                     print("{} inserted successfully.".format(username))
+#                     flash("Thank you for registering {}".format(firstname))
+#                     return redirect(url_for("home"))
+#                 else:
+#                     print("{} failed to be inserted.".format(username))
+#                     flash("{} failed to be inserted.".format(username))
+#                     return redirect(url_for("registerA"))
+#             elif(usertype == "manager"):
+#                 if(db.insertManager(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+#                     print("{} inserted successfully.".format(username))
+#                     flash("Thank you for registering {}".format(firstname))
+#                     return redirect(url_for("home"))
+#                 else:
+#                     print("{} failed to be inserted.".format(username))
+#                     flash("{} failed to be inserted.".format(username))
+#                     return redirect(url_for("registerA"))
+#             elif(usertype == "engineer"):
+#                 if(db.insertEngineer(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+#                     print("{} inserted successfully.".format(username))
+#                     flash("Thank you for registering {}".format(firstname))
+#                     return redirect(url_for("home"))
+#                 else:
+#                     print("{} failed to be inserted.".format(username))
+#                     flash("{} failed to be inserted.".format(username))
+#                     return redirect(url_for("registerA"))
+#             else:
+#                 print("{} failed to be inserted.".format(username))
+#                 flash("{} failed to be inserted.".format(username))
+#                 return redirect(url_for("registerA"))
     
-    return render_template("registerA.html")
+#     return render_template("registerA.html")
 
-#Ask for 3 type of admins
+# Selection login system
 @app.route("/askLogin", methods=['GET', 'POST'])
 def askLogin():
     if request.method == 'POST':
@@ -371,7 +372,7 @@ def processLoginAdmins():
                     return redirect(url_for("askLogin"))
         elif check == 'Manager':
             with DatabaseUtils() as db:
-                if(db.checkAdmin(username, password)):
+                if(db.checkManager(username, password)):
                     session['manager'] = request.form['username']
                     print("Passed")
                     return redirect(url_for("askLogin"))
@@ -381,7 +382,7 @@ def processLoginAdmins():
                     return redirect(url_for("askLogin"))
         elif check == 'Engineer':
             with DatabaseUtils() as db:
-                if(db.checkAdmin(username, password)):
+                if(db.checkEngineer(username, password)):
                     session['engineer'] = request.form['username']
                     print("Passed")
                     return redirect(url_for("askLogin"))
@@ -397,26 +398,42 @@ def processLoginAdmins():
 # Get car rental history 
 @app.route("/showAllBookings", methods=['GET','POST'])
 def showAllBookings():
-    with DatabaseUtils() as db:
-        booking = db.getAllBookings()
-        return render_template("bookings.html", booking = booking)
+    #If session admin doesn't exist, redirect
+    if session.get('admin') != None:
+        with DatabaseUtils() as db:
+            booking = db.getAllBookings()
+            return render_template("bookings.html", booking = booking)
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 # Get car rental history 
 @app.route("/showAllUsers", methods=['GET','POST'])
 def showAllUsers():
-    with DatabaseUtils() as db:
-        users = db.getAllUsers()
-        return render_template("users.html", users = users)
-    
+    if session.get('admin') != None:
+        with DatabaseUtils() as db:
+            users = db.getAllUsers()
+            return render_template("users.html", users = users)
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
+        
 # Get car rental history 
 @app.route("/updateUser", methods=['POST'])
 def updateUser():
-    if request.method == 'POST':
-        userid = request.form['userid']
-        with DatabaseUtils() as db:
-            user = db.getUser(userid)
-            return render_template("updateUser.html", user = user)
-    return render_template("updateUser.html")
+    if session.get('admin') != None:
+        if request.method == 'POST':
+            userid = request.form['userid']
+            with DatabaseUtils() as db:
+                user = db.getUser(userid)
+                return render_template("updateUser.html", user = user)
+        return render_template("updateUser.html")
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 
 @app.route("/updatingUser", methods=['POST'])
@@ -430,9 +447,11 @@ def updatingUser():
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-        print(userid, username, password, firstname, lastname, phone, email, address)
+        city = request.form['city']
+        
+        print(userid, username, password, firstname, lastname, phone, email, address, city)
         with DatabaseUtils() as db:
-            if(db.updateUser(userid, username, password, firstname, lastname,phone,email,address)):
+            if(db.updateUser(userid, username, password, firstname, lastname, phone, email, address, city)):
                 print("{}'s profile is updated".format(username))
                 flash("{}'s profile is updated".format(username))
                 return redirect(url_for("showAllUsers"))
@@ -524,10 +543,11 @@ def addUser():
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-        
+        city = request.form['city']
+
         with DatabaseUtils() as db:
             if(db.checkUsername(username)):
-                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address, city)):
                     print("{} is inserted successfully.".format(username))
                     flash("{} is inserted successfully.".format(username))
                     return redirect(url_for("addUser"))
@@ -578,6 +598,37 @@ def reportCar():
                 print("Error while reporting CarID: {} ".format(carid))
                 flash("Error while reporting CarID: {} ".format(carid))
                 return redirect(url_for("showAdminCars"))
+
+# Displaying visual board chart #1
+@app.route("/managerBoard1", methods=['GET', 'POST'])
+def managerBoard1():
+    if session.get('manager') != None:
+        return render_template("managerBoard1.html")
+    else:
+        print("You are not an authorized manager")
+        flash("You are not an authorized manager")
+        return redirect(url_for('home'))
+
+# Displaying visual board chart #2
+@app.route("/managerBoard2", methods=['GET', 'POST'])
+def managerBoard2():
+    if session.get('manager') != None:
+        return render_template("managerBoard2.html")
+    else:
+        print("You are not an authorized manager")
+        flash("You are not an authorized manager")
+        return redirect(url_for('home'))
+
+# Displaying visual board chart #1
+@app.route("/managerBoard3", methods=['GET', 'POST'])
+def managerBoard3():
+    if session.get('manager') != None:
+        return render_template("managerBoard3.html")
+    else:
+        print("You are not an authorized manager")
+        flash("You are not an authorized manager")
+        return redirect(url_for('home'))
+
 
 
 
