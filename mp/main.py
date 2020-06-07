@@ -375,7 +375,7 @@ def processLoginAdmins():
                 if(db.checkManager(username, password)):
                     session['manager'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("askLogin"))
+                    return redirect(url_for("managerBoard1"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
@@ -477,9 +477,14 @@ def deleteUser():
 # List cars with editing function for Admins
 @app.route("/showAdminCars", methods=['GET', 'POST'])
 def showAdminCars():
-    with DatabaseUtils() as db:
-        cars = db.getAllCar()
-    return render_template("adminCars.html", **locals())
+    if session.get('admin') != None:
+        with DatabaseUtils() as db:
+            cars = db.getAllCar()
+        return render_template("adminCars.html", **locals())
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 # Routing update car
 @app.route("/updateCar", methods=['POST'])
@@ -534,55 +539,65 @@ def deleteCar():
 
 @app.route("/addUser", methods=['GET', 'POST'])
 def addUser():
-    if request.method == 'POST':
-        #Data collected from register form
-        username = request.form['username']
-        password = request.form['password']
-        firstname = request.form['firstname']
-        lastname = request.form['lastname']
-        phone = request.form['phone']
-        email = request.form['email']
-        address = request.form['address']
-        city = request.form['city']
+    if session.get('admin') != None:
+        if request.method == 'POST':
+            #Data collected from register form
+            username = request.form['username']
+            password = request.form['password']
+            firstname = request.form['firstname']
+            lastname = request.form['lastname']
+            phone = request.form['phone']
+            email = request.form['email']
+            address = request.form['address']
+            city = request.form['city']
 
-        with DatabaseUtils() as db:
-            if(db.checkUsername(username)):
-                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address, city)):
-                    print("{} is inserted successfully.".format(username))
-                    flash("{} is inserted successfully.".format(username))
-                    return redirect(url_for("addUser"))
+            with DatabaseUtils() as db:
+                if(db.checkUsername(username)):
+                    if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address, city)):
+                        print("{} is inserted successfully.".format(username))
+                        flash("{} is inserted successfully.".format(username))
+                        return redirect(url_for("addUser"))
+                    else:
+                        print("{} failed to be inserted.".format(username))
+                        flash("{} failed to be inserted.".format(username))
+                        return redirect(url_for("addUser"))
                 else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
+                    print("{} already exist, try a different username.".format(username))
+                    flash("{} already exist, try a different username.".format(username))
                     return redirect(url_for("addUser"))
-            else:
-                print("{} already exist, try a different username.".format(username))
-                flash("{} already exist, try a different username.".format(username))
-                return redirect(url_for("addUser"))
-    
-    return render_template("add.html")
+        
+        return render_template("add.html")
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 @app.route("/addCar", methods=['GET', 'POST'])
 def addCar():
-    if request.method == 'POST':
-        make = request.form['make']
-        model = request.form['model']
-        cartype = request.form['type']
-        seats = request.form['seats']
-        color = request.form['color']
-        location = request.form['location']
-        cost = request.form['cost']
-        available = request.form['status']
-        with DatabaseUtils() as db:
-            if(db.addCar(make, model, cartype, seats, color, location, cost, available)):
-                print("{} {} is inserted successfully.".format(make,model))
-                flash("{} {} is inserted successfully.".format(make,model))
-                return redirect(url_for("addUser"))
-            else:
-                print("{} {} failed to be inserted.".format(make,model))
-                flash("{} {} failed to be inserted.".format(make,model))
-                return redirect(url_for("addUser"))
-    return render_template("add.html") 
+    if session.get('admin') != None:
+        if request.method == 'POST':
+            make = request.form['make']
+            model = request.form['model']
+            cartype = request.form['type']
+            seats = request.form['seats']
+            color = request.form['color']
+            location = request.form['location']
+            cost = request.form['cost']
+            available = request.form['status']
+            with DatabaseUtils() as db:
+                if(db.addCar(make, model, cartype, seats, color, location, cost, available)):
+                    print("{} {} is inserted successfully.".format(make,model))
+                    flash("{} {} is inserted successfully.".format(make,model))
+                    return redirect(url_for("addUser"))
+                else:
+                    print("{} {} failed to be inserted.".format(make,model))
+                    flash("{} {} failed to be inserted.".format(make,model))
+                    return redirect(url_for("addUser"))
+        return render_template("add.html") 
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 # Reporting cars with issue and update their availability status to "Faulty"
 @app.route("/reportCar", methods=['POST'])
@@ -628,11 +643,6 @@ def managerBoard3():
         print("You are not an authorized manager")
         flash("You are not an authorized manager")
         return redirect(url_for('home'))
-
-
-
-
-
 
 ################# Below are testing routes ##########################
 @app.route("/chart", methods=['POST', 'GET'])
