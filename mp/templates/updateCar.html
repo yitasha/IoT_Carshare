@@ -46,7 +46,9 @@
             <div class="form-row">
             <label for="status"><b>Status</b></label>
             <input type="text" name="status" placeholder="status" value="{{ car[8] }}" required/><br>
-            </div><br>
+            </div>
+
+            <br>
             <input id="carid" name="carid" type="hidden" value="{{ car[0] }}">
             <input class="btn btn-primary" type="submit" name="submit" value="Update"/>
             <button type="submit" class="btn btn-danger" formaction="/deleteCar">Delete Car</button>

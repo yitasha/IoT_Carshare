@@ -5,7 +5,12 @@ from passlib.hash import sha256_crypt
 from datetime import datetime
 from add_event import Calendar
 from time import sleep
+
+# Remove comment if your pushbullet is working
+# from pushbullet import Pushbullet
 import random
+import requests
+import json
 import os
 import cv2 
 
@@ -15,6 +20,11 @@ app = Flask(__name__)
 app.secret_key = 'asdasd12easd123rdada'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Pushbullet API Token
+ACCESS_TOKEN="o.DmzF65qvLy7Tbptcl0blbsRVQdWdOc0O"
+# Remove this comment to use pushbullet library api instead
+# pb = Pushbullet(ACCESS_TOKEN)
 
 @app.route("/")
 def home():
@@ -604,8 +614,12 @@ def addCar():
 def reportCar():
     if request.method == 'POST':
         carid = request.form['carid']
+        body = "CarID: {} is reported faulty by Admin".format(carid)
         with DatabaseUtils() as db:
             if(db.reportCar(carid)):
+                send_notification_via_pushbullet("Faulty Car Notification", body)
+                # Remove this comment if pushbullet importing is working properly
+                # pb.push_note("Faulty Car Notification", body)
                 print("CarID: {} is reported successfully.".format(carid))
                 flash("CarID: {} is reported successfully.".format(carid))
                 return redirect(url_for("showAdminCars"))
@@ -613,6 +627,24 @@ def reportCar():
                 print("Error while reporting CarID: {} ".format(carid))
                 flash("Error while reporting CarID: {} ".format(carid))
                 return redirect(url_for("showAdminCars"))
+
+# Helper function for send notification to engineer
+# Since my pushbullet didn't work on my windows, I used this HTTP Request method
+def send_notification_via_pushbullet(title, body):
+    """ Sending notification via pushbullet.
+        Args:
+            title (str) : title of text.
+            body (str) : Body of text.
+    """
+    data_send = {"type": "note", "title": title, "body": body}
+ 
+    resp = requests.post('https://api.pushbullet.com/v2/pushes', data=json.dumps(data_send),
+                         headers={'Authorization': 'Bearer ' + ACCESS_TOKEN, 
+                         'Content-Type': 'application/json'})
+    if resp.status_code != 200:
+        raise Exception('Error, Something is wrong')
+    else:
+        print('Faulty Car Message Sent')
 
 # Displaying visual board chart #1
 @app.route("/managerBoard1", methods=['GET', 'POST'])
@@ -643,6 +675,19 @@ def managerBoard3():
         print("You are not an authorized manager")
         flash("You are not an authorized manager")
         return redirect(url_for('home'))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ################# Below are testing routes ##########################
 @app.route("/chart", methods=['POST', 'GET'])

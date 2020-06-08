@@ -9,3 +9,7 @@ pip3 install google-api-python-client google-auth-httplib2 google-auth-oauthlib 
 
 # To run all uni tests within command line
 python -m unittest discover 
+
+A3 Requirements
+# This is to use the pushbullet package instead of the HTTP request
+pip3 install pushbullet.py
