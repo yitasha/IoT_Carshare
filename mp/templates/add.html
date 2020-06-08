@@ -51,7 +51,7 @@
                         <label for="address"><b>Address</b></label>
                         <input type="text" name="address" placeholder="Address" required/><br>
                         </div>
-                        div class="form-row">
+                        <div class="form-row">
                         <label for="city"><b>City</b></label>
                         <input type="city" name="city" placeholder="City" required/><br>
                         </div>
@@ -93,9 +93,30 @@
                         <input type="text" name="cost" placeholder="cost" required/><br>
                         </div>
                         <div class="form-row">
+                        <label for="lat"><b>Latitude</b></label>
+                        <input type="text" name="lat" placeholder="Latitude" required/><br>
+                        </div>
+                        <div class="form-row">
+                        <label for="lng"><b>Longtitude</b></label>
+                        <input type="text" name="lng" placeholder="Longtitude" required/><br>
+                        </div>
+                        <!-- <div class="form-row">
                         <label for="status"><b>Status</b></label>
                         <input type="text" name="status" placeholder="status" required/><br>
-                        </div><br>
+                        </div> -->
+                        <div class="form-row">
+                            <label for="status"><b>Status</b></label>
+                            <select name="status" id="status">
+                              <option value="True" selected >True</option>
+                              <option value="False">False</option>
+                              <option value="Unlocked">Unlocked</option>
+                              <option value="Returned">Returned</option>
+                              <option value="Falty">Falty</option>
+                            </select>
+                          </div>
+                        
+                        <br>
+
                         <input class="btn btn-primary" type="submit" name="submit" value="Add Car"/>
                         
                     </form> 

@@ -26,6 +26,8 @@ color varchar (20) NOT NULL,
 location varchar (30) NOT NULL,
 cost int NOT NULL,
 available varchar(10) NOT NULL,
+lat text,
+lng text,
 primary key (carid)
 );
 

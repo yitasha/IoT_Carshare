@@ -40,14 +40,33 @@
             <input type="text" name="location" placeholder="location" value="{{ car[6] }}" required/><br>
             </div>
             <div class="form-row">
-            <label for="cost"><b>Cost</b></label>
+            <label for="cost"><b>Cost/Day</b></label>
             <input type="text" name="cost" placeholder="cost" value="{{ car[7] }}" required/><br>
             </div>
             <div class="form-row">
+              <label for="lat"><b>Latitude</b></label>
+              <input type="text" name="lat" placeholder="Latitude" value="{{ car[9] }}" required/><br>
+              </div>
+              <div class="form-row">
+              <label for="lng"><b>Longtitude</b></label>
+              <input type="text" name="lng" placeholder="Longtitude" value="{{ car[10] }}" required/><br>
+              </div>
+            <!-- <div class="form-row">
             <label for="status"><b>Status</b></label>
             <input type="text" name="status" placeholder="status" value="{{ car[8] }}" required/><br>
+            </div> -->
+            <div class="form-row">
+              <label for="status"><b>Status</b></label>
+              <select name="status" id="status">
+                <option value="{{ car[8] }}" selected>{{ car[8] }}</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
+                <option value="Unlocked">Unlocked</option>
+                <option value="Returned">Returned</option>
+                <option value="Falty">Falty</option>
+              </select>
             </div>
-
+            
             <br>
             <input id="carid" name="carid" type="hidden" value="{{ car[0] }}">
             <input class="btn btn-primary" type="submit" name="submit" value="Update"/>

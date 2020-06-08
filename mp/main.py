@@ -395,7 +395,7 @@ def processLoginAdmins():
                 if(db.checkEngineer(username, password)):
                     session['engineer'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("askLogin"))
+                    return redirect(url_for("engineer"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
@@ -519,10 +519,12 @@ def updatingCar():
         location = request.form['location']
         cost = request.form['cost']
         available = request.form['status']
-        print(carid, make, model, cartype, seats, color, location, cost, available)
+        lat = request.form['lat']
+        lng = request.form['lng']
+        print(carid, make, model, cartype, seats, color, location, cost, available, lat, lng)
 
         with DatabaseUtils() as db:
-            if(db.updateCar(carid, make, model, cartype, seats, color, location, cost, available)):
+            if(db.updateCar(carid, make, model, cartype, seats, color, location, cost, available, lat, lng)):
                 print("CarID : {} is updated".format(carid))
                 flash("CarID : {} is updated".format(carid))
                 return redirect(url_for("showAdminCars"))
@@ -593,9 +595,11 @@ def addCar():
             color = request.form['color']
             location = request.form['location']
             cost = request.form['cost']
+            lat = request.form['lat']
+            lng = request.form['lng']
             available = request.form['status']
             with DatabaseUtils() as db:
-                if(db.addCar(make, model, cartype, seats, color, location, cost, available)):
+                if(db.addCar(make, model, cartype, seats, color, location, cost, available, lat, lng)):
                     print("{} {} is inserted successfully.".format(make,model))
                     flash("{} {} is inserted successfully.".format(make,model))
                     return redirect(url_for("addUser"))
@@ -676,13 +680,14 @@ def managerBoard3():
         flash("You are not an authorized manager")
         return redirect(url_for('home'))
 
-
-
-
-
-
-
-
+# Displaying maps homepage for Engineer
+@app.route("/engineer", methods=['GET', 'POST'])
+def engineer():
+    with DatabaseUtils() as db:
+        position = db.getFaultyCar()
+        data = json.dumps(position)
+        print(data)
+    return render_template("engineer.html", position=position,data = data)
 
 
 

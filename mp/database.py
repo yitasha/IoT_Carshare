@@ -498,9 +498,9 @@ class DatabaseUtils:
             return cursor.fetchall()
 
     # Updating car with new information
-    def updateCar(self, carid, make, model, cartype, seats, color, location, cost, available):
+    def updateCar(self, carid, make, model, cartype, seats, color, location, cost, available, lat, lng):
         with self.connection.cursor() as cursor:
-            cursor.execute("UPDATE car SET make = '{}', model = '{}', type = '{}', seats = '{}', color = '{}', location = '{}', cost = '{}', available = '{}' WHERE carid = '{}'".format(make, model, cartype, seats, color, location, cost, available, carid))
+            cursor.execute("UPDATE car SET make = '{}', model = '{}', type = '{}', seats = '{}', color = '{}', location = '{}', cost = '{}', available = '{}', lat = '{}', lng = '{}' WHERE carid = '{}'".format(make, model, cartype, seats, color, location, cost, available, lat, lng, carid))
         self.connection.commit()
         return cursor.rowcount == 1
 
@@ -519,10 +519,10 @@ class DatabaseUtils:
         return cursor.rowcount == 1
     
     # Insert new car to database:car
-    def addCar(self, make, model, cartype, seats, color, location, cost, available):
+    def addCar(self, make, model, cartype, seats, color, location, cost, available, lat, lng):
         with self.connection.cursor() as cursor:
-            sql = "INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-            val = (make, model, cartype, seats, color, location, cost, available)
+            sql = "INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (make, model, cartype, seats, color, location, cost, available, lat, lng)
             cursor.execute(sql, val)
         self.connection.commit()
         return cursor.rowcount == 1
@@ -533,6 +533,13 @@ class DatabaseUtils:
             cursor.execute("UPDATE car SET available = 'Faulty' WHERE carid = '{}'".format(carid))
         self.connection.commit()
         return cursor.rowcount == 1
+
+    # Retrieve faulty car from database where available = "Faulty"
+    def getFaultyCar(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM car WHERE available = 'Faulty'")
+            return cursor.fetchall()
+    
 
 # db = DatabaseUtils()
 # print(db.checkAdmin("admin", "abc123"))
