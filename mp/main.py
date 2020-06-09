@@ -5,7 +5,12 @@ from passlib.hash import sha256_crypt
 from datetime import datetime
 from add_event import Calendar
 from time import sleep
+
+# Remove comment if your pushbullet is working
+# from pushbullet import Pushbullet
 import random
+import requests
+import json
 import os
 import cv2 
 
@@ -15,6 +20,11 @@ app = Flask(__name__)
 app.secret_key = 'asdasd12easd123rdada'
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Pushbullet API Token
+ACCESS_TOKEN="o.DmzF65qvLy7Tbptcl0blbsRVQdWdOc0O"
+# Remove this comment to use pushbullet library api instead
+# pb = Pushbullet(ACCESS_TOKEN)
 
 @app.route("/")
 def home():
@@ -41,10 +51,11 @@ def register():
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-        
+        city = request.form['city']
+
         with DatabaseUtils() as db:
             if(db.checkUsername(username)):
-                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+                if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname, phone, email, address, city)):
                     print("{} inserted successfully.".format(username))
                     flash("Thank you for registering {}".format(firstname))
                     return redirect(url_for("home"))
@@ -53,9 +64,9 @@ def register():
                     flash("{} failed to be inserted.".format(username))
                     return redirect(url_for("register"))
             else:
-                    print("{} already exist, try a different one.".format(username))
-                    flash("{} already exist, try a different one.".format(username))
-                    return redirect(url_for("register"))
+                print("{} already exist, try a different one.".format(username))
+                flash("{} already exist, try a different one.".format(username))
+                return redirect(url_for("register"))
     
     return render_template("register.html")
 
@@ -251,8 +262,6 @@ def processbook():
                     print("Error, Car ID: {} is not available, try a different car later".format(carid))
                     flash("Error, Car ID: {} is not available, try a different car later".format(carid))
                     return redirect(url_for("home"))
-    
-    return render_template("test.html", **locals())
 
 @app.route("/cancelbook", methods=['POST'])
 def cancelbook():
@@ -280,56 +289,58 @@ def cancelbook():
                 flash("Error, Please use your primary google account.")
     return redirect(url_for("myprofile"))
 
-#Register for 3 type of admins
-@app.route("/registerA", methods=['GET', 'POST'])
-def registerA():
-    if request.method == 'POST':
-        #Data collected from register form
-        username = request.form['username']
-        password = request.form['password']
-        firstname = request.form['firstname']
-        lastname = request.form['lastname']
-        phone = request.form['phone']
-        email = request.form['email']
-        address = request.form['address']
-        usertype = request.form['type']
+########################### A3 Part ####################################
 
-        with DatabaseUtils() as db:
-            if(usertype == "admin"):
-                if(db.insertAdmin(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                    print("{} inserted successfully.".format(username))
-                    flash("Thank you for registering {}".format(firstname))
-                    return redirect(url_for("home"))
-                else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
-                    return redirect(url_for("registerA"))
-            elif(usertype == "manager"):
-                if(db.insertManager(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                    print("{} inserted successfully.".format(username))
-                    flash("Thank you for registering {}".format(firstname))
-                    return redirect(url_for("home"))
-                else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
-                    return redirect(url_for("registerA"))
-            elif(usertype == "engineer"):
-                if(db.insertEngineer(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
-                    print("{} inserted successfully.".format(username))
-                    flash("Thank you for registering {}".format(firstname))
-                    return redirect(url_for("home"))
-                else:
-                    print("{} failed to be inserted.".format(username))
-                    flash("{} failed to be inserted.".format(username))
-                    return redirect(url_for("registerA"))
-            else:
-                print("{} failed to be inserted.".format(username))
-                flash("{} failed to be inserted.".format(username))
-                return redirect(url_for("registerA"))
+# Register for 3 type of admins, DISABLED!
+# @app.route("/registerA", methods=['GET', 'POST'])
+# def registerA():
+#     if request.method == 'POST':
+#         #Data collected from register form
+#         username = request.form['username']
+#         password = request.form['password']
+#         firstname = request.form['firstname']
+#         lastname = request.form['lastname']
+#         phone = request.form['phone']
+#         email = request.form['email']
+#         address = request.form['address']
+#         usertype = request.form['type']
+
+#         with DatabaseUtils() as db:
+#             if(usertype == "admin"):
+#                 if(db.insertAdmin(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+#                     print("{} inserted successfully.".format(username))
+#                     flash("Thank you for registering {}".format(firstname))
+#                     return redirect(url_for("home"))
+#                 else:
+#                     print("{} failed to be inserted.".format(username))
+#                     flash("{} failed to be inserted.".format(username))
+#                     return redirect(url_for("registerA"))
+#             elif(usertype == "manager"):
+#                 if(db.insertManager(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+#                     print("{} inserted successfully.".format(username))
+#                     flash("Thank you for registering {}".format(firstname))
+#                     return redirect(url_for("home"))
+#                 else:
+#                     print("{} failed to be inserted.".format(username))
+#                     flash("{} failed to be inserted.".format(username))
+#                     return redirect(url_for("registerA"))
+#             elif(usertype == "engineer"):
+#                 if(db.insertEngineer(sha256_crypt.hash(username), sha256_crypt.hash(password), firstname, lastname,phone,email,address)):
+#                     print("{} inserted successfully.".format(username))
+#                     flash("Thank you for registering {}".format(firstname))
+#                     return redirect(url_for("home"))
+#                 else:
+#                     print("{} failed to be inserted.".format(username))
+#                     flash("{} failed to be inserted.".format(username))
+#                     return redirect(url_for("registerA"))
+#             else:
+#                 print("{} failed to be inserted.".format(username))
+#                 flash("{} failed to be inserted.".format(username))
+#                 return redirect(url_for("registerA"))
     
-    return render_template("registerA.html")
+#     return render_template("registerA.html")
 
-#Ask for 3 type of admins
+# Selection login system
 @app.route("/askLogin", methods=['GET', 'POST'])
 def askLogin():
     if request.method == 'POST':
@@ -364,27 +375,27 @@ def processLoginAdmins():
                 if(db.checkAdmin(username, password)):
                     session['admin'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("askLogin"))
+                    return redirect(url_for("showAllBookings"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
                     return redirect(url_for("askLogin"))
         elif check == 'Manager':
             with DatabaseUtils() as db:
-                if(db.checkAdmin(username, password)):
+                if(db.checkManager(username, password)):
                     session['manager'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("askLogin"))
+                    return redirect(url_for("managerBoard1"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
                     return redirect(url_for("askLogin"))
         elif check == 'Engineer':
             with DatabaseUtils() as db:
-                if(db.checkAdmin(username, password)):
+                if(db.checkEngineer(username, password)):
                     session['engineer'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("askLogin"))
+                    return redirect(url_for("engineer1"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
@@ -397,26 +408,42 @@ def processLoginAdmins():
 # Get car rental history 
 @app.route("/showAllBookings", methods=['GET','POST'])
 def showAllBookings():
-    with DatabaseUtils() as db:
-        booking = db.getAllBookings()
-        return render_template("bookings.html", booking = booking)
+    #If session admin doesn't exist, redirect
+    if session.get('admin') != None:
+        with DatabaseUtils() as db:
+            booking = db.getAllBookings()
+            return render_template("bookings.html", booking = booking)
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 # Get car rental history 
 @app.route("/showAllUsers", methods=['GET','POST'])
 def showAllUsers():
-    with DatabaseUtils() as db:
-        users = db.getAllUsers()
-        return render_template("users.html", users = users)
-    
+    if session.get('admin') != None:
+        with DatabaseUtils() as db:
+            users = db.getAllUsers()
+            return render_template("users.html", users = users)
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
+        
 # Get car rental history 
 @app.route("/updateUser", methods=['POST'])
 def updateUser():
-    if request.method == 'POST':
-        userid = request.form['userid']
-        with DatabaseUtils() as db:
-            user = db.getUser(userid)
-            return render_template("updateUser.html", user = user)
-    return render_template("updateUser.html")
+    if session.get('admin') != None:
+        if request.method == 'POST':
+            userid = request.form['userid']
+            with DatabaseUtils() as db:
+                user = db.getUser(userid)
+                return render_template("updateUser.html", user = user)
+        return render_template("updateUser.html")
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
 
 @app.route("/updatingUser", methods=['POST'])
@@ -430,9 +457,11 @@ def updatingUser():
         phone = request.form['phone']
         email = request.form['email']
         address = request.form['address']
-        print(userid, username, password, firstname, lastname, phone, email, address)
+        city = request.form['city']
+        
+        print(userid, username, password, firstname, lastname, phone, email, address, city)
         with DatabaseUtils() as db:
-            if(db.updateUser(userid, username, password, firstname, lastname,phone,email,address)):
+            if(db.updateUser(userid, username, password, firstname, lastname, phone, email, address, city)):
                 print("{}'s profile is updated".format(username))
                 flash("{}'s profile is updated".format(username))
                 return redirect(url_for("showAllUsers"))
@@ -441,14 +470,229 @@ def updatingUser():
                 flash("Error while updating user profile")
                 return redirect(url_for("showAllUsers"))
 
+@app.route("/deleteUser", methods=['POST'])
+def deleteUser():
+    if request.method == 'POST':
+        userid = request.form['userid']
+        with DatabaseUtils() as db:
+            if(db.deleteUser(userid)):
+                print("UserID: {} 's profile is removed".format(userid))
+                flash("UserID: {} 's profile is removed".format(userid))
+                return redirect(url_for("showAllUsers"))
+            else:
+                print("Error while removing user profile")
+                flash("Error while removing user profile")
+                return redirect(url_for("showAllUsers"))
+
+# List cars with editing function for Admins
+@app.route("/showAdminCars", methods=['GET', 'POST'])
+def showAdminCars():
+    if session.get('admin') != None:
+        with DatabaseUtils() as db:
+            cars = db.getAllCar()
+        return render_template("adminCars.html", **locals())
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
+
+# Routing update car
+@app.route("/updateCar", methods=['POST'])
+def updateCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        with DatabaseUtils() as db:
+            car = db.getCar(carid)
+        return render_template("updateCar.html", car = car)
+    return render_template("updateCar.html")
+
+# Updating individual car
+@app.route("/updatingCar", methods=['POST'])
+def updatingCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        make = request.form['make']
+        model = request.form['model']
+        cartype = request.form['type']
+        seats = request.form['seats']
+        color = request.form['color']
+        location = request.form['location']
+        cost = request.form['cost']
+        available = request.form['status']
+        lat = request.form['lat']
+        lng = request.form['lng']
+        print(carid, make, model, cartype, seats, color, location, cost, available, lat, lng)
+
+        with DatabaseUtils() as db:
+            if(db.updateCar(carid, make, model, cartype, seats, color, location, cost, available, lat, lng)):
+                print("CarID : {} is updated".format(carid))
+                flash("CarID : {} is updated".format(carid))
+                return redirect(url_for("showAdminCars"))
+            else:
+                print("Error while updating car profile")
+                flash("Error while updating car profile")
+                return redirect(url_for("showAdminCars"))
+
+# Updating individual car
+@app.route("/deleteCar", methods=['POST'])
+def deleteCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        with DatabaseUtils() as db:
+            if(db.deleteCar(carid)):
+                print("CarID : {} is removed".format(carid))
+                flash("CarID : {} is removed".format(carid))
+                return redirect(url_for("showAdminCars"))
+            else:
+                print("Error while removing car profile")
+                flash("Error while removing car profile")
+                return redirect(url_for("showAdminCars"))
 
 
+@app.route("/addUser", methods=['GET', 'POST'])
+def addUser():
+    if session.get('admin') != None:
+        if request.method == 'POST':
+            #Data collected from register form
+            username = request.form['username']
+            password = request.form['password']
+            firstname = request.form['firstname']
+            lastname = request.form['lastname']
+            phone = request.form['phone']
+            email = request.form['email']
+            address = request.form['address']
+            city = request.form['city']
 
+            with DatabaseUtils() as db:
+                if(db.checkUsername(username)):
+                    if(db.insertPerson(username, sha256_crypt.hash(password), firstname, lastname,phone,email,address, city)):
+                        print("{} is inserted successfully.".format(username))
+                        flash("{} is inserted successfully.".format(username))
+                        return redirect(url_for("addUser"))
+                    else:
+                        print("{} failed to be inserted.".format(username))
+                        flash("{} failed to be inserted.".format(username))
+                        return redirect(url_for("addUser"))
+                else:
+                    print("{} already exist, try a different username.".format(username))
+                    flash("{} already exist, try a different username.".format(username))
+                    return redirect(url_for("addUser"))
+        
+        return render_template("add.html")
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
+@app.route("/addCar", methods=['GET', 'POST'])
+def addCar():
+    if session.get('admin') != None:
+        if request.method == 'POST':
+            make = request.form['make']
+            model = request.form['model']
+            cartype = request.form['type']
+            seats = request.form['seats']
+            color = request.form['color']
+            location = request.form['location']
+            cost = request.form['cost']
+            lat = request.form['lat']
+            lng = request.form['lng']
+            available = request.form['status']
+            with DatabaseUtils() as db:
+                if(db.addCar(make, model, cartype, seats, color, location, cost, available, lat, lng)):
+                    print("{} {} is inserted successfully.".format(make,model))
+                    flash("{} {} is inserted successfully.".format(make,model))
+                    return redirect(url_for("addUser"))
+                else:
+                    print("{} {} failed to be inserted.".format(make,model))
+                    flash("{} {} failed to be inserted.".format(make,model))
+                    return redirect(url_for("addUser"))
+        return render_template("add.html") 
+    else:
+        print("You are not an authorized admin")
+        flash("You are not an authorized admin")
+        return redirect(url_for('home'))
 
+# Reporting cars with issue and update their availability status to "Faulty"
+@app.route("/reportCar", methods=['POST'])
+def reportCar():
+    if request.method == 'POST':
+        carid = request.form['carid']
+        body = "CarID: {} is reported faulty by Admin".format(carid)
+        with DatabaseUtils() as db:
+            if(db.reportCar(carid)):
+                send_notification_via_pushbullet("Faulty Car Notification", body)
+                # Remove this comment if pushbullet importing is working properly
+                # pb.push_note("Faulty Car Notification", body)
+                print("CarID: {} is reported successfully.".format(carid))
+                flash("CarID: {} is reported successfully.".format(carid))
+                return redirect(url_for("showAdminCars"))
+            else:
+                print("Error while reporting CarID: {} ".format(carid))
+                flash("Error while reporting CarID: {} ".format(carid))
+                return redirect(url_for("showAdminCars"))
 
+# Helper function for send notification to engineer
+# Since my pushbullet didn't work on my windows, I used this HTTP Request method
+def send_notification_via_pushbullet(title, body):
+    """ Sending notification via pushbullet.
+        Args:
+            title (str) : title of text.
+            body (str) : Body of text.
+    """
+    data_send = {"type": "note", "title": title, "body": body}
+ 
+    resp = requests.post('https://api.pushbullet.com/v2/pushes', data=json.dumps(data_send),
+                         headers={'Authorization': 'Bearer ' + ACCESS_TOKEN, 
+                         'Content-Type': 'application/json'})
+    if resp.status_code != 200:
+        raise Exception('Error, Something is wrong')
+    else:
+        print('Faulty Car Message Sent')
 
+# Displaying visual board chart #1
+@app.route("/managerBoard1", methods=['GET', 'POST'])
+def managerBoard1():
+    if session.get('manager') != None:
+        return render_template("managerBoard1.html")
+    else:
+        print("You are not an authorized manager")
+        flash("You are not an authorized manager")
+        return redirect(url_for('home'))
 
+# Displaying visual board chart #2
+@app.route("/managerBoard2", methods=['GET', 'POST'])
+def managerBoard2():
+    if session.get('manager') != None:
+        return render_template("managerBoard2.html")
+    else:
+        print("You are not an authorized manager")
+        flash("You are not an authorized manager")
+        return redirect(url_for('home'))
+
+# Displaying visual board chart #1
+@app.route("/managerBoard3", methods=['GET', 'POST'])
+def managerBoard3():
+    if session.get('manager') != None:
+        return render_template("managerBoard3.html")
+    else:
+        print("You are not an authorized manager")
+        flash("You are not an authorized manager")
+        return redirect(url_for('home'))
+
+# Displaying maps with makrer homepage for Engineer
+@app.route("/engineer1", methods=['GET', 'POST'])
+def engineer1():
+    with DatabaseUtils() as db:
+        position = db.getFaultyCar()
+    return render_template("engineer1.html",position=position)
+
+# Displaying maps with circle area homepage for Engineer
+@app.route("/engineer2", methods=['GET', 'POST'])
+def engineer2():
+    with DatabaseUtils() as db:
+        position = db.getFaultyCar()
+    return render_template("engineer2.html",position=position)
 
 
 

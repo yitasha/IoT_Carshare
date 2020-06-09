@@ -22,7 +22,7 @@ class DatabaseUtils:
         self.close()
     
     #This function returns Boolean: True or False
-    def insertPerson(self, username, password, firstname, lastname,phone,email,address):
+    def insertPerson(self, username, password, firstname, lastname, phone, email, address, city):
         """
 
         This function returns Boolean: True or False
@@ -37,8 +37,8 @@ class DatabaseUtils:
         :return: boolean
         """
         with self.connection.cursor() as cursor:
-            sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            val = (username, password, firstname, lastname, phone, email, address)
+            sql = "INSERT INTO user (username, password, firstname, lastname, phone, email, address, city) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (username, password, firstname, lastname, phone, email, address, city)
             cursor.execute(sql, val)
         self.connection.commit()
         return cursor.rowcount == 1
@@ -481,16 +481,65 @@ class DatabaseUtils:
             return cursor.fetchone()
 
     # Updating user with basic details and encrypte new password
-    def updateUser(self, userid, username, password, firstname, lastname, phone, email, address):
-        
+    def updateUser(self, userid, username, password, firstname, lastname, phone, email, address, city):
         with self.connection.cursor() as cursor:
             if password == "":
-                cursor.execute("UPDATE user SET firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}' WHERE userid = '{}'".format(firstname, lastname, phone, email, address, userid))
+                cursor.execute("UPDATE user SET firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}', city = '{}' WHERE userid = '{}'".format(firstname, lastname, phone, email, address, city, userid))
             else:
                 encpassword = sha256_crypt.hash(password)
-                cursor.execute("UPDATE user SET password = '{}', firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}' WHERE userid = '{}'".format(encpassword, firstname, lastname, phone, email, address, userid))
+                cursor.execute("UPDATE user SET password = '{}', firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}', city = '{}' WHERE userid = '{}'".format(encpassword, firstname, lastname, phone, email, address, city, userid))
         self.connection.commit()
         return cursor.rowcount == 1
+    
+    # Get all cars no matter what the available status is
+    def getAllCar(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM car")
+            return cursor.fetchall()
+
+    # Updating car with new information
+    def updateCar(self, carid, make, model, cartype, seats, color, location, cost, available, lat, lng):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE car SET make = '{}', model = '{}', type = '{}', seats = '{}', color = '{}', location = '{}', cost = '{}', available = '{}', lat = '{}', lng = '{}' WHERE carid = '{}'".format(make, model, cartype, seats, color, location, cost, available, lat, lng, carid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+    # delete car by CarID
+    def deleteCar(self, carid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("DELETE FROM car WHERE carid = '{}'".format(carid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+    # delete user by UserID
+    def deleteUser(self, userid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("DELETE FROM user WHERE userid = '{}'".format(userid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+    
+    # Insert new car to database:car
+    def addCar(self, make, model, cartype, seats, color, location, cost, available, lat, lng):
+        with self.connection.cursor() as cursor:
+            sql = "INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (make, model, cartype, seats, color, location, cost, available, lat, lng)
+            cursor.execute(sql, val)
+        self.connection.commit()
+        return cursor.rowcount == 1
+    
+    # Report faulty car, setting its status to Faulty
+    def reportCar(self, carid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE car SET available = 'Faulty' WHERE carid = '{}'".format(carid))
+        self.connection.commit()
+        return cursor.rowcount == 1
+
+    # Retrieve faulty car from database where available = "Faulty"
+    def getFaultyCar(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM car WHERE available = 'Faulty'")
+            return cursor.fetchall()
+    
 
 # db = DatabaseUtils()
 # print(db.checkAdmin("admin", "abc123"))

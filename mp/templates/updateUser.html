@@ -5,7 +5,7 @@
 
 {% block display %}
 <h1>Updating UserID: {{ user[0] }}</h1>
-<h1>Username: {{ user[1] }}</h1>
+<h1>Usernames can not be updated</h1>
 {% with messages = get_flashed_messages() %}
 {% if messages %}
   {% for message in messages %}
@@ -44,8 +44,13 @@
             <label for="address"><b>Address</b></label>
             <input type="text" name="address" placeholder="Address" value="{{ user[7] }}" required/><br>
             </div>
+            <div class="form-row">
+            <label for="city"><b>City</b></label>
+            <input type="city" name="city" placeholder="City" value="{{ user[8] }}" required/><br>
+            </div><br/>
             <input id="userid" name="userid" type="hidden" value="{{ user[0] }}">
-            <input class="btn btn-primary" type="submit" name="submit" value="Update"/><br/>
+            <input class="btn btn-primary" type="submit" name="submit" value="Update"/>
+            <button type="submit" class="btn btn-danger" formaction="/deleteUser">Delete User</button>
         </form> 
     </div>
 </div>

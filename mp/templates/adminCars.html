@@ -1,0 +1,78 @@
+{% extends "template.html" %}
+
+{% block title %} 
+{{'Cars'}} 
+{% endblock %}
+
+{% block display %}
+
+<h1> Available Cars for Rent</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="searchCar">
+    <input type="text" id="myInput"  placeholder="Search for every attribute" title="Type in a name">
+</div>
+<div class="container">
+    <table id="carTable" class="table table-striped">
+      <thead>
+        <tr class="header">
+          <th>ID</th>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Type</th>
+          <th>Seats</th>
+          <th>Color</th>
+          <th>Location</th>
+          <th>Price/Day
+            <select id='filterText' style='display:inline-block' onchange='filterPrice()'>
+                <option value="9999" selected>All</option>
+                <option value='100'> < 100 </option>
+                <option value='200'> < 200 </option>
+                <option value='500'> < 500 </option>
+            </select>
+          </th>
+          <th>Status</th>
+          <th>Lat/Lng</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <tbody id="carsTable">
+        {%for car in cars%}
+        <form action="/updateCar" method="POST">
+        <tr>
+          <td>{{ car[0] }}</td>
+          <td>{{ car[1] }}</td>
+          <td>{{ car[2] }}</td>
+          <td>{{ car[3] }}</td>
+          <td>{{ car[4] }}</td>
+          <td>{{ car[5] }}</td>
+          <td>{{ car[6] }}</td>
+          <td>{{ car[7] }}</td>
+          <td>{{ car[8] }}</td>
+          <td>{{ car[9] }}, {{ car[10] }}</td>
+          <td>
+          <input  class="btn btn-success" type="submit" name="book" value="Update">
+          <button type="submit" class="btn btn-danger" name="reportCar" formaction="/reportCar">Report</button>
+          </td>
+        </tr>
+        <!-- Hidden attribute to get data from form request  -->
+        <input id="carid" name="carid" type="hidden" value="{{ car[0] }}">
+        <input id="make" name="make" type="hidden" value="{{ car[1] }}">
+        <input id="model" name="model" type="hidden" value="{{ car[2] }}">
+        <input id="type" name="type" type="hidden" value="{{ car[3] }}">
+        <input id="seats" name="seats" type="hidden" value="{{ car[4] }}">
+        <input id="color" name="color" type="hidden" value="{{ car[5] }}">
+        <input id="location" name="location" type="hidden" value="{{ car[6] }}">
+        <input id="price" name="price" type="hidden" value="{{ car[7] }}">
+        <input id="available" name="available" type="hidden" value="{{ car[8] }}">
+        </form>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -1,7 +1,7 @@
-from passlib.hash import sha256_crypt
-# username = "admin"
-# encUsername = sha256_crypt.hash(username)
-# print(encUsername)
+from pushbullet import Pushbullet
 
-password = ""
-print(password == "")
+api_key = "o.aEjo2hFS6HFhr2CUtS39MIrNQJhlxngY"
+pb = Pushbullet(api_key)
+
+pb.push_note("This is headers", "This is message body")
+print(pb.devices)
