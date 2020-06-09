@@ -343,6 +343,11 @@ def cancelbook():
 # Selection login system
 @app.route("/askLogin", methods=['GET', 'POST'])
 def askLogin():
+    """
+
+    Selection login system
+
+    """
     if request.method == 'POST':
         usertype = request.form['user']
         if usertype == 'admin':
@@ -360,11 +365,22 @@ def askLogin():
 # 3 type of admins login
 @app.route("/loginAdmins/<usertype>", methods=['GET', 'POST'])
 def loginAdmins(usertype):
+    """
+
+    3 type of admins login
+    :param usertype: string
+    :return: string
+    """
     return render_template("loginAdmins.html", **locals())
 
 # 3 type of admins login
 @app.route("/processLoginAdmins", methods=['GET','POST'])
 def processLoginAdmins():
+    """
+
+    # 3 type of admins login
+
+    """
     if request.method == 'POST':
         check = request.form['filter']
         username = request.form['username']
@@ -408,6 +424,11 @@ def processLoginAdmins():
 # Get car rental history 
 @app.route("/showAllBookings", methods=['GET','POST'])
 def showAllBookings():
+    """
+
+    Get car rental history
+
+    """
     #If session admin doesn't exist, redirect
     if session.get('admin') != None:
         with DatabaseUtils() as db:
@@ -418,9 +439,14 @@ def showAllBookings():
         flash("You are not an authorized admin")
         return redirect(url_for('home'))
 
-# Get car rental history 
+# Get car rental history
 @app.route("/showAllUsers", methods=['GET','POST'])
 def showAllUsers():
+    """
+
+    Get car rental history
+
+    """
     if session.get('admin') != None:
         with DatabaseUtils() as db:
             users = db.getAllUsers()
@@ -433,6 +459,11 @@ def showAllUsers():
 # Get car rental history 
 @app.route("/updateUser", methods=['POST'])
 def updateUser():
+    """
+
+    Get car rental history
+
+    """
     if session.get('admin') != None:
         if request.method == 'POST':
             userid = request.form['userid']
@@ -448,6 +479,11 @@ def updateUser():
 
 @app.route("/updatingUser", methods=['POST'])
 def updatingUser():
+    """
+
+    Updating user data
+    :return: string
+    """
     if request.method == 'POST':
         userid = request.form['userid']
         username = request.form['username']
@@ -471,7 +507,12 @@ def updatingUser():
                 return redirect(url_for("showAllUsers"))
 
 @app.route("/deleteUser", methods=['POST'])
-def deleteUser():
+def deleteUser()
+    """
+    
+    Delete user
+    :return: string
+    """
     if request.method == 'POST':
         userid = request.form['userid']
         with DatabaseUtils() as db:
@@ -487,6 +528,11 @@ def deleteUser():
 # List cars with editing function for Admins
 @app.route("/showAdminCars", methods=['GET', 'POST'])
 def showAdminCars():
+    """
+
+    List cars with editing function for Admins
+    :return: string
+    """
     if session.get('admin') != None:
         with DatabaseUtils() as db:
             cars = db.getAllCar()
@@ -499,6 +545,11 @@ def showAdminCars():
 # Routing update car
 @app.route("/updateCar", methods=['POST'])
 def updateCar():
+    """
+
+    Routing update car
+    :return: int
+    """
     if request.method == 'POST':
         carid = request.form['carid']
         with DatabaseUtils() as db:
@@ -509,6 +560,11 @@ def updateCar():
 # Updating individual car
 @app.route("/updatingCar", methods=['POST'])
 def updatingCar():
+    """
+
+    Updating individual car
+    :return: string
+    """
     if request.method == 'POST':
         carid = request.form['carid']
         make = request.form['make']
@@ -536,6 +592,11 @@ def updatingCar():
 # Updating individual car
 @app.route("/deleteCar", methods=['POST'])
 def deleteCar():
+    """
+
+    Updating individual car
+    :return: int
+    """
     if request.method == 'POST':
         carid = request.form['carid']
         with DatabaseUtils() as db:
@@ -551,6 +612,11 @@ def deleteCar():
 
 @app.route("/addUser", methods=['GET', 'POST'])
 def addUser():
+    """
+
+    Add user to database
+    :return: string
+    """
     if session.get('admin') != None:
         if request.method == 'POST':
             #Data collected from register form
@@ -586,6 +652,11 @@ def addUser():
 
 @app.route("/addCar", methods=['GET', 'POST'])
 def addCar():
+    """
+
+    Add car to database
+    :return: string
+    """
     if session.get('admin') != None:
         if request.method == 'POST':
             make = request.form['make']
@@ -616,6 +687,13 @@ def addCar():
 # Reporting cars with issue and update their availability status to "Faulty"
 @app.route("/reportCar", methods=['POST'])
 def reportCar():
+    """
+
+    Reporting cars with issue and update their availability status to "Faulty"
+    Remove this comment if pushbullet importing is working properly
+    pb.push_note("Faulty Car Notification", body)
+    :return: int
+    """
     if request.method == 'POST':
         carid = request.form['carid']
         body = "CarID: {} is reported faulty by Admin".format(carid)
@@ -653,6 +731,11 @@ def send_notification_via_pushbullet(title, body):
 # Displaying visual board chart #1
 @app.route("/managerBoard1", methods=['GET', 'POST'])
 def managerBoard1():
+    """
+
+    Displaying visual board chart #1
+    :return: boolean
+    """
     if session.get('manager') != None:
         return render_template("managerBoard1.html")
     else:
@@ -663,6 +746,11 @@ def managerBoard1():
 # Displaying visual board chart #2
 @app.route("/managerBoard2", methods=['GET', 'POST'])
 def managerBoard2():
+    """
+
+    Displaying visual board chart #2
+    :return: boolean
+    """
     if session.get('manager') != None:
         return render_template("managerBoard2.html")
     else:
@@ -670,9 +758,13 @@ def managerBoard2():
         flash("You are not an authorized manager")
         return redirect(url_for('home'))
 
-# Displaying visual board chart #1
+# Displaying visual board chart #3
 @app.route("/managerBoard3", methods=['GET', 'POST'])
 def managerBoard3():
+    """
+     Displaying visual board chart #3
+    :return:
+    """
     if session.get('manager') != None:
         return render_template("managerBoard3.html")
     else:
@@ -680,9 +772,14 @@ def managerBoard3():
         flash("You are not an authorized manager")
         return redirect(url_for('home'))
 
-# Displaying maps with makrer homepage for Engineer
+# Displaying maps with maker homepage for Engineer
 @app.route("/engineer1", methods=['GET', 'POST'])
 def engineer1():
+    """
+
+    Displaying maps with maker homepage for Engineer
+    :return: string
+    """
     with DatabaseUtils() as db:
         position = db.getFaultyCar()
     return render_template("engineer1.html",position=position)
@@ -690,6 +787,11 @@ def engineer1():
 # Displaying maps with circle area homepage for Engineer
 @app.route("/engineer2", methods=['GET', 'POST'])
 def engineer2():
+    """
+
+    Displaying maps with circle area homepage for Engineer
+    :return: string
+    """
     with DatabaseUtils() as db:
         position = db.getFaultyCar()
     return render_template("engineer2.html",position=position)
@@ -699,6 +801,11 @@ def engineer2():
 ################# Below are testing routes ##########################
 @app.route("/chart", methods=['POST', 'GET'])
 def chart():
+    """
+
+    Testing function
+
+    """
     while True:
         x = random.randint(1,20)
         sleep(2)
@@ -709,10 +816,20 @@ def chart():
 
 @app.route("/gchart", methods=['POST', 'GET'])
 def gchart():
+    """
+
+    Testing function
+
+    """
     return render_template("gchart.html", **locals())
 
 @app.route("/loginURL", methods=['GET', 'POST'])
 def loginURL():
+    """
+
+    Testing function
+
+    """
     if request.method == 'POST':
         id = request.form['id']
         username = request.form['username']
