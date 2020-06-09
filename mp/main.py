@@ -395,7 +395,7 @@ def processLoginAdmins():
                 if(db.checkEngineer(username, password)):
                     session['engineer'] = request.form['username']
                     print("Passed")
-                    return redirect(url_for("engineer"))
+                    return redirect(url_for("engineer1"))
                 else:
                     print("{}'s Password is wrong.".format(username))
                     flash("{}'s Password is wrong.".format(username))
@@ -680,17 +680,19 @@ def managerBoard3():
         flash("You are not an authorized manager")
         return redirect(url_for('home'))
 
-# Displaying maps homepage for Engineer
-@app.route("/engineer", methods=['GET', 'POST'])
-def engineer():
+# Displaying maps with makrer homepage for Engineer
+@app.route("/engineer1", methods=['GET', 'POST'])
+def engineer1():
     with DatabaseUtils() as db:
         position = db.getFaultyCar()
-        data = json.dumps(position)
-        print(data)
-    return render_template("engineer.html", position=position,data = data)
+    return render_template("engineer1.html",position=position)
 
-
-
+# Displaying maps with circle area homepage for Engineer
+@app.route("/engineer2", methods=['GET', 'POST'])
+def engineer2():
+    with DatabaseUtils() as db:
+        position = db.getFaultyCar()
+    return render_template("engineer2.html",position=position)
 
 
 

@@ -26,44 +26,17 @@
       </style>
     </head>
     <body>
-    <p id="demo"></p>
-    <div>
-        {%for car in position%}
-        {{ car[0] | tojson }}: {
-            center: {lat: {{ car[9] | tojson }}, lng: {{ car[10] | tojson }}}
-        },
-        {% endfor %}
-    </div>
       <div id="map"></div>
       <script type="text/javascript">
-        data = JSON.parse({{ data | tojson }});
-        document.getElementById("demo").innerHTML = data;
-        var i = 0;
-        // First, create an object containing LatLng and population for each city.
-        var citymap = {
-          14: {
-            center: {lat: -37.911012, lng: 144.742922}
-          },
-          2: {
-            center: {lat: -37.823, lng: 144.997}
-          },
-          3: {
-            center: {lat: -37.850, lng: 144.999}
-          }
-        
-        };
-  
+
         function initMap() {
           // Create the map.
           var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
+            zoom: 10,
             center: {lat: -37.811, lng: 144.961}
-            // mapTypeId: 'terrain'
           });
-  
-          // Construct the circle for each value in citymap.
-          // Note: We scale the area of the circle based on the population.
-          for (var city in citymap) {
+          
+          {%for car in position%}
             // Add the circle for this city to the map.
             var cityCircle = new google.maps.Circle({
               strokeColor: '#FF0000',
@@ -72,10 +45,11 @@
               fillColor: '#FF0000',
               fillOpacity: 0.35,
               map: map,
-              center: citymap[city].center,
+              center: {lat: {{ car[9] }}, lng: {{ car[10] }}},
               radius: 100
             });
-          }
+          
+          {% endfor %}
         }
       </script>
       <script async defer

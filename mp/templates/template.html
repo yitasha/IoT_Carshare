@@ -37,7 +37,10 @@
         <li><a href="{{ url_for('managerBoard2') }}">Frequent Booked Cars</a></li>
         <li><a href="{{ url_for('managerBoard3') }}">Most Profitable Car</a></li>
         {% endif %}
-
+        {% if 'engineer' in session %}
+        <li><a href="{{ url_for('engineer1') }}">Marker</a></li>
+        <li><a href="{{ url_for('engineer2') }}">Circle</a></li>
+        {% endif %}
       </ul>
 
       

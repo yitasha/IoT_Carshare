@@ -1,0 +1,57 @@
+{% extends "template.html" %}
+{% block title %} 
+{{'Engineer'}} 
+{% endblock %}
+
+{% block display %}
+<h1>Welcome Engineer</h1>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+  {% for message in messages %}
+    <h1>{{ message }}</h1>
+  {% endfor %}
+{% endif %}
+{% endwith %}
+<div class="container">
+  <head>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 1000px;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+    function initMap() {
+      var myLatLng = {lat: -37.811, lng: 144.961};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 5,
+        center: myLatLng
+    });
+
+    {%for car in position%}
+      var marker = new google.maps.Marker({
+        position: {lat: {{ car[9] }}, lng: {{ car[10] }}},
+        map: map,
+        label: '{{ car[0] }}'
+      });
+    {% endfor %}
+    }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAL-YEmCr_eVuEAF9fX6fgr8Bop-9Y70sE&callback=initMap">
+    </script>
+  </body>
+
+</div>
+{% endblock %}
