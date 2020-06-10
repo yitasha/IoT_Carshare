@@ -26,8 +26,8 @@ class Server:
 
         """
         # Socket Listen
-        HOST = "192.168.0.135" # Shukun's Pi
-        # HOST = "192.168.0.102" # Shukun's Desktop
+        # HOST = "192.168.0.135" # Shukun's Pi
+        HOST = "192.168.0.102" # Shukun's Desktop
         # HOST = "localhost" # Test local
         # HOST= "120.21.91.201" # Yi's public IP
         # HOST = "192.168.1.7"
@@ -151,6 +151,21 @@ class Server:
                 # Clear this carid record for next time connecting
                 self.connectList.remove(list[1])
                 reply = ["Disconnected"]
+                return reply
+            
+            # case Messages ["Status", carid]
+            elif list[0] == "Status":
+                allFaultyCar = DatabaseUtils().getFaultyCar()
+                # Initial reply
+                reply = "Standard"
+
+                # Match the ID to be detected
+                for each in allFaultyCar:
+                    if each[0] == list[1]:
+                        reply = "Faulty"
+
+                # Return Initial or Faulty message
+                print("Check car id: {} Status - {}".format(list[1], reply))
                 return reply
         except:
             pass

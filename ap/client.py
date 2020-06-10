@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import filedialog
 import os
 import sys
+import bluetooth
 
 class Client:
     def main(self):
@@ -18,7 +19,7 @@ class Client:
 
         """
         # Unique car ID
-        self.carid = 13
+        self.carid = 1
 
         # Socket connection 
         self.HOST = "124.189.52.217" # Shukun's Desktop
@@ -55,15 +56,26 @@ class Client:
                     if connCheck == "Car already exists":
                         break
 
+                    # Check the car status
+                    self.s.sendall(pickle.dumps(["Status", self.carid]))
+                    StatusCheck = pickle.loads(self.s.recv(4096))
+                    print("Car status - {}".format(StatusCheck))
+
+                    if StatusCheck == "Faulty":
+                        # If car status is faulty
+                        # Automatically enter engineer mode
+                        selection = "Engineer"
+
                     # Main menu
                     # Need add in a option "Select image"
-                    print()
-                    print("Home page")
-                    print("1. Unlock Car")
-                    print("2. Return Car")
-                    print("3. Quit")
-                    selection = input("Select an option: ")
-                    print()
+                    if selection == "":
+                        print()
+                        print("Home page")
+                        print("1. Unlock Car")
+                        print("2. Return Car")
+                        print("3. Quit")
+                        selection = input("Select an option: ")
+                        print()
 
                     if selection == "1":
                         self.checkAccount(selection)
@@ -72,6 +84,8 @@ class Client:
                     elif selection == "3":
                         print("Client closed!")
                         break
+                    elif selection == "Engineer":
+                        self.bluetoothSearch()
                     else:
                         print("Invalid input - please try again.")
                 
@@ -86,6 +100,47 @@ class Client:
             # Situation: The server is suddenly disconnected
             print("Disconnecting from server.")
             pass
+
+    def bluetoothSearch(self):
+        # 获取工程师所有设备
+        Engineer_devices = ['9C:B6:D0:FA:B0:54', 'B8:27:EB:C9:97:D2']
+        Search = True
+        while Search:
+            # Automatically scan the nearby devices
+            print("Performing inquiry...")
+            nearby_devices = bluetooth.discover_devices(duration=8,
+                                            lookup_names=True,
+                                            flush_cache=True,
+                                            lookup_class=False)
+            print("Found {} devices".format(len(nearby_devices)))
+            for addr, name in nearby_devices:
+                try:
+                    print("   {} - {}".format(addr, name))
+                    if addr in Engineer_devices:
+                        self.checkEngineerIdentity()
+                        Search = False
+                        break
+                except UnicodeEncodeError:
+                    print("   {} - {}".format(addr, name.encode("utf-8", "replace")))
+    
+    def checkEngineerIdentity(self):
+        while True:
+            print()
+            print("Engineer mode")
+            print("1. Login by QR code")
+            print("2. Login by username and password")
+            print("3. Return")
+            EngineerInput = input("Select an option: ")
+            print()
+
+            if EngineerInput == "1":
+                print("Login by QR code")
+            elif EngineerInput == "2":
+                print("Login by username and password")
+            elif EngineerInput == "3":
+                break
+            else:
+                print("Invalid input - please try again.")
 
     def checkAccount(self, selection):
         """

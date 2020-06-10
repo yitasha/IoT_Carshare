@@ -13,3 +13,7 @@ python -m unittest discover
 A3 Requirements
 # This is to use the pushbullet package instead of the HTTP request
 pip3 install pushbullet.py
+
+# This is to use Bluetooth in AP
+sudo apt-get install libbluetooth-dev
+sudo pip3 install pybluez
