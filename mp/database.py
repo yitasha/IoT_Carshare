@@ -1,5 +1,7 @@
 import MySQLdb
 from passlib.hash import sha256_crypt
+import qrcode
+import os
 
 class DatabaseUtils:
     HOST = "35.189.49.76"
@@ -539,6 +541,13 @@ class DatabaseUtils:
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE available = 'Faulty'")
             return cursor.fetchall()
+
+    # Repair faulty car, setting its status to True
+    def repairCar(self, carid):
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE car SET available = 'True' WHERE carid = '{}'".format(carid))
+        self.connection.commit()
+        return cursor.rowcount == 1
     
 
 # db = DatabaseUtils()
