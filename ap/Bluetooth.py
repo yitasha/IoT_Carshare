@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+#ifdef _WIN32
+#include <Winsock2.h>
+#endif
 
 import bluetooth
 
@@ -18,3 +21,12 @@ for addr, name in nearby_devices:
         print("   {} - {}".format(addr, name))
     except UnicodeEncodeError:
         print("   {} - {}".format(addr, name.encode("utf-8", "replace")))
+
+print(nearby_devices)
+
+Engineer_devices = ['9C:B6:D0:FA:B0:54', 'others']
+print(Engineer_devices)
+
+for addr, name in nearby_devices:
+    if addr in Engineer_devices:
+        print(addr)

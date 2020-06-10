@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import socket
 import pickle
 import datetime
@@ -10,6 +11,8 @@ from tkinter import filedialog
 import os
 import sys
 import bluetooth
+import time
+import zxing
 
 class Client:
     def main(self):
@@ -65,6 +68,8 @@ class Client:
                         # If car status is faulty
                         # Automatically enter engineer mode
                         selection = "Engineer"
+                    else:
+                        selection = ""
 
                     # Main menu
                     # Need add in a option "Select image"
@@ -116,12 +121,14 @@ class Client:
             for addr, name in nearby_devices:
                 try:
                     print("   {} - {}".format(addr, name))
-                    if addr in Engineer_devices:
-                        self.checkEngineerIdentity()
-                        Search = False
-                        break
                 except UnicodeEncodeError:
                     print("   {} - {}".format(addr, name.encode("utf-8", "replace")))
+            
+            for addr, name in nearby_devices:
+                if addr in Engineer_devices:
+                    self.checkEngineerIdentity()
+                    Search = False
+                    break
     
     def checkEngineerIdentity(self):
         while True:
@@ -134,13 +141,66 @@ class Client:
             print()
 
             if EngineerInput == "1":
-                print("Login by QR code")
+                self.checkEngineerInput(EngineerInput)
             elif EngineerInput == "2":
-                print("Login by username and password")
+                self.checkEngineerInput(EngineerInput)
             elif EngineerInput == "3":
                 break
             else:
                 print("Invalid input - please try again.")
+
+    def checkEngineerInput(self, EngineerInput):
+        while True:
+            if EngineerInput == "1":
+                # Login by QR code
+                reader = zxing.BarCodeReader()
+                # Build a list of tuples for each file type the file dialog should display
+                my_filetypes = [('all files', '.*'), ('text files', '.txt')]
+                # Ask the user to select a single file name.
+                path = filedialog.askopenfilename(initialdir=os.getcwd(),
+                                                    title="Please select a file:",
+                                                    filetypes=my_filetypes)
+                if path == "":
+                    break
+                # decode QR
+                barcode = reader.decode(path)
+                username = barcode.parsed.split(', ')[0]
+                password = barcode.parsed.split(', ')[1]
+                message = ["CheckEngineerIdentity", username, password, self.carid]
+
+            elif EngineerInput == "2":
+                # Login by username and password
+                username = input("Enter username (Leave blank to quit) : ")
+                if(not username):
+                    return
+                password = getpass("Enter Password: ")
+                message = ["CheckEngineerIdentity", username, password, self.carid]
+
+            # Receive login reply
+            self.s.sendall(pickle.dumps(message))
+            data = pickle.loads(self.s.recv(4096))
+            if data[0] == "True":
+                # True
+                message = ["Repair", self.carid]
+                self.s.sendall(pickle.dumps(message))
+                data = pickle.loads(self.s.recv(4096))
+                # Send and Receive Repair reply
+                if data[0] == "True":
+                    # True
+                    print()
+                    print("Start repairing the car")
+                    time.sleep(2)
+                    print()
+                    print("The car has been repaired")
+                    return
+                else:
+                    # False
+                    print()
+                    print("The car does not need to be repaired")
+                    return
+            else:
+                # False
+                print("Username or Password is incorrect")
 
     def checkAccount(self, selection):
         """

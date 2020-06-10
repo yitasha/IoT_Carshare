@@ -167,6 +167,24 @@ class Server:
                 # Return Initial or Faulty message
                 print("Check car id: {} Status - {}".format(list[1], reply))
                 return reply
+
+            # case Messages ["CheckEngineerIdentity", username, password, carid]
+            elif list[0] == "CheckEngineerIdentity":
+                if DatabaseUtils().checkEngineer(list[1], list[2]):
+                    reply = ["True"]
+                else:
+                    reply = ["False"]
+                print("Engineer try to access car id {} and reply {}".format(list[3], reply[0]))
+                return reply
+            # case Messages ["Repair", self.carid]
+            elif list[0] == "Repair":
+                if DatabaseUtils().repairCar(list[1]):
+                    reply = ["True"]
+                else:
+                    reply = ["False"]
+                print("Engineer try to repair car id {} and reply {}".format(list[1], reply[0]))
+                return reply
+
         except:
             pass
 
