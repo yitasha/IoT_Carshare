@@ -184,6 +184,12 @@ class Server:
                     reply = ["False"]
                 print("Engineer try to repair car id {} and reply {}".format(list[1], reply[0]))
                 return reply
+            
+            # case Messages ["CheckEngineerDevices"]
+            elif list[0] == "CheckEngineerDevices":
+                reply = ['9C:B6:D0:FA:B0:54', 'others']
+                print(reply)
+                return reply
 
         except:
             pass

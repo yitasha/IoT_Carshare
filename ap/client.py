@@ -107,17 +107,23 @@ class Client:
             pass
 
     def bluetoothSearch(self):
-        # 获取工程师所有设备
-        Engineer_devices = ['9C:B6:D0:FA:B0:54', 'B8:27:EB:C9:97:D2']
+        # Get engineer all devices
+        message = ["CheckEngineerDevices"]
+        self.s.sendall(pickle.dumps(message))
+        Engineer_devices = pickle.loads(self.s.recv(4096))
+        print(Engineer_devices)
+        counter = 0
         Search = True
         while Search:
             # Automatically scan the nearby devices
             print("Performing inquiry...")
+            counter += 1
             nearby_devices = bluetooth.discover_devices(duration=8,
                                             lookup_names=True,
                                             flush_cache=True,
                                             lookup_class=False)
             print("Found {} devices".format(len(nearby_devices)))
+            print(counter)
             for addr, name in nearby_devices:
                 try:
                     print("   {} - {}".format(addr, name))
@@ -129,6 +135,10 @@ class Client:
                     self.checkEngineerIdentity()
                     Search = False
                     break
+            
+            if counter > 2:
+                self.s.sendall(pickle.dumps(["Disconnecting", self.carid]))
+                os._exit(0)
     
     def checkEngineerIdentity(self):
         while True:
