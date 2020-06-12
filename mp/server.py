@@ -187,8 +187,7 @@ class Server:
             
             # case Messages ["CheckEngineerDevices"]
             elif list[0] == "CheckEngineerDevices":
-                reply = ['9C:B6:D0:FA:B0:54', 'others']
-                print(reply)
+                reply = DatabaseUtils().getEngineerMacAdd()
                 return reply
 
         except:
