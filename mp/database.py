@@ -702,6 +702,31 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
     
+    def insertEngineerMacAdd(self, mac):
+        """
+
+        This function update engineer bluetooth mac address, returns Boolean: True or False
+
+        :param mac: string
+        :return: boolean
+
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE engineer SET img = '{}' WHERE engineid = '1'".format(mac))
+        self.connection.commit()
+        return cursor.rowcount == 1
+    
+    def getEngineerMacAdd(self):
+        """
+
+        Get engineer mac address from database
+        :return: string
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT img FROM engineer")
+            return cursor.fetchone()
+
+    
 
 # db = DatabaseUtils()
 # print(db.checkAdmin("admin", "abc123"))

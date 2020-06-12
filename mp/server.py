@@ -184,6 +184,11 @@ class Server:
                     reply = ["False"]
                 print("Engineer try to repair car id {} and reply {}".format(list[1], reply[0]))
                 return reply
+            
+            # case Messages ["CheckEngineerDevices"]
+            elif list[0] == "CheckEngineerDevices":
+                reply = DatabaseUtils().getEngineerMacAdd()
+                return reply
 
         except:
             pass

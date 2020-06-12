@@ -42,6 +42,7 @@ class Client:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as self.s:
                 print("Connecting to {}...".format(self.ADDRESS))
+                print()
                 # Socket connect
                 self.s.connect(self.ADDRESS)
 
@@ -53,6 +54,7 @@ class Client:
                 connCheck = pickle.loads(self.s.recv(4096))[0]
                 # Result is "Connected" or "Car already exists" 
                 print(connCheck)
+                print()
 
                 while(True):
                     # Break is to prevent multiple logins of the same carid
@@ -63,6 +65,7 @@ class Client:
                     self.s.sendall(pickle.dumps(["Status", self.carid]))
                     StatusCheck = pickle.loads(self.s.recv(4096))
                     print("Car status - {}".format(StatusCheck))
+                    print()
 
                     if StatusCheck == "Faulty":
                         # If car status is faulty
@@ -107,22 +110,29 @@ class Client:
             pass
 
     def bluetoothSearch(self):
-        # 获取工程师所有设备
         """
 
         Get all the equipment of the engineer
 
         """
-        Engineer_devices = ['9C:B6:D0:FA:B0:54', 'B8:27:EB:C9:97:D2']
+        # Get engineer all devices
+        message = ["CheckEngineerDevices"]
+        self.s.sendall(pickle.dumps(message))
+        Engineer_devices = pickle.loads(self.s.recv(4096))
+        counter = 0
         Search = True
         while Search:
             # Automatically scan the nearby devices
+            print()
             print("Performing inquiry...")
+            print()
+            counter += 1
             nearby_devices = bluetooth.discover_devices(duration=8,
                                             lookup_names=True,
                                             flush_cache=True,
                                             lookup_class=False)
             print("Found {} devices".format(len(nearby_devices)))
+            print()
             for addr, name in nearby_devices:
                 try:
                     print("   {} - {}".format(addr, name))
@@ -134,6 +144,10 @@ class Client:
                     self.checkEngineerIdentity()
                     Search = False
                     break
+            
+            if counter > 2:
+                self.s.sendall(pickle.dumps(["Disconnecting", self.carid]))
+                os._exit(0)
     
     def checkEngineerIdentity(self):
 
