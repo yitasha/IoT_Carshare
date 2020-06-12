@@ -107,6 +107,11 @@ class Client:
             pass
 
     def bluetoothSearch(self):
+        """
+
+        Get all the equipment of the engineer
+
+        """
         # Get engineer all devices
         message = ["CheckEngineerDevices"]
         self.s.sendall(pickle.dumps(message))
@@ -141,6 +146,11 @@ class Client:
                 os._exit(0)
     
     def checkEngineerIdentity(self):
+
+        """
+
+        Check engineer identity function
+        """
         while True:
             print()
             print("Engineer mode")

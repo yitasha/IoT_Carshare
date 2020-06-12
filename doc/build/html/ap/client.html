@@ -38,11 +38,44 @@
 <em class="property">class </em><code class="sig-prename descclassname">ap.client.</code><code class="sig-name descname">Client</code><a class="headerlink" href="#ap.client.Client" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
+<dt id="ap.client.Client.bluetoothSearch">
+<code class="sig-name descname">bluetoothSearch</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.bluetoothSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all the equipment of the engineer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ap.client.Client.car">
+<code class="sig-name descname">car</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">title</span></em>, <em class="sig-param"><span class="n">bookingid</span></em>, <em class="sig-param"><span class="n">userid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.car" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> – string</p></li>
+<li><p><strong>bookingid</strong> – int</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="ap.client.Client.checkAccount">
 <code class="sig-name descname">checkAccount</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">selection</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.checkAccount" title="Permalink to this definition">¶</a></dt>
 <dd><p>:param : selection
 :return: string</p>
 </dd></dl>
+
+<dl class="py method">
+<dt id="ap.client.Client.checkEngineerIdentity">
+<code class="sig-name descname">checkEngineerIdentity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.checkEngineerIdentity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check engineer identity function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="ap.client.Client.checkEngineerInput">
+<code class="sig-name descname">checkEngineerInput</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">EngineerInput</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.checkEngineerInput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="ap.client.Client.identity">
@@ -54,38 +87,6 @@
 <dt id="ap.client.Client.main">
 <code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.main" title="Permalink to this definition">¶</a></dt>
 <dd><p>Connect to master Pi server function</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ap.client.Client.returnCar">
-<code class="sig-name descname">returnCar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">bookingid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.returnCar" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>username</strong> – string</p></li>
-<li><p><strong>bookingid</strong> – int</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>string</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="ap.client.Client.unlockCar">
-<code class="sig-name descname">unlockCar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">username</span></em>, <em class="sig-param"><span class="n">bookingid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#ap.client.Client.unlockCar" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>username</strong> – string</p></li>
-<li><p><strong>bookingid</strong> – int</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>string</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

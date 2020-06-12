@@ -60,4 +60,5 @@ html_static_path = ['_static']
 #This value contains a list of modules to be mocked up.
 #This is useful when some external dependencies are not met at build time and break the building process. 
 #You may only specify the root package of the dependencies themselves and omit the sub-modules:
-autodoc_mock_imports = ["MySQLdb","flask","googleapiclient","httplib2","passlib","oauth2client","google_auth_oauthlib","client","database","add_event"]
+autodoc_mock_imports = ["MySQLdb","flask","googleapiclient","httplib2","passlib","oauth2client","google_auth_oauthlib",
+"client","database","add_event","bluetooth","qrcode","cv2","server","zxing","werkzeug","main"]
