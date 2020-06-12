@@ -108,6 +108,11 @@ class Client:
 
     def bluetoothSearch(self):
         # 获取工程师所有设备
+        """
+
+        Get all the equipment of the engineer
+
+        """
         Engineer_devices = ['9C:B6:D0:FA:B0:54', 'B8:27:EB:C9:97:D2']
         Search = True
         while Search:
@@ -131,6 +136,11 @@ class Client:
                     break
     
     def checkEngineerIdentity(self):
+
+        """
+
+        Check engineer identity function
+        """
         while True:
             print()
             print("Engineer mode")

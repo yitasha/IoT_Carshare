@@ -249,6 +249,13 @@ class DatabaseUtils:
 
     # Get the image tuple numbers from AP and compare to database
     def checkFaceImage(self, img, carid, date):
+        """
+
+        :param img: string
+        :param carid: int
+        :param date: date
+        :return: string, int, date
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user WHERE img = '{}'".format(img))
             if(cursor.rowcount >= 1):
@@ -396,6 +403,18 @@ class DatabaseUtils:
 ################## For A3 database functions ##################
     #This function returns Boolean: True or False
     def insertAdmin(self, username, password, firstname, lastname,phone,email,address):
+        """
+
+        This function returns Boolean: True or False
+        :param username: string
+        :param password: string
+        :param firstname: string
+        :param lastname: string
+        :param phone: int
+        :param email: string
+        :param address: string
+        :return: Boolean
+        """
         with self.connection.cursor() as cursor:
             sql = "INSERT INTO admin (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             val = (username, password, firstname, lastname, phone, email, address)
@@ -405,6 +424,18 @@ class DatabaseUtils:
 
     #This function returns Boolean: True or False
     def insertManager(self, username, password, firstname, lastname,phone,email,address):
+        """
+
+        This function returns Boolean: True or False
+        :param username: string
+        :param password: string
+        :param firstname: string
+        :param lastname: string
+        :param phone: int
+        :param email: string
+        :param address: string
+        :return: Boolean
+        """
         with self.connection.cursor() as cursor:
             sql = "INSERT INTO manager (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             val = (username, password, firstname, lastname, phone, email, address)
@@ -414,6 +445,18 @@ class DatabaseUtils:
 
     #This function returns Boolean: True or False
     def insertEngineer(self, username, password, firstname, lastname,phone,email,address):
+        """
+
+        This function returns Boolean: True or False
+        :param username: string
+        :param password: string
+        :param firstname: string
+        :param lastname: string
+        :param phone: int
+        :param email: string
+        :param address: string
+        :return: Boolean
+        """
         with self.connection.cursor() as cursor:
             sql = "INSERT INTO engineer (username, password, firstname, lastname, phone, email, address) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             val = (username, password, firstname, lastname, phone, email, address)
@@ -423,6 +466,13 @@ class DatabaseUtils:
 
     #Check admin encrypted username and encrypted password
     def checkAdmin(self, username, password):
+        """
+
+        Check admin encrypted username and encrypted password
+        :param username: string
+        :param password: string
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM admin")
             results = cursor.fetchone()
@@ -435,6 +485,13 @@ class DatabaseUtils:
     
     #Check admin encrypted username and encrypted password
     def checkManager(self, username, password):
+        """
+
+        Check admin encrypted username and encrypted password
+        :param username: string
+        :param password: string
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM manager")
             results = cursor.fetchone()
@@ -447,6 +504,13 @@ class DatabaseUtils:
     
     #Check admin encrypted username and encrypted password
     def checkEngineer(self, username, password):
+        """
+
+        Check admin encrypted username and encrypted password
+        :param username: string
+        :param password: string
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM engineer")
             results = cursor.fetchone()
@@ -459,12 +523,22 @@ class DatabaseUtils:
 
     #Check admin encrypted username and encrypted password
     def getAllBookings(self):
+        """
+
+        Check admin encrypted username and encrypted password
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking")
             return cursor.fetchall()
     
     # Check admin encrypted username and encrypted password
     def getAllUsers(self):
+        """
+
+        Check admin encrypted username and encrypted password
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM user")
             return cursor.fetchall()
@@ -484,6 +558,20 @@ class DatabaseUtils:
 
     # Updating user with basic details and encrypte new password
     def updateUser(self, userid, username, password, firstname, lastname, phone, email, address, city):
+        """
+
+        Updating user with basic details and encrypte new password
+        :param userid: string
+        :param username: string
+        :param password: string
+        :param firstname: string
+        :param lastname: string
+        :param phone: int
+        :param email: string
+        :param address: string
+        :param city: string
+        :return: string, int
+        """
         with self.connection.cursor() as cursor:
             if password == "":
                 cursor.execute("UPDATE user SET firstname = '{}', lastname = '{}', phone = '{}', email = '{}', address = '{}', city = '{}' WHERE userid = '{}'".format(firstname, lastname, phone, email, address, city, userid))
@@ -495,12 +583,33 @@ class DatabaseUtils:
     
     # Get all cars no matter what the available status is
     def getAllCar(self):
+        """
+
+        Get all cars no matter what the available status is
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car")
             return cursor.fetchall()
 
     # Updating car with new information
     def updateCar(self, carid, make, model, cartype, seats, color, location, cost, available, lat, lng):
+        """
+
+        Updating car with new information
+        :param carid: string
+        :param make: string
+        :param model: string
+        :param cartype: string
+        :param seats: int
+        :param color: string
+        :param location: string
+        :param cost: int
+        :param available: boolean
+        :param lat: string
+        :param lng: string
+        :return: string, int, boolean
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE car SET make = '{}', model = '{}', type = '{}', seats = '{}', color = '{}', location = '{}', cost = '{}', available = '{}', lat = '{}', lng = '{}' WHERE carid = '{}'".format(make, model, cartype, seats, color, location, cost, available, lat, lng, carid))
         self.connection.commit()
@@ -508,6 +617,12 @@ class DatabaseUtils:
 
     # delete car by CarID
     def deleteCar(self, carid):
+        """
+
+        delete car by CarID
+        :param carid: int
+        :return: int
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("DELETE FROM car WHERE carid = '{}'".format(carid))
         self.connection.commit()
@@ -515,6 +630,12 @@ class DatabaseUtils:
 
     # delete user by UserID
     def deleteUser(self, userid):
+        """
+
+        delete user by UserID
+        :param userid: int
+        :return: int
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("DELETE FROM user WHERE userid = '{}'".format(userid))
         self.connection.commit()
@@ -522,6 +643,21 @@ class DatabaseUtils:
     
     # Insert new car to database:car
     def addCar(self, make, model, cartype, seats, color, location, cost, available, lat, lng):
+        """
+
+        Insert new car to database:car
+        :param make: string
+        :param model: string
+        :param cartype: string
+        :param seats: int
+        :param color: string
+        :param location: string
+        :param cost: int
+        :param available: string
+        :param lat: string
+        :param lng: string
+        :return: string, int, boolean
+        """
         with self.connection.cursor() as cursor:
             sql = "INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             val = (make, model, cartype, seats, color, location, cost, available, lat, lng)
@@ -531,6 +667,12 @@ class DatabaseUtils:
     
     # Report faulty car, setting its status to Faulty
     def reportCar(self, carid):
+        """
+
+        Report faulty car, setting its status to Faulty
+        :param carid: int
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE car SET available = 'Faulty' WHERE carid = '{}'".format(carid))
         self.connection.commit()
@@ -538,12 +680,23 @@ class DatabaseUtils:
 
     # Retrieve faulty car from database where available = "Faulty"
     def getFaultyCar(self):
+        """
+
+        Retrieve faulty car from database where available = "Faulty"
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM car WHERE available = 'Faulty'")
             return cursor.fetchall()
 
     # Repair faulty car, setting its status to True
     def repairCar(self, carid):
+        """
+
+        Repair faulty car, setting its status to True
+        :param carid: int
+        :return: string
+        """
         with self.connection.cursor() as cursor:
             cursor.execute("UPDATE car SET available = 'True' WHERE carid = '{}'".format(carid))
         self.connection.commit()

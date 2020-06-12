@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/Users/ruilonpoy/Desktop/carshare/venv/bin/python3.8",
+    "python.pythonPath": "/usr/local/bin/python3",
     "restructuredtext.confPath": "${workspaceFolder}/doc/source"
 }
