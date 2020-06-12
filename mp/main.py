@@ -507,7 +507,7 @@ def updatingUser():
                 return redirect(url_for("showAllUsers"))
 
 @app.route("/deleteUser", methods=['POST'])
-def deleteUser()
+def deleteUser():
     """
     
     Delete user
