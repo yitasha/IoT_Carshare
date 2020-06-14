@@ -28,14 +28,6 @@ mp.main module
    :undoc-members:
    :show-inheritance:
 
-mp.menu module
---------------
-
-.. automodule:: mp.menu
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 mp.server module
 ----------------
 
@@ -56,6 +48,14 @@ mp.testDB\_User module
 ----------------------
 
 .. automodule:: mp.testDB_User
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+mp.testDB\_admins module
+------------------------
+
+.. automodule:: mp.testDB_admins
    :members:
    :undoc-members:
    :show-inheritance:

@@ -13,17 +13,17 @@ Car Share Scheme is a website provide user with booking a pecific car on the spe
 > Username:__engineer__ Password: ***abc123***<br>
 
 #### Report your repository usage in GitHub by attaching some screen shots in README.md
-![image1](/git screenshots/2020-06-14(1))
-![image2](/git screenshots/2020-06-14(2))
-![image3](/git screenshots/2020-06-14(3))
-![image4](/git screenshots/2020-06-14(4))
+![image1](/screenshots/2.png)
+For more please go to screenshots for check as images are too large !
 
 #### Report your Trello board usage by attaching some screen shots in README.md
+
+![image1](/screenshots/5.png)
 
 #### Well organised file structure and also separate website and API code into two folders
 
 #### Make surehaving one main method to run in main.py
-> Run command python main.py
+> Run command __`python main.py`__
 
 ## Environment and Deployment 
 `pip3 install passlib`<br>

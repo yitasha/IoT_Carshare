@@ -379,7 +379,7 @@ def loginAdmins(usertype):
 def processLoginAdmins():
     """
 
-    # 3 type of admins login
+    3 type of admins login
 
     """
     if request.method == 'POST':
@@ -714,10 +714,12 @@ def reportCar():
 # Helper function for send notification to engineer
 # Since my pushbullet didn't work on my windows, I used this HTTP Request method
 def send_notification_via_pushbullet(title, body):
-    """ Sending notification via pushbullet.
-        Args:
-            title (str) : title of text.
-            body (str) : Body of text.
+    """ 
+
+    Sending notification via pushbullet.
+    Args:
+        title (str) : title of text.
+        body (str) : Body of text.
     """
     data_send = {"type": "note", "title": title, "body": body}
  
@@ -764,7 +766,7 @@ def managerBoard2():
 def managerBoard3():
     """
      Displaying visual board chart #3
-    :return:
+    :return: boolean
     """
     if session.get('manager') != None:
         return render_template("managerBoard3.html")
