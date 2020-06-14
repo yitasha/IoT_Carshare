@@ -73,19 +73,19 @@ Agent client<br>
 web-based system<br>
 1. Login Option
 Admin<br>
-2. View the list of car rental history
-3. Search and view users and car by properties
-4. Edit information of car and user
-5. Report cars with issues
-6. Search the car by GoogleSpeech
+1. View the list of car rental history
+2. Search and view users and car by properties
+3. Edit information of car and user
+4. Report cars with issues
+5. Search the car by GoogleSpeech
 Manager<br>
-2. View the number of users living in each area
-3. View the user location
-4. View the Frequent Booked Cars
-5. View Most Profitable Car
+1. View the number of users living in each area
+2. View the user location
+3. View the Frequent Booked Cars
+4. View Most Profitable Car
 Engineer<br>
-2. View the location of the broken car in Google Map
-3. View the circle of the city
+1. View the location of the broken car in Google Map
+2. View the circle of the city
 
 
 ### AP:
