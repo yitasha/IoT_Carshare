@@ -37,30 +37,32 @@ class TestDatabaseUtils(unittest.TestCase):
                     location varchar (30) NOT NULL,
                     cost int NOT NULL,
                     available varchar(10) NOT NULL,
+                    lat text,
+                    lng text,
                     primary key (carid)
                 )""")
             
             cursor.execute("""
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Toyota", "Camry", "Sedan", "5", "Red", "Melbourne", 99, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("BMW", "i8", "Coupe", "2", "Blue", "Sydney", 459, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("BMW", "i320", "Sedan", "5", "White", "Geelong", 249, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Mazda", "CX-5", "SUV", "5", "Red", "RMIT", 199, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Mitsubishi", "Lancer", "Sedan", "5", "Black", "Rowville", 129, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Nissan", "Skyline", "Coupe", "4", "Red", "Ringwood", 199, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Porsche", "911", "Coupe", "2", "Red", "Glen Waverly", 999, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("VW", "Golf", "Hatchback", "4", "Black", "Kew", 99, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Porsche", "Cayenne", "SUV", "5", "Yellow", "Melbourne", 799, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Volvo", "XC60", "SUV", "5", "White", "Carlton", 199, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Porsche", "Panamera", "Sedan", "4", "Black", "Melbourne", 799, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("AUDI", "A4", "Sedan", "5", "Green", "Melbourne", 399, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Honda", "Civic", "Sedan", "5", "Black", "Melbourne", 99, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Toyota", "Corolla", "Hatch", "5", "Navy", "Point Cook", 69, "True");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Hyundai", "i30", "Hatch", "5", "White", "Melbourne", 69, "True");                        
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Hyundai", "i20", "Hatch", "5", "Black", "Hawthorn", 69, "False");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("AUDI", "i20", "Hatch", "5", "Black", "Hawthorn", 69, "False");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Nissan", "Fairlady-Z", "Coupe", "2", "Black", "Hawthorn", 69, "False");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Ferrari", "F8", "Coupe", "2", "Black", "Hawthorn", 999, "False");
-                    INSERT INTO car (make, model, type, seats, color, location, cost, available) VALUES ("Ferrari", "F1", "SUV", "5", "Red", "South Yarra", 1299, "False");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Toyota", "Camry", "Sedan", "5", "Red", "Melbourne", 99, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("BMW", "i8", "Coupe", "2", "Blue", "Sydney", 459, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("BMW", "i320", "Sedan", "5", "White", "Geelong", 249, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Mazda", "CX-5", "SUV", "5", "Red", "RMIT", 199, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Mitsubishi", "Lancer", "Sedan", "5", "Black", "Rowville", 129, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Nissan", "Skyline", "Coupe", "4", "Red", "Ringwood", 199, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Porsche", "911", "Coupe", "2", "Red", "Glen Waverly", 999, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("VW", "Golf", "Hatchback", "4", "Black", "Kew", 99, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Porsche", "Cayenne", "SUV", "5", "Yellow", "Melbourne", 799, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Volvo", "XC60", "SUV", "5", "White", "Carlton", 199, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Porsche", "Panamera", "Sedan", "4", "Black", "Melbourne", 799, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("AUDI", "A4", "Sedan", "5", "Green", "Melbourne", 399, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Honda", "Civic", "Sedan", "5", "Black", "Melbourne", 99, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Toyota", "Corolla", "Hatch", "5", "Navy", "Point Cook", 69, "True", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Hyundai", "i30", "Hatch", "5", "White", "Melbourne", 69, "True", "-145.087459", "123.123292");                        
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Hyundai", "i20", "Hatch", "5", "Black", "Hawthorn", 69, "False", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("AUDI", "i20", "Hatch", "5", "Black", "Hawthorn", 69, "False", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Nissan", "Fairlady-Z", "Coupe", "2", "Black", "Hawthorn", 69, "False", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Ferrari", "F8", "Coupe", "2", "Black", "Hawthorn", 999, "False", "-145.087459", "123.123292");
+                    INSERT INTO car (make, model, type, seats, color, location, cost, available, lat, lng) VALUES ("Ferrari", "F1", "SUV", "5", "Red", "South Yarra", 1299, "False", "-145.087459", "123.123292");
                     """)
            
         self.connection.commit()
@@ -94,6 +96,11 @@ class TestDatabaseUtils(unittest.TestCase):
             cursor.execute("SELECT * FROM car WHERE carid = '{}'".format(carid))
             return cursor.fetchone()
 
+    def getFaultyCar(self):
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM car WHERE available = 'Faulty'")
+            return cursor.fetchall()
+
     # Compare the available cars row count
     def test_countAvailCar(self):
         with DatabaseUtils(self.connection) as db:
@@ -109,8 +116,8 @@ class TestDatabaseUtils(unittest.TestCase):
         with DatabaseUtils(self.connection) as db:
             self.assertEqual(self.getCar(1), db.getCar(1))
             self.assertEqual(self.getCar(2), db.getCar(2))
-            rawData20 = (20, "Ferrari", "F1", "SUV", "5", "Red", "South Yarra", 1299, "False")
-            rawData10 = (10, "Volvo", "XC60", "SUV", "5", "White", "Carlton", 199, "True")
+            rawData20 = (20, "Ferrari", "F1", "SUV", "5", "Red", "South Yarra", 1299, "False", "-145.087459", "123.123292")
+            rawData10 = (10, "Volvo", "XC60", "SUV", "5", "White", "Carlton", 199, "True", "-145.087459", "123.123292")
             self.assertEqual(rawData10, db.getCar(10))
             self.assertEqual(rawData20, db.getCar(20))
     
@@ -144,6 +151,104 @@ class TestDatabaseUtils(unittest.TestCase):
             self.assertTrue(db.checkCarAvail(carTrue2))
             self.assertFalse(db.checkCarAvail(carFalse19))
             self.assertFalse(db.checkCarAvail(carFalse20))
+
+    # Get all cars no matter what the available status is
+    def test_getAllCar(self):
+        with DatabaseUtils(self.connection) as db:
+            self.assertEqual(len(db.getAllCar()), 20)
+
+    # Updating car with new information
+    def test_updateCar(self):
+        carid = 1
+        make = "BMW"
+        model = "c125"
+        cartype = "Coupe"
+        seats = "2"
+        color = "Blue"
+        location = "Geelong East"
+        cost = "149"
+        available = "False"
+        lat = "145.098101"
+        lng = "159.239102"
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.updateCar(carid, make, model, cartype, seats, color, location, cost, available, lat, lng))
+            updateCar = self.getCar(carid)
+            # Compare updated value to original arguments
+            self.assertEqual(updateCar[1], make)
+            self.assertEqual(updateCar[2], model)
+            self.assertEqual(updateCar[3], cartype)
+            self.assertEqual(updateCar[4], seats)
+            self.assertEqual(updateCar[5], color)
+            self.assertEqual(updateCar[6], location)
+            self.assertEqual(updateCar[7], int(cost))
+            self.assertEqual(updateCar[8], available)
+            self.assertEqual(updateCar[9], lat)
+            self.assertEqual(updateCar[10], lng)
+
+    # Delete car by CarID
+    def test_deleteCar(self):
+        CarID_1 = 1
+        CarID_10 = 10
+        # Record down current number of cars
+        count = self.countCar()
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.deleteCar(CarID_1))
+            self.assertEqual((count-1), self.countCar())
+            self.assertTrue(db.deleteCar(CarID_10))
+            self.assertEqual((count-2), self.countCar())
+
+    # Add new car to database: car
+    def test_addCar(self):
+        make = "TestMake"
+        model = "TestModel"
+        cartype = "TestType"
+        seats = "TestSeats"
+        color = "TestColor"
+        location = "TestLocation"
+        cost = "999"
+        available = "False"
+        lat = "145.098101"
+        lng = "159.239102"
+        count = self.countCar()
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.addCar(make, model, cartype, seats, color, location, cost, available, lat, lng))
+            self.assertEqual((count+1), self.countCar())
+
+    # Report faulty car
+    def test_reportCar(self):
+        carid = 1
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.reportCar(carid))
+            status = self.getCar(carid)
+            self.assertEqual("Faulty", status[8])
+
+    # Retrieve faulty car from database
+    def test_getFaultyCar(self):
+        carid = 1
+        count = len(self.getFaultyCar())
+        with DatabaseUtils(self.connection) as db:
+            # Verify that there is no Faulty car in the database
+            self.assertTrue(count == 0)
+            # Report a car and set it to Faulty
+            self.assertTrue(db.reportCar(carid))
+            # Verify if faulty car is in the system by checking database rows
+            self.assertEqual((count+1), len(self.getFaultyCar()))
+
+    # Repair faulty car 
+    def test_repairCar(self):
+        carid = 1
+        count = len(self.getFaultyCar())
+        with DatabaseUtils(self.connection) as db:
+            # Verify that there is no Faulty car in the database
+            self.assertTrue(count == 0)
+            # Report a car and set it to Faulty
+            self.assertTrue(db.reportCar(carid))
+            # Verify if faulty car is in the system by checking database rows
+            self.assertEqual((count+1), len(self.getFaultyCar()))
+            # Now fix the car by update its status
+            self.assertTrue(db.repairCar(carid))
+            # Now check the number of faulty cars
+            self.assertEqual((count), len(self.getFaultyCar()))
 
 if __name__ == "__main__":
     unittest.main()

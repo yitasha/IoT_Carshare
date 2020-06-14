@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
     "python.pythonPath": "C:\\python381\\python.exe",
+=======
+    "python.pythonPath": "C:\\Python38\\python.exe",
+>>>>>>> f3960c60daab38f0dabb3edb23984d145ae3e18e
     "restructuredtext.confPath": "${workspaceFolder}/doc/source"
 }
