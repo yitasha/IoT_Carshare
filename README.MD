@@ -13,10 +13,10 @@ Car Share Scheme is a website provide user with booking a pecific car on the spe
 > Username:__engineer__ Password: ***abc123***<br>
 
 #### Report your repository usage in GitHub by attaching some screen shots in README.md
-![image1](/git screenshots/2020-06-14(1))
-![image2](/git screenshots/2020-06-14(2))
-![image3](/git screenshots/2020-06-14(3))
-![image4](/git screenshots/2020-06-14(4))
+![image1](/gitscreenshots/1.png)
+![image2](/gitscreenshots/2.png)
+![image3](/gitscreenshots/3.png)
+![image4](/gitscreenshots/4.png)
 
 #### Report your Trello board usage by attaching some screen shots in README.md
 
