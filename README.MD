@@ -1,5 +1,5 @@
 # PIoT Assignment 03 Car Share Scheme
-Car Share Scheme is a website provide user with booking a pecific car on the specific period.
+Car Share Scheme is a website provide user with booking a pecific car on the specific period. In this step, User can view the history of booked car and avaiable car, they also can search the car book it and cancle the booking. Admin system provide the power to view car rental history, search users and cars and edit the information of them, they also can report the car issues to the engineer for asking for supporting. For Manager, there is a dashboard page for them to login and manage the business status. The Engineers should show their QR code to verify their identity and unlock the broken cars in GoogleMap by Bluetooth. This application will be continuously updated and developed in the future.
 
 ## Team members 
 > Yi Zhang s3602956 <br>
@@ -27,6 +27,15 @@ Car Share Scheme is a website provide user with booking a pecific car on the spe
 `pip3 install passlib`<br>
 `pip3 install google-api-python-client google-auth-httplib2`<br> 
 `google-auth-oauthlib oauth2client httplib2`<br>
+`pip3 install pushbullet.py`<br>
+`sudo apt-get install libbluetooth-dev`<br>
+`sudo pip3 install pybluez`<br>
+`pip3 install qrcode pillow image zxing`<br>
+`pip3 install SpeechRecognition`<br>
+`sudo apt-get install portaudio19-dev python-all-dev python3-all-dev`<br>
+`pip3 install pyaudio`<br>
+`pip3 install google-api-python-client`<br>
+`sudo apt-get install flac`<br>
 
 # To run all unit tests in command line
 `python -m unittest discover`<br>
