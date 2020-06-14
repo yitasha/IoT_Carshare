@@ -21,6 +21,7 @@ For more please go to screenshots for check as images are too large !
 ![image5](/screenshots/5.png)
 
 #### Well organised file structure and also separate website and API code into two folders
+![workflow](/screenshots/workflow.png)
 
 #### Make surehaving one main method to run in main.py
 > Run command __`python main.py`__
