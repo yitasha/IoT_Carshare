@@ -28,7 +28,7 @@ class TestDatabaseUtils(unittest.TestCase):
         with self.connection.cursor() as cursor:
             cursor.execute("drop table if exists user")
             cursor.execute("""
-                create table if not exists user (
+                create table user(
                     userid int NOT NULL auto_increment,
                     username text NOT NULL,
                     password text NOT NULL,
@@ -37,13 +37,15 @@ class TestDatabaseUtils(unittest.TestCase):
                     phone varchar(15) NOT NULL,
                     email varchar (40) NOT NULL,
                     address varchar (40) NOT NULL,
+                    city varchar(30) NOT NULL,
+                    img text,
                     primary key (userid)
                 )""")
             
             password = sha256_crypt.hash("TestPassword")
-            cursor.execute("INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES ('TestUser1', '{}', 'TestFirstName', 'TestLastName', 'TestPhone', 'TestEmail', 'TestAddress')".format(password))
-            cursor.execute("INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES ('TestUser2', '{}', 'TestFirstName', 'TestLastName', 'TestPhone', 'TestEmail', 'TestAddress')".format(password))
-            cursor.execute("INSERT INTO user (username, password, firstname, lastname, phone, email, address) VALUES ('TestUser3', '{}', 'TestFirstName', 'TestLastName', 'TestPhone', 'TestEmail', 'TestAddress')".format(password))
+            cursor.execute("INSERT INTO user (username, password, firstname, lastname, phone, email, address, city, img) VALUES ('TestUser1', '{}', 'TestFirstName', 'TestLastName', 'TestPhone', 'TestEmail', 'TestAddress', 'TestCity', 'TestImg')".format(password))
+            cursor.execute("INSERT INTO user (username, password, firstname, lastname, phone, email, address, city, img) VALUES ('TestUser2', '{}', 'TestFirstName', 'TestLastName', 'TestPhone', 'TestEmail', 'TestAddress', 'TestCity', 'TestImg')".format(password))
+            cursor.execute("INSERT INTO user (username, password, firstname, lastname, phone, email, address, city, img) VALUES ('TestUser3', '{}', 'TestFirstName', 'TestLastName', 'TestPhone', 'TestEmail', 'TestAddress', 'TestCity', 'TestImg')".format(password))
         self.connection.commit()
 
     # code that is executed after each test
@@ -65,9 +67,9 @@ class TestDatabaseUtils(unittest.TestCase):
             count = self.countPeople()
             password = sha256_crypt.hash("TestPassword")
 
-            self.assertTrue(db.insertPerson("TestUser4", password,"TestFirstName","TestLastName","TestPhone","TestEmail","TestAddress"))
+            self.assertTrue(db.insertPerson("TestUser4", password,"TestFirstName","TestLastName","TestPhone","TestEmail","TestAddress", "TestCity"))
             self.assertTrue((count + 1) == self.countPeople())
-            self.assertTrue(db.insertPerson("TestUser5", password,"TestFirstName","TestLastName","TestPhone","TestEmail","TestAddress"))
+            self.assertTrue(db.insertPerson("TestUser5", password,"TestFirstName","TestLastName","TestPhone","TestEmail","TestAddress", "TestCity"))
             self.assertTrue((count + 2) == self.countPeople())
     
     # This checks if a username is available
@@ -90,13 +92,62 @@ class TestDatabaseUtils(unittest.TestCase):
             self.assertFalse(db.checkPerson("TestUser2", "WrongPassword2"))
             self.assertFalse(db.checkPerson("TestUser3", "WrongPassword3"))
     
-    # Checks user
+    # Checks user by username
     def test_getPerson(self):
         with DatabaseUtils(self.connection) as db:
             self.assertEqual("TestUser1", db.getPerson("TestUser1")[1])
             self.assertEqual("TestUser2", db.getPerson("TestUser2")[1])
             self.assertEqual("TestUser3", db.getPerson("TestUser3")[1])
 
+    # Checks user by userid
+    def test_getUser(self):
+        with DatabaseUtils(self.connection) as db:
+            user1 = 1
+            user2 = 2
+            user3 = 3
+            self.assertEqual("TestUser1", db.getUser(user1)[1])
+            self.assertEqual("TestUser2", db.getUser(user2)[1])
+            self.assertEqual("TestUser3", db.getUser(user3)[1])
+
+    # Compare number of users to count total database rows
+    def test_getAllUsers(self):
+        with DatabaseUtils(self.connection) as db:
+            allusers = len(db.getAllUsers())
+            self.assertEqual(allusers, self.countPeople())
+
+    # Update user with basic details + password if neccessary
+    def test_updateUser(self):
+        userid = 1
+        username = "TestUser1"
+        password = "UpdatePass"
+        firstname = "UpdateFirst"
+        lastname = "UpdateLast"
+        phone = "UpdatePhone"
+        email = "UpdateEmail@gmail.com"
+        address = "UpdateAddress"
+        city = "UpdateCity"
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.updateUser(userid, username, password, firstname, lastname, phone, email, address, city))
+            # Compare data after update userid 1
+            updateUser = db.getUser(userid)
+            self.assertTrue(sha256_crypt.verify(password, updateUser[2]))
+            self.assertEqual(updateUser[3], firstname)
+            self.assertEqual(updateUser[4], lastname)
+            self.assertEqual(updateUser[5], phone)
+            self.assertEqual(updateUser[6], email)
+            self.assertEqual(updateUser[7], address)
+            self.assertEqual(updateUser[8], city)
+    
+    # Delete user by UserID
+    def test_deleteUser(self):
+        userid = 1
+        count = self.countPeople()
+        with DatabaseUtils(self.connection) as db:
+            self.assertTrue(db.deleteUser(userid))
+            # Removed 1 user so the current count should - 1
+            self.assertTrue((count-1) == self.countPeople())
+
+    
 if __name__ == "__main__":
     unittest.main()
 
