@@ -19,6 +19,7 @@ Car Share Scheme is a website provide user with booking a pecific car on the spe
 #### Well organised file structure and also separate website and API code into two folders
 
 #### Make surehaving one main method to run in main.py
+> Run command python main.py
 
 ## Environment and Deployment 
 `pip3 install passlib`<br>
@@ -65,6 +66,33 @@ Agent client<br>
 2. Unlock Car<br>
 3. Return Car<br>
 4. Facial recognition Login<br>
+
+### A3 Features
+## MP:
+web-based system<br>
+1. Login Option
+Admin
+2. View the list of car rental history
+3. Search and view users and car by properties
+4. Edit information of car and user
+5. Report cars with issues
+6. Search the car by GoogleSpeech
+Manager
+2. View the number of users living in each area
+3. View the user location
+4. View the Frequent Booked Cars
+5. View Most Profitable Car
+Engineer
+2. View the location of the broken car in Google Map
+3. View the circle of the city
+
+
+## AP:
+object-detection console-based system<br>
+1. Verify identity by QR code
+2. Unlock the car by implementing an automatic identification system by Bluetooth
+
+
 
 ## Notice ##
 Run mp/server.py in terminal first 
