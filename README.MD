@@ -67,27 +67,27 @@ Agent client<br>
 3. Return Car<br>
 4. Facial recognition Login<br>
 
-### A3 Features
-## MP:
+## A3 Features
+### MP:
 web-based system<br>
 1. Login Option
-Admin
+Admin<br>
 2. View the list of car rental history
 3. Search and view users and car by properties
 4. Edit information of car and user
 5. Report cars with issues
 6. Search the car by GoogleSpeech
-Manager
+Manager<br>
 2. View the number of users living in each area
 3. View the user location
 4. View the Frequent Booked Cars
 5. View Most Profitable Car
-Engineer
+Engineer<br>
 2. View the location of the broken car in Google Map
 3. View the circle of the city
 
 
-## AP:
+### AP:
 object-detection console-based system<br>
 1. Verify identity by QR code
 2. Unlock the car by implementing an automatic identification system by Bluetooth
