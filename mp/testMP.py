@@ -29,13 +29,13 @@ class MyTestForMP(unittest.TestCase):
         pass
     
     def test_get_page_status(self):
-        pages = ['/', '/register', '/login', '/myprofile', '/logout', '/cars']
+        pages = ['/', '/register', '/login', '/myprofile', '/logout', '/cars', '/askLogin', '/loginAdmins/admin', '/processLoginAdmins']
         for page in pages:
             result = self.app.get(page)
             self.assertEqual(result.status_code, 200)
 
     def test_post_page_status(self):
-        pages = ['/book', '/processbook', '/cancelbook']
+        pages = ['/book', '/processbook', '/cancelbook', '/updateUser', '/updatingUser', '/deleteUser', '/updateCar', '/updatingCar', '/deleteCar']
         for page in pages:
             result = self.app.get(page)
             self.assertEqual(result.status_code, 405)
@@ -59,5 +59,59 @@ class MyTestForMP(unittest.TestCase):
         # assert the response data
         self.assertIn(b'Nicole', result.data)
 
+    def test_admin_pages(self):
+        with self.app as client:
+            # Fake a login with session 
+            with client.session_transaction() as sess:
+                sess['admin'] = 'admin'
+            # Test all admin pages
+            pages = ['/showAdminCars', '/showAllUsers', '/showAllBookings', '/addCar', '/addUser']
+            for page in pages:
+                result = self.app.get(page)
+                self.assertEqual(result.status_code, 200)
+    
+    def test_manager_pages(self):
+        with self.app as client:
+            # Fake a login with session 
+            with client.session_transaction() as sess:
+                sess['manager'] = 'manager'
+            # Test all admin pages
+            pages = ['/managerBoard1', '/managerBoard2', '/managerBoard3']
+            for page in pages:
+                result = self.app.get(page)
+                self.assertEqual(result.status_code, 200)
+    
+    def test_engineer_pages(self):
+        with self.app as client:
+            # Fake a login with session 
+            with client.session_transaction() as sess:
+                sess['engineer'] = 'engineer'
+            # Test all admin pages
+            pages = ['/engineer1', '/engineer1']
+            for page in pages:
+                result = self.app.get(page)
+                self.assertEqual(result.status_code, 200)
+
+    def test_admin_login(self):
+        # sends POST request to login with dictionary data
+        result = self.app.post('/processLoginAdmins', data=dict(username='admin', password='abc123', filter='Admin'), follow_redirects=True)
+
+        # assert the response data
+        self.assertIn(b'Admin', result.data)
+
+    def test_manager_login(self):
+        # sends POST request to login with dictionary data
+        result = self.app.post('/processLoginAdmins', data=dict(username='manager', password='abc123', filter='Manager'), follow_redirects=True)
+
+        # assert the response data
+        self.assertIn(b'managerBoard', result.data)
+
+    def test_engineer_login(self):
+        # sends POST request to login with dictionary data
+        result = self.app.post('/processLoginAdmins', data=dict(username='engineer', password='abc123', filter='Engineer'), follow_redirects=True)
+
+        # assert the response data
+        self.assertIn(b'Engineer', result.data)
+        
 if __name__ == "__main__":
     unittest.main()

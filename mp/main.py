@@ -291,7 +291,7 @@ def cancelbook():
 
 ########################### A3 Part ####################################
 
-# Register for 3 type of admins, DISABLED!
+# Register for 3 type of admins, DISABLED on purpose!
 # @app.route("/registerA", methods=['GET', 'POST'])
 # def registerA():
 #     if request.method == 'POST':
@@ -339,6 +339,7 @@ def cancelbook():
 #                 return redirect(url_for("registerA"))
     
 #     return render_template("registerA.html")
+
 
 # Selection login system
 @app.route("/askLogin", methods=['GET', 'POST'])

@@ -422,7 +422,7 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
-    #This function returns Boolean: True or False
+    # This function returns Boolean: True or False
     def insertManager(self, username, password, firstname, lastname,phone,email,address):
         """
 
@@ -443,7 +443,7 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
-    #This function returns Boolean: True or False
+    # This function returns Boolean: True or False
     def insertEngineer(self, username, password, firstname, lastname,phone,email,address):
         """
 
@@ -464,7 +464,7 @@ class DatabaseUtils:
         self.connection.commit()
         return cursor.rowcount == 1
 
-    #Check admin encrypted username and encrypted password
+    # Check admin encrypted username and encrypted password
     def checkAdmin(self, username, password):
         """
 
@@ -483,11 +483,11 @@ class DatabaseUtils:
             else:
                 return False
     
-    #Check admin encrypted username and encrypted password
+    # Check manager encrypted username and encrypted password
     def checkManager(self, username, password):
         """
 
-        Check admin encrypted username and encrypted password
+        Check manager encrypted username and encrypted password
         :param username: string
         :param password: string
         :return: string
@@ -502,11 +502,11 @@ class DatabaseUtils:
             else:
                 return False
     
-    #Check admin encrypted username and encrypted password
+    # Check engineer encrypted username and encrypted password
     def checkEngineer(self, username, password):
         """
 
-        Check admin encrypted username and encrypted password
+        Check engineer encrypted username and encrypted password
         :param username: string
         :param password: string
         :return: string
@@ -521,22 +521,22 @@ class DatabaseUtils:
             else:
                 return False
 
-    #Check admin encrypted username and encrypted password
+    # Get all booking history
     def getAllBookings(self):
         """
 
-        Check admin encrypted username and encrypted password
+        Get all booking history
         :return: string
         """
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT * FROM booking")
             return cursor.fetchall()
     
-    # Check admin encrypted username and encrypted password
+    # Get all users in the system
     def getAllUsers(self):
         """
 
-        Check admin encrypted username and encrypted password
+        Get all users in the system
         :return: string
         """
         with self.connection.cursor() as cursor:
@@ -726,7 +726,5 @@ class DatabaseUtils:
             cursor.execute("SELECT img FROM engineer")
             return cursor.fetchone()
 
-    
-
 # db = DatabaseUtils()
-# print(db.checkAdmin("admin", "abc123"))
+# print(db.admins())
