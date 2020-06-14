@@ -20,3 +20,12 @@ sudo pip3 install pybluez
 
 # This is to use QRcode in AP
 pip3 install qrcode pillow image zxing
+
+# This is to use GoogleSpeech in MP
+pip3 install SpeechRecognition
+sudo apt-get install portaudio19-dev python-all-dev python3-all-dev
+pip3 install pyaudio
+pip3 install google-api-python-client
+sudo apt-get install flac
+
+# Please set up the Google Assistant Service first
